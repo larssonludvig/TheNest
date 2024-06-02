@@ -1,0 +1,38 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    @if (menuOpen)
+    {
+        <NavMenu OnToggleMenu="ToggleMenu" />
+    }
+
+    <main>
+        <div class="top-row px-4">
+            <h1>THE FINALS</h1>
+            <p>Random Loadout Generator</p>
+            <button class="btn btn-menu" style="margin-left:auto;" @onclick="ToggleMenu">
+                <img src="images/menu.svg" alt="Menu" />
+            </button>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code {
+    private bool menuOpen = true;
+
+    private void ToggleMenu()
+    {
+        menuOpen = !menuOpen;
+        StateHasChanged();
+    }
+}

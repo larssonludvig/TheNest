@@ -1,0 +1,25 @@
+﻿<div class="menu"> 
+    <div class="top-row ps-3 navbar navbar-dark">
+        <h1>MENU</h1>
+        <button class="btn btn-menu" style="margin-left:auto;" @onclick="ToggleMenu">
+            <img src="images/menu.svg" alt="Menu" />
+        </button>
+    </div>
+
+    <nav class="content">
+        <a class="menu-link" @onclick="ToggleMenu" href="">RANDOM LOADOUT</a>
+        <a class="menu-link" @onclick="ToggleMenu" href="options">OPTIONS</a>
+        <!-- <a class="menu-link" @onclick="ToggleMenu" href="support">SUPPORT</a> -->
+    </nav>
+
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnToggleMenu { get; set; }
+
+    private async void ToggleMenu()
+    {
+        await OnToggleMenu.InvokeAsync();
+    }
+}

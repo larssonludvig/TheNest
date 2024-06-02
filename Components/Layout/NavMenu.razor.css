@@ -1,0 +1,44 @@
+.menu {
+    background-color: var(--dark-gray);
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+}
+
+.top-row {
+    background-color: var(--dark-gray);
+    justify-content: flex-start;
+    height: 4.5rem;
+    display: flex;
+    align-items: center;
+    margin: 0 1.5rem;
+}
+
+.top-row > h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.top-row > p {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 85%;
+}
+
+.menu-link {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-decoration: none;
+}
