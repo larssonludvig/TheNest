@@ -1,0 +1,26 @@
+<div>
+    <div class="layer1">
+        <img class="image" src=@ImagePath alt=@AltText @onclick=ToggleChecked />
+    </div>
+    @if (IsChecked)
+    {
+        <div class="layer2">
+            <img class="cross" src="images/close.svg" alt="Checked" @onclick=ToggleChecked />
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string ImagePath { get; set; }
+    [Parameter] public bool IsChecked { get; set; }
+    [Parameter] public string AltText { get; set; }
+    [Parameter] public EventCallback<string> IsCheckedChanged { get; set; }
+
+    private void ToggleChecked()
+    {
+        IsChecked = !IsChecked;
+        if (IsCheckedChanged.HasDelegate) {
+            IsCheckedChanged.InvokeAsync(AltText);
+        }
+    }
+}

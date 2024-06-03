@@ -1,0 +1,23 @@
+
+.layer1 {
+    position: relative;
+    width: 8rem;
+    height: 8rem;
+}
+
+.image {
+    width: 8rem;
+}
+
+.layer2 {
+    position: relative;
+    width: 4rem;
+    height: 4rem;
+    margin-left: 2rem;
+    margin-top: -4rem;
+}
+
+.cross {
+    width: 4rem;
+    filter: invert(1);
+}

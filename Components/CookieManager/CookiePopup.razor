@@ -1,0 +1,21 @@
+@namespace FinalsRandomLoadout.Components.CookieManager
+@inject CookieService CookieService
+
+@if (visible)
+{
+    <div class="cookie-popup">
+        <p>This site use cookies to store your options. By using the site you consent to cookies.</p>
+        <button class="btn btn-primary" @onclick="AcceptCookies">Accept</button>
+    </div>
+}
+
+@code {
+    private bool visible = true;
+
+    private async void  AcceptCookies()
+    {
+        await CookieService.SetCookie("cookieConsent", "true");
+        visible = false;
+        StateHasChanged();
+    }
+}

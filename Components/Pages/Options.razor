@@ -1,9 +1,171 @@
 ﻿@page "/options"
+@inject CookieService CookieService
 
-<PageTitle>Options</PageTitle>
+<PageTitle>Random Loadout Generator</PageTitle>
 
-<h1>Options</h1>
+<div class="items">
+    <div class="item">
+        <h1 class="itemHeader">Classes</h1>
+        <div class="items">
+            @if (selectedClasses != null)
+            {
+                foreach (string item in classTypes)
+                {
+                    <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) />
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="items">
+    <div class="item">
+        <h1 class="itemHeader">Specializations</h1>
+        <div class="items">
+            @if (selectedSpecializations != null)
+            {
+                foreach (string item in SpecializationTypes)
+                {
+                    <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                }
+            }
+
+            <img src="images/placeholder.jpg" alt="Cloaking Device">
+        </div>
+    </div>
+</div>
+
+<!-- <div class="items">
+    <div class="item">
+        <h1 class="itemHeader">Weapons</h1>
+        <div class="items">
+            <img src="images/placeholder.jpg" alt="V95">
+            <img src="images/placeholder.jpg" alt="93R">
+            <img src="images/placeholder.jpg" alt="M11">
+            <img src="images/placeholder.jpg" alt="XP-54">
+            <img src="images/placeholder.jpg" alt="SH1900">
+            <img src="images/placeholder.jpg" alt="LH1">
+            <img src="images/placeholder.jpg" alt="SR-84">
+            <img src="images/placeholder.jpg" alt="Dagger">
+            <img src="images/placeholder.jpg" alt="Sword">
+            <img src="images/placeholder.jpg" alt="Throwing Knives">
+            <img src="images/placeholder.jpg" alt="AKM">
+            <img src="images/placeholder.jpg" alt="FCAR">
+            <img src="images/placeholder.jpg" alt="CL-40">
+            <img src="images/placeholder.jpg" alt="R.357">
+            <img src="images/placeholder.jpg" alt="Model 1887">
+            <img src="images/placeholder.jpg" alt="Riot Shield">
+            <img src="images/placeholder.jpg" alt="FAMAS">
+            <img src="images/placeholder.jpg" alt="M60">
+            <img src="images/placeholder.jpg" alt="Lewis">
+            <img src="images/placeholder.jpg" alt="Flamethrower">
+            <img src="images/placeholder.jpg" alt="MGL32">
+            <img src="images/placeholder.jpg" alt="SA1216">
+            <img src="images/placeholder.jpg" alt="Sledgehammer">
+            <img src="images/placeholder.jpg" alt="KS-23">
+        </div>
+    </div>
+</div> -->
+
+<!-- </div class="items">
+    <div class="item">
+        <h1 class="itemHeader">Gadgets</h1>
+        <div class="items">
+            <img src="images/placeholder.jpg" alt="Breach Charge">
+            <img src="images/placeholder.jpg" alt="Flashbang">
+            <img src="images/placeholder.jpg" alt="Frag Grenade">
+            <img src="images/placeholder.jpg" alt="Gas Grenade">
+            <img src="images/placeholder.jpg" alt="Gateway">
+            <img src="images/placeholder.jpg" alt="Goo Grenade">
+            <img src="images/placeholder.jpg" alt="Glitch Grenade">
+            <img src="images/placeholder.jpg" alt="Smoke Grenade">
+            <img src="images/placeholder.jpg" alt="Sonar Grenade">
+            <img src="images/placeholder.jpg" alt="Stun Gun">
+            <img src="images/placeholder.jpg" alt="Thermal Vision">
+            <img src="images/placeholder.jpg" alt="Tracking Dart">
+            <img src="images/placeholder.jpg" alt="Pyro Grenade">
+            <img src="images/placeholder.jpg" alt="Vanishing Bomb">
+            <img src="images/placeholder.jpg" alt="APS Turret">
+            <img src="images/placeholder.jpg" alt="Defibrillator">
+            <img src="images/placeholder.jpg" alt="Explosive Mine">
+            <img src="images/placeholder.jpg" alt="Flashbang">
+            <img src="images/placeholder.jpg" alt="Frag Grenade">
+            <img src="images/placeholder.jpg" alt="Gas Grenade">
+            <img src="images/placeholder.jpg" alt="Gas Mine">
+            <img src="images/placeholder.jpg" alt="Glitch Trap">
+            <img src="images/placeholder.jpg" alt="Goo Grenade">
+            <img src="images/placeholder.jpg" alt="Jump Pad">
+            <img src="images/placeholder.jpg" alt="Incendiary Grenade">
+            <img src="images/placeholder.jpg" alt="Sonar Grenade">
+            <img src="images/placeholder.jpg" alt="Tracking Dart">
+            <img src="images/placeholder.jpg" alt="Zipline">
+            <img src="images/placeholder.jpg" alt="Night Vision">
+            <img src="images/placeholder.jpg" alt="Data Reshaper">
+            <img src="images/placeholder.jpg" alt="Frag Grenade">
+            <img src="images/placeholder.jpg" alt="Flashbang">
+            <img src="images/placeholder.jpg" alt="Incendiary Grenade">
+            <img src="images/placeholder.jpg" alt="Goo Grenade">
+            <img src="images/placeholder.jpg" alt="Gas Grenade">
+        </div>
+    </div>
+</div> -->
+
 
 @code {
+    private List<string> classTypes = new List<string> {"light", "medium", "heavy"};
+    private List<string> SpecializationTypes = new List<string> {"Cloaking Device", "Evasive Dash", "Grappling Hook", "Guardian Turret", "Healing Beam", "Dematerialiser", "Charge 'n' Slam", "Goo Gun", "Mesh Shield"};
 
+    private bool cookieConsent = false;
+
+    private List<string> selectedClasses;
+    private List<string> selectedSpecializations;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            cookieConsent = await CookieService.GetCookie("cookieConsent") == "true";
+        }
+
+        if (cookieConsent) {
+            // Classes
+            string cookie = await CookieService.GetCookie("classes");
+            if (cookie != null) {
+                selectedClasses = cookie.Split(",").ToList();
+            } else {
+                selectedClasses = new List<string>();
+            }
+
+            // Specializations
+            string cookieSpecializations = await CookieService.GetCookie("specializations");
+            if (cookieSpecializations != null) {
+                selectedSpecializations = cookieSpecializations.Split(",").ToList();
+            } else {
+                selectedSpecializations = new List<string>();
+            }
+
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task SelectClass(string selectedClass) {
+        if (selectedClasses.Contains(selectedClass)) {
+            selectedClasses.Remove(selectedClass);
+        } else {
+            selectedClasses.Add(selectedClass);
+        }
+
+        await CookieService.SetCookie("classes", string.Join(",", selectedClasses));
+    }
+
+    private async Task SelectSpecialization(string selectedSpecialization) {
+        if (selectedSpecializations.Contains(selectedSpecialization)) {
+            selectedSpecializations.Remove(selectedSpecialization);
+        } else {
+            selectedSpecializations.Add(selectedSpecialization);
+        }
+
+        await CookieService.SetCookie("specializations", string.Join(",", selectedSpecializations));
+    }
 }

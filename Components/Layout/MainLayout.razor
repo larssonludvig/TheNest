@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject CookieService CookieService
 
 <div class="page">
     @if (menuOpen)
@@ -8,7 +9,7 @@
 
     <main>
         <div class="top-row px-4">
-            <h1>THE FINALS</h1>
+            <img src="images/thefinals.png" alt="THE FINALS" />
             <p>Random Loadout Generator</p>
             <button class="btn btn-menu" style="margin-left:auto;" @onclick="ToggleMenu">
                 <img src="images/menu.svg" alt="Menu" />
@@ -21,14 +22,29 @@
     </main>
 </div>
 
+@if (cookieConsent == false)
+{
+    <CookiePopup />
+}
+
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
 
+
 @code {
     private bool menuOpen = false;
+    private bool cookieConsent = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) {
+            cookieConsent = await CookieService.GetCookie("cookieConsent") == "true";
+            StateHasChanged();
+        }
+    }
 
     private void ToggleMenu()
     {

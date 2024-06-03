@@ -1,0 +1,14 @@
+.cookie-popup {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 1rem;
+    margin: 2rem;
+    background-color: var(--black);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    width: 30rem;
+    flex-direction: column;
+}
