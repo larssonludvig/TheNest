@@ -10,12 +10,15 @@
 @code {
     private List<string> classes = new List<string> {"light", "medium", "heavy"};
 
+    private List<string> lightSpecializations = new List<string> {"Cloaking Device", "Evasive Dash", "Grappling Hook"};
     private List<string> lightWeapons = new List<string> {"V95", "93R", "M11", "XP-54", "SH1900", "LH1", "SR-84", "Dagger", "Sword", "Throwing Knives"};
     private List<string> lightGadgets = new List<string> {"Breach Charge", "Flashbang", "Frag Grenade", "Gas Grenade", "Gateway", "Goo Grenade", "Glitch Grenade", "Smoke Grenade", "Sonar Grenade", "Stun Gun", "Thermal Vision", "Tracking Dart", "Pyro Grenade", "Vanishing Bomb"};
     
+    private List<string> mediumSpecializations = new List<string> {"Guardian Turret", "Healing Beam", "Dematerialiser"};
     private List<string> mediumWeapons = new List<string> {"AKM", "FCAR", "CL-40", "R.357", "Model 1887", "Riot Shield", "FAMAS"};
     private List<string> mediumGadgets = new List<string> {"APS Turret", "Defibrillator", "Explosive Mine", "Flashbang", "Frag Grenade", "Gas Grenade", "Gas Mine", "Glitch Trap", "Goo Grenade", "Jump Pad", "Incendiary Grenade", "Sonar Grenade", "Tracking Dart", "Zipline", "Night Vision", "Data Reshaper"};
 
+    private List<string> heavySpecializations = new List<string> {"Charge 'n' Slam", "Goo Gun", "Mesh Shield"};
     private List<string> heavyWeapons = new List<string> {"M60", "Lewis", "Flamethrower", "MGL32", "SA1216", "Sledgehammer", "KS-23"};
     private List<string> heavyGadgets = new List<string> {"Frag Grenade", "Flashbang", "Incendiary Grenade", "Goo Grenade", "Gas Grenade", "C4", "Explosive Mine", "Incendiary Mine", "Barricade", "RPG-7", "Dome Shield", "Night Vision", "Anti-Gravity Cube"};
 
@@ -26,27 +29,31 @@
     private void GenerateRandomLoadout()
     {
         Random random = new Random();
+        string specialization = "";
         string weapon = "";
         List<string> gadgets = new List<string>();
         string classType = classes[random.Next(0, 3)];
 
         if (classType == "light")
         {
+            specialization = lightSpecializations[random.Next(0, lightSpecializations.Count)];
             weapon = lightWeapons[random.Next(0, lightWeapons.Count)];
             gadgets = GetRandomItems(lightGadgets, 3);
         }
         else if (classType == "medium")
         {
+            specialization = mediumSpecializations[random.Next(0, mediumSpecializations.Count)];
             weapon = mediumWeapons[random.Next(0, mediumWeapons.Count)];
             gadgets = GetRandomItems(mediumGadgets, 3);
         }
         else if (classType == "heavy")
         {
+            specialization = heavySpecializations[random.Next(0, heavySpecializations.Count)];
             weapon = heavyWeapons[random.Next(0, heavyWeapons.Count)];
             gadgets = GetRandomItems(heavyGadgets, 3);
         }
 
-        loadout = $"Class: {classType}; Weapon: {weapon}; Gadgets: {gadgets[0]}, {gadgets[1]}, {gadgets[2]}";
+        loadout = $"Class: {classType}; Specialization: {specialization}; Weapon: {weapon}; Gadgets: {gadgets[0]}, {gadgets[1]}, {gadgets[2]}";
     }
 
     private List<string> GetRandomItems(List<string> items, int count) {
