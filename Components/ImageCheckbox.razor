@@ -1,26 +1,32 @@
-<div>
+<div class="area" @onclick=ToggleChecked>
     <div class="layer1">
-        <img class="image" src=@ImagePath alt=@AltText @onclick=ToggleChecked />
+        <img class="image" src=@ImagePath alt=@AltText />
     </div>
     @if (IsChecked)
     {
         <div class="layer2">
-            <img class="cross" src="images/close.svg" alt="Checked" @onclick=ToggleChecked />
+            <img class="cross" src="images/close.svg" alt="Checked" />
         </div>
     }
+    <p class="label">@AltText</p>
 </div>
 
 @code {
-    [Parameter] public string ImagePath { get; set; }
-    [Parameter] public bool IsChecked { get; set; }
-    [Parameter] public string AltText { get; set; }
+    [Parameter] public string ImagePath { get; set; } = "";
+    [Parameter] public bool IsChecked { get; set; } = false;
+    [Parameter] public string? AltText { get; set; }
     [Parameter] public EventCallback<string> IsCheckedChanged { get; set; }
+    [Parameter] public bool IsDisabled { get; set; } = false;
 
     private void ToggleChecked()
     {
-        IsChecked = !IsChecked;
-        if (IsCheckedChanged.HasDelegate) {
-            IsCheckedChanged.InvokeAsync(AltText);
+        if (!IsDisabled)
+        {
+            IsChecked = !IsChecked;
+            if (IsCheckedChanged.HasDelegate)
+            {
+                IsCheckedChanged.InvokeAsync(AltText);
+            }
         }
     }
 }

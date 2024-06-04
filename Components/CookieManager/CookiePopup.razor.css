@@ -12,3 +12,9 @@
     width: 30rem;
     flex-direction: column;
 }
+
+.cookie-popup > img {
+    cursor: pointer;
+    margin-left: auto;
+    width: 1rem;
+}

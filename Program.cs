@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<CookieService>();
+builder.Services.AddScoped<Constants>();
 
 var app = builder.Build();
 

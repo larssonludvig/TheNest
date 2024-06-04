@@ -1,100 +1,90 @@
 ﻿@page "/"
 @inject CookieService CookieService
+@inject Constants Constants
 
 <PageTitle>Random Loadout Generator</PageTitle>
 
 <div class="content">
-    @if (classType != "")
+    @if (selectedClass != "")
     {
-        <div class="item">
-            <h1 class="itemHeader">Build</h1>
-            <img src="placeholder.png" alt=@classType>
-        </div>
-        <div class="items">
+        <div class="items" style="gap:2rem;">
             <div class="item">
-                <h1 class="itemHeader">Specialization</h1>
-                <img src="placeholder.png" alt=@specialization>
+                <h1 class="itemHeader">Build</h1>
+                <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedClass IsDisabled=true />
             </div>
-            <div class="item">
-                <h1 style="itemHeader">Weapon</h1>
-                <img src="placeholder.png" alt=@weapon>
+            <div class="items">
+                <div class="item">
+                    <h1 class="itemHeader">Specialization</h1>
+                    <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedSpecialization IsDisabled=true />
+                </div>
+                <div class="item">
+                    <h1 class="itemHeader">Weapon</h1>
+                    <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedWeapon IsDisabled=true />
+                </div>
             </div>
-        </div>
-        <div class="items">
-            <div class="item">
-                <h1 class="itemHeader">Gadgets</h1>
-                <div class="items">
-                    <img src="placeholder.png" alt=@gadgets[0]>
-                    <img src="placeholder.png" alt=@gadgets[1]>
-                    <img src="placeholder.png" alt=@gadgets[2]>
+            <div class="items">
+                <div class="item">
+                    <h1 class="itemHeader">Gadgets</h1>
+                    <div class="items">
+                        <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedGadgets[0] IsDisabled=true />
+                        <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedGadgets[1] IsDisabled=true />
+                        <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedGadgets[2] IsDisabled=true />
+                    </div>
                 </div>
             </div>
         </div>
-        <div style="height:3rem;" />
     }
+    <div style="height:4rem;" />
 
     <button class="generateButton" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
 </div>
 
-
-
-
-
 @code {
-    private List<string> classTypes = new List<string> {"light", "medium", "heavy"};
+    private string selectedClass = "";
+    private string selectedSpecialization = "";
+    private string selectedWeapon = "";
+    private List<string> selectedGadgets = new List<string>();
 
-    private List<string> lSpecializationTypes = new List<string> {"Cloaking Device", "Evasive Dash", "Grappling Hook"};
-    private List<string> lWeaponTypes = new List<string> {"V95", "93R", "M11", "XP-54", "SH1900", "LH1", "SR-84", "Dagger", "Sword", "Throwing Knives"};
-    private List<string> lGadgetTypes = new List<string> {"Breach Charge", "Flashbang", "Frag Grenade", "Gas Grenade", "Gateway", "Goo Grenade", "Glitch Grenade", "Smoke Grenade", "Sonar Grenade", "Stun Gun", "Thermal Vision", "Tracking Dart", "Pyro Grenade", "Vanishing Bomb"};
-    
-    private List<string> mSpecializationTypes = new List<string> {"Guardian Turret", "Healing Beam", "Dematerialiser"};
-    private List<string> mWeaponTypes = new List<string> {"AKM", "FCAR", "CL-40", "R.357", "Model 1887", "Riot Shield", "FAMAS"};
-    private List<string> mGadgetTypes = new List<string> {"APS Turret", "Defibrillator", "Explosive Mine", "Flashbang", "Frag Grenade", "Gas Grenade", "Gas Mine", "Glitch Trap", "Goo Grenade", "Jump Pad", "Incendiary Grenade", "Sonar Grenade", "Tracking Dart", "Zipline", "Night Vision", "Data Reshaper"};
+    private List<string> classes = new List<string>();
 
-    private List<string> hSpecializationTypes = new List<string> {"Charge 'n' Slam", "Goo Gun", "Mesh Shield"};
-    private List<string> hWeaponTypes = new List<string> {"M60", "Lewis", "Flamethrower", "MGL32", "SA1216", "Sledgehammer", "KS-23"};
-    private List<string> hGadgetTypes = new List<string> {"Frag Grenade", "Flashbang", "Incendiary Grenade", "Goo Grenade", "Gas Grenade", "C4", "Explosive Mine", "Incendiary Mine", "Barricade", "RPG-7", "Dome Shield", "Night Vision", "Anti-Gravity Cube"};
+    private List<string> lSpecializations = new List<string>();
+    private List<string> mSpecializations = new List<string>();
+    private List<string> hSpecializations = new List<string>();
 
-    private string loadout = "No loadout generated yet.";
+    private List<string> lWeapons = new List<string>();
+    private List<string> mWeapons = new List<string>();
+    private List<string> hWeapons = new List<string>();
 
-    private string classType = "";
-    private string specialization = "";
-    private string weapon = "";
-    private List<string> gadgets = new List<string>();
+    private List<string> lGadgets = new List<string>();
+    private List<string> mGadgets = new List<string>();
+    private List<string> hGadgets = new List<string>();
 
-    private void GenerateRandomLoadout()
+    private async Task GenerateRandomLoadout()
     {
         Random random = new Random();
-        string cookie;
 
-        // TODO: Remove stored classes in cookies from classes
+        await ParseCookies();
 
+        selectedClass = classes[random.Next(0, classes.Count)];
 
-
-
-
-        classType = classTypes[random.Next(0, 3)];
-
-        if (classType == "light")
+        if (selectedClass == "Light")
         {
-            specialization = lSpecializationTypes[random.Next(0, lSpecializationTypes.Count)];
-            weapon = lWeaponTypes[random.Next(0, lWeaponTypes.Count)];
-            gadgets = GetRandomItems(lGadgetTypes, 3);
+            selectedSpecialization = lSpecializations[random.Next(0, lSpecializations.Count)];
+            selectedWeapon = lWeapons[random.Next(0, lWeapons.Count)];
+            selectedGadgets = GetRandomItems(lGadgets, 3);
         }
-        else if (classType == "medium")
+        else if (selectedClass == "Medium")
         {
-            specialization = mSpecializationTypes[random.Next(0, mSpecializationTypes.Count)];
-            weapon = mWeaponTypes[random.Next(0, mWeaponTypes.Count)];
-            gadgets = GetRandomItems(mGadgetTypes, 3);
+            selectedSpecialization = mSpecializations[random.Next(0, mSpecializations.Count)];
+            selectedWeapon = mWeapons[random.Next(0, mWeapons.Count)];
+            selectedGadgets = GetRandomItems(mGadgets, 3);
         }
-        else if (classType == "heavy")
+        else if (selectedClass == "Heavy")
         {
-            specialization = hSpecializationTypes[random.Next(0, hSpecializationTypes.Count)];
-            weapon = hWeaponTypes[random.Next(0, hWeaponTypes.Count)];
-            gadgets = GetRandomItems(hGadgetTypes, 3);
+            selectedSpecialization = hSpecializations[random.Next(0, hSpecializations.Count)];
+            selectedWeapon = hWeapons[random.Next(0, hWeapons.Count)];
+            selectedGadgets = GetRandomItems(hGadgets, 3);
         }
-
-        loadout = $"Class: {classType}; Specialization: {specialization}; Weapon: {weapon}; Gadgets: {gadgets[0]}, {gadgets[1]}, {gadgets[2]}";
     }
 
     private List<string> GetRandomItems(List<string> items, int count) {
@@ -112,4 +102,67 @@
         return randomItems;
     }
 
+    private async Task ParseCookies() {
+        string cookie;
+
+        // Classes
+        cookie = await CookieService.GetCookie("classes");
+        classes = new List<string>(Constants.classTypes);
+        if (cookie != null)
+        {
+            List<string> selectedClasses = cookie.Split(',').ToList();
+            foreach (string item in selectedClasses)
+            {
+                classes.Remove(item);
+            }
+        }
+
+        // Specializations
+        cookie = await CookieService.GetCookie("specializations");
+        lSpecializations = new List<string>(Constants.lSpecializationTypes);
+        mSpecializations = new List<string>(Constants.mSpecializationTypes);
+        hSpecializations = new List<string>(Constants.hSpecializationTypes);
+        if (cookie != null)
+        {
+            List<string> selectedSpecializations = cookie.Split(',').ToList();
+            foreach (string item in selectedSpecializations)
+            {
+                lSpecializations.Remove(item);
+                mSpecializations.Remove(item);
+                hSpecializations.Remove(item);
+            }
+        }
+
+        // Weapons
+        cookie = await CookieService.GetCookie("weapons");
+        lWeapons = new List<string>(Constants.lWeaponTypes);
+        mWeapons = new List<string>(Constants.mWeaponTypes);
+        hWeapons = new List<string>(Constants.hWeaponTypes);
+        if (cookie != null)
+        {
+            List<string> selectedWeapons = cookie.Split(',').ToList();
+            foreach (string item in selectedWeapons)
+            {
+                lWeapons.Remove(item);
+                mWeapons.Remove(item);
+                hWeapons.Remove(item);
+            }
+        }
+
+        // Gadgets
+        cookie = await CookieService.GetCookie("gadgets");
+        lGadgets = new List<string>(Constants.lGadgetTypes);
+        mGadgets = new List<string>(Constants.mGadgetTypes);
+        hGadgets = new List<string>(Constants.hGadgetTypes);
+        if (cookie != null)
+        {
+            List<string> selectedGadgets = cookie.Split(',').ToList();
+            foreach (string item in selectedGadgets)
+            {
+                lGadgets.Remove(item);
+                mGadgets.Remove(item);
+                hGadgets.Remove(item);
+            }
+        }
+    }
 }

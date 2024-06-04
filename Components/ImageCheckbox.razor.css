@@ -1,3 +1,12 @@
+.area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 8rem;
+    height: 12rem;
+    cursor: pointer;
+}
 
 .layer1 {
     position: relative;
@@ -13,11 +22,16 @@
     position: relative;
     width: 4rem;
     height: 4rem;
-    margin-left: 2rem;
-    margin-top: -4rem;
+    margin-top: -4.5rem;
 }
 
 .cross {
     width: 4rem;
     filter: invert(1);
+}
+
+.label {
+    font-size: 1.5rem;
+    max-width: 100%;
+    text-align: center;
 }
