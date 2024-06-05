@@ -160,12 +160,9 @@ else
     private List<string> selectedWeapons = new List<string>();
     private List<string> selectedGadgets = new List<string>();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
-        {
-            cookieConsent = await CookieService.GetCookie("cookieConsent") == "true";
-        }
+        cookieConsent = await CookieService.GetCookie("cookieConsent") == "true";
 
         if (cookieConsent) {
             // Classes
