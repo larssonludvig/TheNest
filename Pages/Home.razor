@@ -10,25 +10,25 @@
         <div class="items" style="gap:2rem;">
             <div class="item">
                 <h1 class="itemHeader">Build</h1>
-                <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedClass IsDisabled=true />
+                <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@(selectedClass.Replace("_", " ")) IsDisabled=true />
             </div>
             <div class="items">
                 <div class="item">
                     <h1 class="itemHeader">Specialization</h1>
-                    <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedSpecialization IsDisabled=true />
+                    <ImageCheckbox ImagePath=@($"images/{selectedSpecialization}.png") AltText=@(selectedSpecialization.Replace("_", " ")) IsDisabled=true />
                 </div>
                 <div class="item">
                     <h1 class="itemHeader">Weapon</h1>
-                    <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedWeapon IsDisabled=true />
+                    <ImageCheckbox ImagePath=@($"images/{selectedWeapon}.png") AltText=@selectedWeapon IsDisabled=true />
                 </div>
             </div>
             <div class="items">
                 <div class="item">
                     <h1 class="itemHeader">Gadgets</h1>
                     <div class="items">
-                        <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedGadgets[0] IsDisabled=true />
-                        <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedGadgets[1] IsDisabled=true />
-                        <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@selectedGadgets[2] IsDisabled=true />
+                        <ImageCheckbox ImagePath=@($"images/{selectedGadgets[0]}.png") AltText=@(selectedGadgets[0].Replace("_", " ")) IsDisabled=true />
+                        <ImageCheckbox ImagePath=@($"images/{selectedGadgets[1]}.png") AltText=@(selectedGadgets[1].Replace("_", " ")) IsDisabled=true />
+                        <ImageCheckbox ImagePath=@($"images/{selectedGadgets[2]}.png") AltText=@(selectedGadgets[2].Replace("_", " ")) IsDisabled=true />
                     </div>
                 </div>
             </div>
@@ -92,12 +92,12 @@
         List<string> randomItems = new List<string>();
         for (int i = 0; i < count; i++)
         {
-            string item = items[random.Next(0, items.Count)];
-            while (randomItems.Contains(item))
+            string item;
+            do
             {
                 item = items[random.Next(0, items.Count)];
-            }
-            randomItems.Add(items[random.Next(0, items.Count)]);
+            } while (randomItems.Contains(item));
+            randomItems.Add(item);
         }
         return randomItems;
     }

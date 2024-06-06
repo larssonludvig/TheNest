@@ -31,7 +31,7 @@
                     {
                         foreach (string item in Constants.lSpecializationTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                         }
                     }
                 </div>
@@ -43,7 +43,7 @@
                     {
                         foreach (string item in Constants.lWeaponTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                         }
                     }
                 </div>
@@ -55,7 +55,7 @@
                     {
                         foreach (string item in Constants.lGadgetTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                         }
                     }
                 </div>
@@ -73,7 +73,7 @@
                     {
                         foreach (string item in Constants.mSpecializationTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                         }
                     }
                 </div>
@@ -85,7 +85,7 @@
                     {
                         foreach (string item in Constants.mWeaponTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                         }
                     }
                 </div>
@@ -97,7 +97,7 @@
                     {
                         foreach (string item in Constants.mGadgetTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                         }
                     }
                 </div>
@@ -115,7 +115,7 @@
                     {
                         foreach (string item in Constants.hSpecializationTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                         }
                     }
                 </div>
@@ -127,7 +127,7 @@
                     {
                         foreach (string item in Constants.hWeaponTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                         }
                     }
                 </div>
@@ -139,7 +139,7 @@
                     {
                         foreach (string item in Constants.hGadgetTypes)
                         {
-                            <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                         }
                     }
                 </div>
@@ -202,6 +202,7 @@ else
     }
 
     private async Task SelectClass(string selectedClass) {
+        selectedClass = selectedClass.Replace(" ", "_");
         if (selectedClasses.Contains(selectedClass)) {
             selectedClasses.Remove(selectedClass);
         } else {
@@ -212,6 +213,7 @@ else
     }
 
     private async Task SelectSpecialization(string selectedSpecialization) {
+        selectedSpecialization = selectedSpecialization.Replace(" ", "_");
         if (selectedSpecializations.Contains(selectedSpecialization)) {
             selectedSpecializations.Remove(selectedSpecialization);
         } else {
@@ -222,6 +224,7 @@ else
     }
 
     private async Task SelectWeapon(string selectedWeapon) {
+        selectedWeapon = selectedWeapon.Replace(" ", "_");
         if (selectedWeapons.Contains(selectedWeapon)) {
             selectedWeapons.Remove(selectedWeapon);
         } else {
@@ -232,6 +235,7 @@ else
     }
 
     private async Task SelectGadget(string selectedGadget) {
+        selectedGadget = selectedGadget.Replace(" ", "_");
         if (selectedGadgets.Contains(selectedGadget)) {
             selectedGadgets.Remove(selectedGadget);
         } else {
