@@ -1,11 +1,11 @@
-<div class="area" @onclick=ToggleChecked>
+<div class="area" @onclick=ToggleChecked style=@(IsDisabled?"":"cursor:pointer;")>
     <div class="layer1">
         <img class="image" src=@ImagePath alt=@AltText />
     </div>
     @if (IsChecked)
     {
         <div class="layer2">
-            <img class="cross" src="images/close.svg" alt="Checked" />
+            <img class="cross" src="images/close_red.svg" alt="Checked" />
         </div>
     }
     <p class="label">@AltText</p>

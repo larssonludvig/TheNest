@@ -2,10 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
     width: 8rem;
     height: 12rem;
-    cursor: pointer;
 }
 
 .layer1 {
@@ -16,22 +14,27 @@
 
 .image {
     width: 8rem;
+    border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .layer2 {
     position: relative;
     width: 4rem;
     height: 4rem;
-    margin-top: -4.5rem;
+    margin-top: -4rem;
 }
 
 .cross {
     width: 4rem;
-    filter: invert(1);
 }
 
 .label {
-    font-size: 1.5rem;
+    font-size: 1rem;
     max-width: 100%;
     text-align: center;
+    background-color: #6804a4;
+    width: 100%;
+    border-radius: 0 0 0.5rem 0.5rem;
+    padding: 0.5rem 0;
+    color: white;
 }
