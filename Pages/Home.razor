@@ -10,7 +10,7 @@
         <div class="items" style="gap:2rem;">
             <div class="item">
                 <h1 class="itemHeader">Build</h1>
-                <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@(selectedClass.Replace("_", " ")) IsDisabled=true />
+                <ImageCheckbox ImagePath=@($"images/{selectedClass}.jpg") AltText=@(selectedClass.Replace("_", " ")) IsDisabled=true />
             </div>
             <div class="items">
                 <div class="item">

@@ -14,7 +14,7 @@
                 {
                     foreach (string item in Constants.classTypes)
                     {
-                        <ImageCheckbox ImagePath="images/placeholder.jpg" AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) />
+                        <ImageCheckbox ImagePath=@($"images/{item}.jpg") AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) WhiteCross=true />
                     }
                 }
             </div>

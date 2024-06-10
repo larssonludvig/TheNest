@@ -7,7 +7,7 @@
     @if (IsChecked)
     {
         <div class="layer2">
-            <img class="cross" src="images/close_red.svg" alt="Checked" />
+            <img class="cross" src=@(WhiteCross ? "images/close.svg" : "images/close_red.svg") alt="Checked" />
         </div>
     }
     <p class="label">@AltText</p>
@@ -19,6 +19,7 @@
     [Parameter] public string? AltText { get; set; }
     [Parameter] public EventCallback<string> IsCheckedChanged { get; set; }
     [Parameter] public bool IsDisabled { get; set; } = false;
+    [Parameter] public bool WhiteCross { get; set; } = false;
 
     private void ToggleChecked()
     {
