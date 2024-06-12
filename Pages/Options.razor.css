@@ -12,3 +12,24 @@ img {
     align-items: center;
     margin-top: 2rem;
 }
+
+.large-items {
+    flex: 1;
+    align-items: start;
+    max-width: 100%;
+    gap:2rem;
+}
+
+@media only screen and (max-width: 60rem) {
+    .large-items {
+        max-width: 26rem;
+        justify-content: center;
+    }
+}
+
+@media only screen and (max-width: 86rem) {
+    .large-items {
+        max-width: 54rem;
+        justify-content: center;
+    }
+}
