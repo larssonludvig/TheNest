@@ -25,6 +25,11 @@ img {
         max-width: 26rem;
         justify-content: center;
     }
+
+    .large-items .items {
+        justify-content: center;
+    }
+
 }
 
 @media only screen and (max-width: 86rem) {
@@ -32,4 +37,5 @@ img {
         max-width: 54rem;
         justify-content: center;
     }
+
 }
