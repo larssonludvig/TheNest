@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "TheFinalsRandomLoadout",
   "resources": {
-    "hash": "sha256-YaopVNtKMhgj80acvbhEfRtJnwhs2uI4Oiopa6lhcRU=",
+    "hash": "sha256-leu8jFivaoQNUlatdBwcM6pFvg9fNXKI0Srcnk9Cg4c=",
     "jsModuleNative": {
       "dotnet.native.8.0.6.suuomc2hr0.js": "sha256-YU6M9+jtDVnB8/wtrgIndOstzNh778Ls8g9XnbjorSk="
     },
@@ -46,7 +46,7 @@
       "System.Text.Encodings.Web.wasm": "sha256-kUB1Y7HBZCe5X05htxKLP7ZedG/Lb4sP+qjmvelsUdI=",
       "System.Text.Json.wasm": "sha256-NNNp1E5ypaXOhzmr60LoGIdzaIL1gHfy9YCpieVSesM=",
       "System.Text.RegularExpressions.wasm": "sha256-dwAolM80K1HcjJlohUyI5Z8uUesGpmOiR347JGsQNLQ=",
-      "TheFinalsRandomLoadout.wasm": "sha256-81FT5Dh2s0D/0la5D8kuMGIYenoI/wvZ+dqPk21LD0Y="
+      "TheFinalsRandomLoadout.wasm": "sha256-Q1Sz/qaiHirCpO3CvzDsjmOEN+cNVNlLwQs1XKxWm9w="
     }
   },
   "cacheBootResources": true,
