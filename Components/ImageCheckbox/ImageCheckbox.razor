@@ -2,7 +2,7 @@
 
 <div class="area" @onclick=ToggleChecked style=@(IsDisabled?"":"cursor:pointer;")>
     <div class="layer1">
-        <img class="image" src=@ImagePath alt=@AltText />
+        <img class="image" src=@ImagePath alt=@AltText onerror="this.src='images/404.png'" />
     </div>
     @if (IsChecked)
     {
