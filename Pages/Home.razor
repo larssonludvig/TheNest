@@ -5,30 +5,31 @@
 <PageTitle>Random Loadout Generator</PageTitle>
 
 <div class="content">
-    @if (selectedClass != "")
+    @if (loadout != null)
     {
         <div class="items" style="gap:2rem;">
             <div class="item">
                 <h1 class="itemHeader">Build</h1>
-                <ImageCheckbox ImagePath=@($"images/{selectedClass}.jpg") AltText=@(selectedClass.Replace("_", " ")) IsDisabled=true />
+                <ImageCheckbox ImagePath=@($"images/{loadout.Class}.jpg") AltText=@(loadout.Class.Replace("_", " ")) IsDisabled=true />
             </div>
             <div class="items">
                 <div class="item">
                     <h1 class="itemHeader">Specialization</h1>
-                    <ImageCheckbox ImagePath=@($"images/{selectedSpecialization}.png") AltText=@(selectedSpecialization.Replace("_", " ")) IsDisabled=true />
+                    <ImageCheckbox ImagePath=@($"images/{loadout.Specialization}.png") AltText=@(loadout.Specialization.Replace("_", " ")) IsDisabled=true />
                 </div>
                 <div class="item">
                     <h1 class="itemHeader">Weapon</h1>
-                    <ImageCheckbox ImagePath=@($"images/{selectedWeapon}.png") AltText=@selectedWeapon IsDisabled=true />
+                    <ImageCheckbox ImagePath=@($"images/{loadout.Weapon}.png") AltText=@(loadout.Weapon.Replace("_", " ")) IsDisabled=true />
                 </div>
             </div>
             <div class="items">
                 <div class="item">
                     <h1 class="itemHeader">Gadgets</h1>
                     <div class="items">
-                        <ImageCheckbox ImagePath=@($"images/{selectedGadgets[0]}.png") AltText=@(selectedGadgets[0].Replace("_", " ")) IsDisabled=true />
-                        <ImageCheckbox ImagePath=@($"images/{selectedGadgets[1]}.png") AltText=@(selectedGadgets[1].Replace("_", " ")) IsDisabled=true />
-                        <ImageCheckbox ImagePath=@($"images/{selectedGadgets[2]}.png") AltText=@(selectedGadgets[2].Replace("_", " ")) IsDisabled=true />
+                        @foreach (string item in loadout.Gadgets) 
+                        {
+                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsDisabled=true />
+                        }
                     </div>
                 </div>
             </div>
@@ -40,50 +41,48 @@
 </div>
 
 @code {
-    private string selectedClass = "";
-    private string selectedSpecialization = "";
-    private string selectedWeapon = "";
-    private List<string> selectedGadgets = new List<string>();
+    private Loadout? loadout = null;
 
     private List<string> classes = new List<string>();
 
-    private List<string> lSpecializations = new List<string>();
-    private List<string> mSpecializations = new List<string>();
-    private List<string> hSpecializations = new List<string>();
+    private List<string> LSpecializations = new List<string>();
+    private List<string> MSpecializations = new List<string>();
+    private List<string> HSpecializations = new List<string>();
 
-    private List<string> lWeapons = new List<string>();
-    private List<string> mWeapons = new List<string>();
-    private List<string> hWeapons = new List<string>();
+    private List<string> LWeapons = new List<string>();
+    private List<string> MWeapons = new List<string>();
+    private List<string> HWeapons = new List<string>();
 
-    private List<string> lGadgets = new List<string>();
-    private List<string> mGadgets = new List<string>();
-    private List<string> hGadgets = new List<string>();
+    private List<string> LGadgets = new List<string>();
+    private List<string> MGadgets = new List<string>();
+    private List<string> HGadgets = new List<string>();
 
     private async Task GenerateRandomLoadout()
     {
         Random random = new Random();
+        loadout = new Loadout();
 
         await ParseCookies();
 
-        selectedClass = classes[random.Next(0, classes.Count)];
+        loadout.Class = classes[random.Next(0, classes.Count)];
 
-        if (selectedClass == "Light")
+        if (loadout.Class == "Light")
         {
-            selectedSpecialization = lSpecializations[random.Next(0, lSpecializations.Count)];
-            selectedWeapon = lWeapons[random.Next(0, lWeapons.Count)];
-            selectedGadgets = GetRandomItems(lGadgets, 3);
+            loadout.Specialization = LSpecializations[random.Next(0, LSpecializations.Count)];
+            loadout.Weapon = LWeapons[random.Next(0, LWeapons.Count)];
+            loadout.Gadgets = GetRandomItems(LGadgets, 3);
         }
-        else if (selectedClass == "Medium")
+        else if (loadout.Class == "Medium")
         {
-            selectedSpecialization = mSpecializations[random.Next(0, mSpecializations.Count)];
-            selectedWeapon = mWeapons[random.Next(0, mWeapons.Count)];
-            selectedGadgets = GetRandomItems(mGadgets, 3);
+            loadout.Specialization = MSpecializations[random.Next(0, MSpecializations.Count)];
+            loadout.Weapon = MWeapons[random.Next(0, MWeapons.Count)];
+            loadout.Gadgets = GetRandomItems(MGadgets, 3);
         }
-        else if (selectedClass == "Heavy")
+        else if (loadout.Class == "Heavy")
         {
-            selectedSpecialization = hSpecializations[random.Next(0, hSpecializations.Count)];
-            selectedWeapon = hWeapons[random.Next(0, hWeapons.Count)];
-            selectedGadgets = GetRandomItems(hGadgets, 3);
+            loadout.Specialization = HSpecializations[random.Next(0, HSpecializations.Count)];
+            loadout.Weapon = HWeapons[random.Next(0, HWeapons.Count)];
+            loadout.Gadgets = GetRandomItems(HGadgets, 3);
         }
     }
 
@@ -107,7 +106,7 @@
 
         // Classes
         cookie = await CookieService.GetCookie("classes");
-        classes = new List<string>(Constants.classTypes);
+        classes = new List<string>(Constants.Classes);
         if (cookie != null)
         {
             List<string> selectedClasses = cookie.Split(',').ToList();
@@ -119,49 +118,49 @@
 
         // Specializations
         cookie = await CookieService.GetCookie("specializations");
-        lSpecializations = new List<string>(Constants.lSpecializationTypes);
-        mSpecializations = new List<string>(Constants.mSpecializationTypes);
-        hSpecializations = new List<string>(Constants.hSpecializationTypes);
+        LSpecializations = new List<string>(Constants.LSpecializations);
+        MSpecializations = new List<string>(Constants.MSpecializations);
+        HSpecializations = new List<string>(Constants.HSpecializations);
         if (cookie != null)
         {
             List<string> selectedSpecializations = cookie.Split(',').ToList();
             foreach (string item in selectedSpecializations)
             {
-                lSpecializations.Remove(item);
-                mSpecializations.Remove(item);
-                hSpecializations.Remove(item);
+                LSpecializations.Remove(item);
+                MSpecializations.Remove(item);
+                HSpecializations.Remove(item);
             }
         }
 
         // Weapons
         cookie = await CookieService.GetCookie("weapons");
-        lWeapons = new List<string>(Constants.lWeaponTypes);
-        mWeapons = new List<string>(Constants.mWeaponTypes);
-        hWeapons = new List<string>(Constants.hWeaponTypes);
+        LWeapons = new List<string>(Constants.LWeapons);
+        MWeapons = new List<string>(Constants.MWeapons);
+        HWeapons = new List<string>(Constants.HWeapons);
         if (cookie != null)
         {
             List<string> selectedWeapons = cookie.Split(',').ToList();
             foreach (string item in selectedWeapons)
             {
-                lWeapons.Remove(item);
-                mWeapons.Remove(item);
-                hWeapons.Remove(item);
+                LWeapons.Remove(item);
+                MWeapons.Remove(item);
+                HWeapons.Remove(item);
             }
         }
 
         // Gadgets
         cookie = await CookieService.GetCookie("gadgets");
-        lGadgets = new List<string>(Constants.lGadgetTypes);
-        mGadgets = new List<string>(Constants.mGadgetTypes);
-        hGadgets = new List<string>(Constants.hGadgetTypes);
+        LGadgets = new List<string>(Constants.LGadgets);
+        MGadgets = new List<string>(Constants.MGadgets);
+        HGadgets = new List<string>(Constants.HGadgets);
         if (cookie != null)
         {
             List<string> selectedGadgets = cookie.Split(',').ToList();
             foreach (string item in selectedGadgets)
             {
-                lGadgets.Remove(item);
-                mGadgets.Remove(item);
-                hGadgets.Remove(item);
+                LGadgets.Remove(item);
+                MGadgets.Remove(item);
+                HGadgets.Remove(item);
             }
         }
     }

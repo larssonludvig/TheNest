@@ -12,7 +12,7 @@
             <div class="items">
                 @if (selectedClasses != null)
                 {
-                    foreach (string item in Constants.classTypes)
+                    foreach (string item in Constants.Classes)
                     {
                         <ImageCheckbox ImagePath=@($"images/{item}.jpg") AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) WhiteCross=true />
                     }
@@ -29,7 +29,7 @@
                 <div class="items">
                     @if (selectedSpecializations != null)
                     {
-                        foreach (string item in Constants.lSpecializationTypes)
+                        foreach (string item in Constants.LSpecializations)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                         }
@@ -41,7 +41,7 @@
                 <div class="items">
                     @if (selectedWeapons != null)
                     {
-                        foreach (string item in Constants.lWeaponTypes)
+                        foreach (string item in Constants.LWeapons)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                         }
@@ -53,7 +53,7 @@
                 <div class="items">
                     @if (selectedGadgets != null)
                     {
-                        foreach (string item in Constants.lGadgetTypes)
+                        foreach (string item in Constants.LGadgets)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                         }
@@ -71,7 +71,7 @@
                 <div class="items">
                     @if (selectedSpecializations != null)
                     {
-                        foreach (string item in Constants.mSpecializationTypes)
+                        foreach (string item in Constants.MSpecializations)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                         }
@@ -83,7 +83,7 @@
                 <div class="items">
                     @if (selectedWeapons != null)
                     {
-                        foreach (string item in Constants.mWeaponTypes)
+                        foreach (string item in Constants.MWeapons)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                         }
@@ -95,7 +95,7 @@
                 <div class="items">
                     @if (selectedGadgets != null)
                     {
-                        foreach (string item in Constants.mGadgetTypes)
+                        foreach (string item in Constants.MGadgets)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                         }
@@ -113,7 +113,7 @@
                 <div class="items">
                     @if (selectedSpecializations != null)
                     {
-                        foreach (string item in Constants.hSpecializationTypes)
+                        foreach (string item in Constants.HSpecializations)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                         }
@@ -125,7 +125,7 @@
                 <div class="items">
                     @if (selectedWeapons != null)
                     {
-                        foreach (string item in Constants.hWeaponTypes)
+                        foreach (string item in Constants.HWeapons)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                         }
@@ -137,7 +137,7 @@
                 <div class="items">
                     @if (selectedGadgets != null)
                     {
-                        foreach (string item in Constants.hGadgetTypes)
+                        foreach (string item in Constants.HGadgets)
                         {
                             <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                         }
