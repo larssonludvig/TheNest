@@ -1,5 +1,5 @@
 /* /Components/CookieManager/CookiePopup.razor.rz.scp.css */
-.cookie-popup[b-w3x4k240s2] {
+.cookie-popup[b-79qkp638xp] {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -15,13 +15,13 @@
     max-width: 85%;
 }
 
-.cookie-popup > img[b-w3x4k240s2] {
+.cookie-popup > img[b-79qkp638xp] {
     cursor: pointer;
     margin-left: auto;
     width: 1rem;
 }
 /* /Components/ImageCheckbox/ImageCheckbox.razor.rz.scp.css */
-.area[b-k0qpui8ucb] {
+.area[b-xcywqu6t3y] {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,12 +29,12 @@
     height: 12rem;
 }
 
-.layer1[b-k0qpui8ucb] {
+.layer1[b-xcywqu6t3y] {
     position: relative;
     width: 100%;
 }
 
-.image[b-k0qpui8ucb] {
+.image[b-xcywqu6t3y] {
     width: 100%;
     height: 8rem;
     object-fit: cover;
@@ -42,18 +42,18 @@
     border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.layer2[b-k0qpui8ucb] {
+.layer2[b-xcywqu6t3y] {
     position: relative;
     width: 4rem;
     height: 4rem;
     margin-top: -4rem;
 }
 
-.cross[b-k0qpui8ucb] {
+.cross[b-xcywqu6t3y] {
     width: 4rem;
 }
 
-.label[b-k0qpui8ucb] {
+.label[b-xcywqu6t3y] {
     font-size: 1rem;
     max-width: 100%;
     text-align: center;
@@ -65,27 +65,27 @@
 }
 
 @media only screen and (max-width: 30rem) {
-    .area[b-k0qpui8ucb] {
+    .area[b-xcywqu6t3y] {
         width: 6rem;
         height: 8rem;
     }
 
-    .image[b-k0qpui8ucb] {
+    .image[b-xcywqu6t3y] {
         height: 6rem;
     }
 }
 /* /Layout/MainLayout.razor.rz.scp.css */
-.page[b-50we6bc0f7] {
+.page[b-wp84x687sp] {
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
-main[b-50we6bc0f7] {
+main[b-wp84x687sp] {
     flex: 1;
 }
 
-#blazor-error-ui[b-50we6bc0f7] {
+#blazor-error-ui[b-wp84x687sp] {
     background: lightyellow;
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
@@ -97,7 +97,7 @@ main[b-50we6bc0f7] {
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss[b-50we6bc0f7] {
+#blazor-error-ui .dismiss[b-wp84x687sp] {
     cursor: pointer;
     position: absolute;
     right: 0.75rem;
@@ -105,13 +105,13 @@ main[b-50we6bc0f7] {
 }
 
 @media only screen and (max-width: 40rem) {
-    .top-row > p[b-50we6bc0f7] {
+    .top-row > p[b-wp84x687sp] {
         display: none;
     }
 }
     
 /* /Layout/NavMenu.razor.rz.scp.css */
-.menu[b-zjrcq2knd7] {
+.menu[b-2ta2zykge7] {
     background-color: var(--dark-gray);
     position: absolute;
     width: 100vw;
@@ -120,11 +120,11 @@ main[b-50we6bc0f7] {
     padding: 0 1.5rem;
 }
 
-.top-row[b-zjrcq2knd7] {
+.top-row[b-2ta2zykge7] {
     background-color: var(--dark-gray);
 }
 
-.content[b-zjrcq2knd7] {
+.content[b-2ta2zykge7] {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -132,14 +132,14 @@ main[b-50we6bc0f7] {
     height: 85%;
 }
 
-.menu-link[b-zjrcq2knd7] {
+.menu-link[b-2ta2zykge7] {
     color: white;
     font-size: 2.5rem;
     font-weight: bold;
     text-decoration: none;
 }
 /* /Pages/Home.razor.rz.scp.css */
-.generateButton[b-6kec0e77my] {
+.generateButton[b-3xcte9qnpj] {
     background-color: #1255cf;
     color: white;
     border: none;
@@ -148,32 +148,32 @@ main[b-50we6bc0f7] {
     font-weight: bolder;
 }
 
-.item img[b-6kec0e77my] {
+.item img[b-3xcte9qnpj] {
     width: 8rem;
 }
 
 @media only screen and (max-width: 60rem) {
-    .items[b-6kec0e77my] {
+    .items[b-3xcte9qnpj] {
         justify-content: center;
     }
 }
 /* /Pages/Options.razor.rz.scp.css */
-img[b-vnzilcr0ig] {
+img[b-6h3tfdbaa6] {
     width: 8rem;
 }
 
-.items[b-vnzilcr0ig] {
+.items[b-6h3tfdbaa6] {
     max-width: 26rem;
 }
 
-.build[b-vnzilcr0ig] {
+.build[b-6h3tfdbaa6] {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 2rem;
 }
 
-.large-items[b-vnzilcr0ig] {
+.large-items[b-6h3tfdbaa6] {
     flex: 1;
     align-items: start;
     max-width: 100%;
@@ -181,19 +181,19 @@ img[b-vnzilcr0ig] {
 }
 
 @media only screen and (max-width: 60rem) {
-    .large-items[b-vnzilcr0ig] {
+    .large-items[b-6h3tfdbaa6] {
         max-width: 26rem;
         justify-content: center;
     }
 
-    .large-items .items[b-vnzilcr0ig] {
+    .large-items .items[b-6h3tfdbaa6] {
         justify-content: center;
     }
 
 }
 
 @media only screen and (max-width: 86rem) {
-    .large-items[b-vnzilcr0ig] {
+    .large-items[b-6h3tfdbaa6] {
         max-width: 54rem;
         justify-content: center;
     }

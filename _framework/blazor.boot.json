@@ -1,7 +1,7 @@
 {
-  "mainAssemblyName": "TheFinalsRandomLoadout",
+  "mainAssemblyName": "TheNest",
   "resources": {
-    "hash": "sha256-6GbLQ03PxJ0S1O5A991v17cU+WIHjCUpjYZXj9HmcKw=",
+    "hash": "sha256-LFuSOWvHqSxJf4BgNJnso94l14J5u+s6W7hL87KzkeY=",
     "jsModuleNative": {
       "dotnet.native.8.0.6.suuomc2hr0.js": "sha256-YU6M9+jtDVnB8/wtrgIndOstzNh778Ls8g9XnbjorSk="
     },
@@ -48,7 +48,7 @@
       "System.Text.Encodings.Web.wasm": "sha256-kUB1Y7HBZCe5X05htxKLP7ZedG/Lb4sP+qjmvelsUdI=",
       "System.Text.Json.wasm": "sha256-FbRD+ILvvydBv9+Z36A6Apwc0E4S41Bjnq44BxnaFRQ=",
       "System.Text.RegularExpressions.wasm": "sha256-dwAolM80K1HcjJlohUyI5Z8uUesGpmOiR347JGsQNLQ=",
-      "TheFinalsRandomLoadout.wasm": "sha256-AIid8dlqNclN+u6TlswtghhuTSkKJi99+marfoWhAsU="
+      "TheNest.wasm": "sha256-8zm02DIy2a0WJ/rqW/Me5kMrR8Z+9VGrQl/fgbJQvcc="
     }
   },
   "cacheBootResources": true,
