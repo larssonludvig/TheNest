@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using TheFinalsRandomLoadout;
+using TheNest;
 using Components.ApiService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
