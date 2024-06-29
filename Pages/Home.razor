@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject CookieService CookieService
 @inject Constants Constants
+@inject ApiService ApiService
 
 <PageTitle>Random Loadout Generator</PageTitle>
 
@@ -43,125 +44,16 @@
 @code {
     private Loadout? loadout = null;
 
-    private List<string> classes = new List<string>();
-
-    private List<string> LSpecializations = new List<string>();
-    private List<string> MSpecializations = new List<string>();
-    private List<string> HSpecializations = new List<string>();
-
-    private List<string> LWeapons = new List<string>();
-    private List<string> MWeapons = new List<string>();
-    private List<string> HWeapons = new List<string>();
-
-    private List<string> LGadgets = new List<string>();
-    private List<string> MGadgets = new List<string>();
-    private List<string> HGadgets = new List<string>();
-
     private async Task GenerateRandomLoadout()
     {
-        Random random = new Random();
-        loadout = new Loadout();
-
-        await ParseCookies();
-
-        loadout.Class = classes[random.Next(0, classes.Count)];
-
-        if (loadout.Class == "Light")
+        Dictionary<string, string> headers = new Dictionary<string, string>
         {
-            loadout.Specialization = LSpecializations[random.Next(0, LSpecializations.Count)];
-            loadout.Weapon = LWeapons[random.Next(0, LWeapons.Count)];
-            loadout.Gadgets = GetRandomItems(LGadgets, 3);
-        }
-        else if (loadout.Class == "Medium")
-        {
-            loadout.Specialization = MSpecializations[random.Next(0, MSpecializations.Count)];
-            loadout.Weapon = MWeapons[random.Next(0, MWeapons.Count)];
-            loadout.Gadgets = GetRandomItems(MGadgets, 3);
-        }
-        else if (loadout.Class == "Heavy")
-        {
-            loadout.Specialization = HSpecializations[random.Next(0, HSpecializations.Count)];
-            loadout.Weapon = HWeapons[random.Next(0, HWeapons.Count)];
-            loadout.Gadgets = GetRandomItems(HGadgets, 3);
-        }
-    }
+            { "removed_classes", await CookieService.GetCookie("classes") },
+            { "removed_specializations", await CookieService.GetCookie("specializations") },
+            { "removed_weapons", await CookieService.GetCookie("weapons") },
+            { "removed_gadgets", await CookieService.GetCookie("gadgets") }
+        };
 
-    private List<string> GetRandomItems(List<string> items, int count) {
-        Random random = new Random();
-        List<string> randomItems = new List<string>();
-        for (int i = 0; i < count; i++)
-        {
-            string item;
-            do
-            {
-                item = items[random.Next(0, items.Count)];
-            } while (randomItems.Contains(item));
-            randomItems.Add(item);
-        }
-        return randomItems;
-    }
-
-    private async Task ParseCookies() {
-        string cookie;
-
-        // Classes
-        cookie = await CookieService.GetCookie("classes");
-        classes = new List<string>(Constants.Classes);
-        if (cookie != null)
-        {
-            List<string> selectedClasses = cookie.Split(',').ToList();
-            foreach (string item in selectedClasses)
-            {
-                classes.Remove(item);
-            }
-        }
-
-        // Specializations
-        cookie = await CookieService.GetCookie("specializations");
-        LSpecializations = new List<string>(Constants.LSpecializations);
-        MSpecializations = new List<string>(Constants.MSpecializations);
-        HSpecializations = new List<string>(Constants.HSpecializations);
-        if (cookie != null)
-        {
-            List<string> selectedSpecializations = cookie.Split(',').ToList();
-            foreach (string item in selectedSpecializations)
-            {
-                LSpecializations.Remove(item);
-                MSpecializations.Remove(item);
-                HSpecializations.Remove(item);
-            }
-        }
-
-        // Weapons
-        cookie = await CookieService.GetCookie("weapons");
-        LWeapons = new List<string>(Constants.LWeapons);
-        MWeapons = new List<string>(Constants.MWeapons);
-        HWeapons = new List<string>(Constants.HWeapons);
-        if (cookie != null)
-        {
-            List<string> selectedWeapons = cookie.Split(',').ToList();
-            foreach (string item in selectedWeapons)
-            {
-                LWeapons.Remove(item);
-                MWeapons.Remove(item);
-                HWeapons.Remove(item);
-            }
-        }
-
-        // Gadgets
-        cookie = await CookieService.GetCookie("gadgets");
-        LGadgets = new List<string>(Constants.LGadgets);
-        MGadgets = new List<string>(Constants.MGadgets);
-        HGadgets = new List<string>(Constants.HGadgets);
-        if (cookie != null)
-        {
-            List<string> selectedGadgets = cookie.Split(',').ToList();
-            foreach (string item in selectedGadgets)
-            {
-                LGadgets.Remove(item);
-                MGadgets.Remove(item);
-                HGadgets.Remove(item);
-            }
-        }
+        loadout = await ApiService.Get<Loadout>("randomizer", headers);
     }
 }
