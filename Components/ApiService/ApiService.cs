@@ -2,22 +2,39 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Components.ApiService
 {
     public class ApiService
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "https://thenest.larssonludvig.com/";
+        private HttpClient _httpClient = new HttpClient();
+        public readonly string _baseUrl = "https://thenest.larssonludvig.com/";
 
-        public ApiService(HttpClient httpClient)
+        public Task Initialize(string? baseUrl = null)
         {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new System.Uri(_baseUrl);
+            _httpClient = new HttpClient();
+            
+            if (!string.IsNullOrEmpty(baseUrl))
+                _httpClient.BaseAddress = new System.Uri(baseUrl);
+            else    
+                _httpClient.BaseAddress = new System.Uri(_baseUrl);
+            
+            return Task.CompletedTask;
         }
 
-        public async Task<T?> Get<T>(string url, Dictionary<string, string>? headers = null)
+        public async Task<T> Get<T>(string endpoint, Dictionary<string, string>? headers = null)
         {
+            return await Get<T>(endpoint, null, headers);
+        }
+
+        public async Task<T> Get<T>(string endpoint, string? baseUrl = null, Dictionary<string, string>? headers = null)
+        {
+            if (!string.IsNullOrEmpty(baseUrl))
+                await Initialize(baseUrl);
+            else
+                await Initialize();
+
             if (headers != null)
             {
                 foreach (var header in headers)
@@ -26,13 +43,22 @@ namespace Components.ApiService
                 }
             }
 
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<T>();
-            }
+                string json = await response.Content.ReadAsStringAsync();
 
-            return await _httpClient.GetFromJsonAsync<T>(url);
+                T? data = JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (data == null)
+                    throw new System.Exception("Failed to deserialize response");
+
+                return data;
+            }
+            throw new System.Exception("Failed to fetch data");
         }
     }
 }

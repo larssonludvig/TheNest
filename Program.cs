@@ -8,8 +8,6 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped<CookieService>();
 builder.Services.AddScoped<Constants>();
-
-builder.Services.AddScoped(sp => new HttpClient());
 builder.Services.AddScoped<ApiService>();
 
 

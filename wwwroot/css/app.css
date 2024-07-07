@@ -113,3 +113,51 @@ h1:focus {
     border-bottom: 1px solid white;
     padding-bottom: 0.2rem;
 }
+
+.leaderboard {
+    background-color: white;
+    border: 1px solid gray;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    width: 50rem;
+}
+
+.leaderboard-header {
+    width: 50rem;
+    display: flex;
+    justify-content: end;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 8px 8px 0 0;
+    padding: 8px;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    color: black;
+    border-bottom: 1px solid gray;
+}
+
+th .sort-indicator {
+    margin-left: auto;
+}
+
+tr {
+    height: 4rem;
+    color: black;
+}
+
+tr:first-child {
+    height: 2.5rem;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.pagination-text {
+    color: black;
+}
