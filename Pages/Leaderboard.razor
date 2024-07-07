@@ -2,78 +2,214 @@
 @inject ApiService ApiService
 @using Domain
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using System.Globalization
 
 <div class="content">
     <div class="leaderboard-header">
-        <span style="display:flex;">
-            <input type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value.ToString(); })" @onkeydown="@OnInput" placeholder="Search by name" />
-            <button @onclick="@(e => FetchData(searchString))">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg>
-            </button>
-        </span>
-    </div>
-    <div class="leaderboard">
-        <QuickGrid Items="@data" Pagination=@pagination>
-            <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="SortDirection.Ascending" IsDefaultSortColumn="true" />
-            <PropertyColumn Title="24h Change" Property="@(x => x.Change)" Sortable="true" />
-            <TemplateColumn Title="Name">
-                <span>
-                    <p class="m-0">@context.Name</p>
-                    @if (!string.IsNullOrEmpty(context.SteamName))
-                    {
-                        <span style="display:flex; align-items: center;">
+@* Season radio buttons *@
+        <div style="display: flex; gap: 8px;">
+            <div class="radio-group">
+                <div class="radio-button" @onclick="@(() => SetSeason("s3worldtour"))">
+                    <input type="radio" name="s3worldtour" checked="@(season == "s3worldtour")" />
+                    <label for="s3worldtour">World Tour</label>
+                </div>
+            </div>
+            <div class="radio-group">
+                <div class="radio-button" @onclick="@(() => SetSeason("s3"))">
+                    <input type="radio" name="s3" checked="@(season == "s3")" />
+                    <label for="s3">Season 3</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => SetSeason("s2"))">
+                    <input type="radio" name="s2" checked="@(season == "s2")" />
+                    <label for="s2">Season 2</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => SetSeason("s1"))">
+                    <input type="radio" name="s1" checked="@(season == "s1")" />
+                    <label for="s1">Season 1</label>
+                </div>
+            </div>
+            <div class="radio-group">
+                <div class="radio-button" @onclick="@(() => SetSeason("ob"))">
+                    <input type="radio" name="ob" checked="@(season == "ob")" />
+                    <label for="ob">Open Beta</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => SetSeason("cb2"))">
+                    <input type="radio" name="s1" checked="@(season == "cb2")" />
+                    <label for="cb2">Closed Beta 2</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => SetSeason("cb1"))">
+                    <input type="radio" name="cb1" checked="@(season == "cb1")" />
+                    <label for="cb1">Closed Beta 1</label>
+                </div>
+            </div>
+        </div>
+    
+@* Platform radio buttons *@
+        <div style="display: flex;">
+            @if (season == "s2" || season == "s1" || season == "ob")
+            {
+                <div class="radio-group" style="margin-bottom: 0;">
+                    <div class="radio-button" @onclick="@(() => SetPlatform("crossplay"))">
+                        <input type="radio" name="crossplay" checked="@(platform == "crossplay")" />
+                        <label for="crossplay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe2" viewBox="0 0 16 16">
+                                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"/>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="radio-button" @onclick="@(() => SetPlatform("steam"))">
+                        <input type="radio" name="steam" checked="@(platform == "steam")" />
+                        <label for="steam">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-steam" viewBox="0 0 16 16">
                                 <path d="M.329 10.333A8.01 8.01 0 0 0 7.99 16C12.414 16 16 12.418 16 8s-3.586-8-8.009-8A8.006 8.006 0 0 0 0 7.468l.003.006 4.304 1.769A2.2 2.2 0 0 1 5.62 8.88l1.96-2.844-.001-.04a3.046 3.046 0 0 1 3.042-3.043 3.046 3.046 0 0 1 3.042 3.043 3.047 3.047 0 0 1-3.111 3.044l-2.804 2a2.223 2.223 0 0 1-3.075 2.11 2.22 2.22 0 0 1-1.312-1.568L.33 10.333Z"/>
                                 <path d="M4.868 12.683a1.715 1.715 0 0 0 1.318-3.165 1.7 1.7 0 0 0-1.263-.02l1.023.424a1.261 1.261 0 1 1-.97 2.33l-.99-.41a1.7 1.7 0 0 0 .882.84Zm3.726-6.687a2.03 2.03 0 0 0 2.027 2.029 2.03 2.03 0 0 0 2.027-2.029 2.03 2.03 0 0 0-2.027-2.027 2.03 2.03 0 0 0-2.027 2.027m2.03-1.527a1.524 1.524 0 1 1-.002 3.048 1.524 1.524 0 0 1 .002-3.048"/>
                             </svg>
-                            <p class="m-0" style="padding-left: 5px;">@context.SteamName</p>
-                        </span>
-                    }
-                    @if (!string.IsNullOrEmpty(context.PsnName))
-                    {
-                        <span style="display:flex; align-items: center;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-playstation" viewBox="0 0 16 16">
-                                <path d="M15.858 11.451c-.313.395-1.079.676-1.079.676l-5.696 2.046v-1.509l4.192-1.493c.476-.17.549-.412.162-.538-.386-.127-1.085-.09-1.56.08l-2.794.984v-1.566l.161-.054s.807-.286 1.942-.412c1.135-.125 2.525.017 3.616.43 1.23.39 1.368.962 1.056 1.356M9.625 8.883v-3.86c0-.453-.083-.87-.508-.988-.326-.105-.528.198-.528.65v9.664l-2.606-.827V2c1.108.206 2.722.692 3.59.985 2.207.757 2.955 1.7 2.955 3.825 0 2.071-1.278 2.856-2.903 2.072Zm-8.424 3.625C-.061 12.15-.271 11.41.304 10.984c.532-.394 1.436-.69 1.436-.69l3.737-1.33v1.515l-2.69.963c-.474.17-.547.411-.161.538.386.126 1.085.09 1.56-.08l1.29-.469v1.356l-.257.043a8.45 8.45 0 0 1-4.018-.323Z"/>
-                            </svg>
-                            <p class="m-0" style="padding-left: 5px;">@context.PsnName</p>
-                        </span>
-                    }
-                    @if (!string.IsNullOrEmpty(context.XboxName))
-                    {
-                        <span style="display:flex; align-items: center;">
+                        </label>
+                    </div>
+                    <div class="radio-button" @onclick="@(() => SetPlatform("xbox"))">
+                        <input type="radio" name="xbox" checked="@(platform == "xbox")" />
+                        <label for="xbox">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-xbox" viewBox="0 0 16 16">
                                 <path d="M7.202 15.967a8 8 0 0 1-3.552-1.26c-.898-.585-1.101-.826-1.101-1.306 0-.965 1.062-2.656 2.879-4.583C6.459 7.723 7.897 6.44 8.052 6.475c.302.068 2.718 2.423 3.622 3.531 1.43 1.753 2.088 3.189 1.754 3.829-.254.486-1.83 1.437-2.987 1.802-.954.301-2.207.429-3.239.33m-5.866-3.57C.589 11.253.212 10.127.03 8.497c-.06-.539-.038-.846.137-1.95.218-1.377 1.002-2.97 1.945-3.95.401-.417.437-.427.926-.263.595.2 1.23.638 2.213 1.528l.574.519-.313.385C4.056 6.553 2.52 9.086 1.94 10.653c-.315.852-.442 1.707-.306 2.063.091.24.007.15-.3-.319Zm13.101.195c.074-.36-.019-1.02-.238-1.687-.473-1.443-2.055-4.128-3.508-5.953l-.457-.575.494-.454c.646-.593 1.095-.948 1.58-1.25.381-.237.927-.448 1.161-.448.145 0 .654.528 1.065 1.104a8.4 8.4 0 0 1 1.343 3.102c.153.728.166 2.286.024 3.012a9.5 9.5 0 0 1-.6 1.893c-.179.393-.624 1.156-.82 1.404-.1.128-.1.127-.043-.148ZM7.335 1.952c-.67-.34-1.704-.705-2.276-.803a4 4 0 0 0-.759-.043c-.471.024-.45 0 .306-.358A7.8 7.8 0 0 1 6.47.128c.8-.169 2.306-.17 3.094-.005.85.18 1.853.552 2.418.9l.168.103-.385-.02c-.766-.038-1.88.27-3.078.853-.361.176-.676.316-.699.312a12 12 0 0 1-.654-.319Z"/>
                             </svg>
-                            <p class="m-0" style="padding-left: 5px;">@context.XboxName</p>
-                        </span>
-                    }
-                </span>
-            </TemplateColumn>
-            <TemplateColumn Title="League">
-                <div style="display:flex;">
-                    <img style="width:3rem;" src="images/@(context.League.Replace(" ", "_")).png" /> 
-                    <span style="margin-left: 5px;">
-                        <p class="m-0">@context.League</p>
-                        @if (context.RankScore > 0)
-                        {
-                            <p class="m-0">@context.RankScore</p>
-                        }
-                    </Span>               
+                        </label>
+                    </div>
+                    <div class="radio-button" @onclick="@(() => SetPlatform("psn"))">
+                        <input type="radio" name="psn" checked="@(platform == "psn")" />
+                        <label for="psn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-playstation" viewBox="0 0 16 16">
+                                <path d="M15.858 11.451c-.313.395-1.079.676-1.079.676l-5.696 2.046v-1.509l4.192-1.493c.476-.17.549-.412.162-.538-.386-.127-1.085-.09-1.56.08l-2.794.984v-1.566l.161-.054s.807-.286 1.942-.412c1.135-.125 2.525.017 3.616.43 1.23.39 1.368.962 1.056 1.356M9.625 8.883v-3.86c0-.453-.083-.87-.508-.988-.326-.105-.528.198-.528.65v9.664l-2.606-.827V2c1.108.206 2.722.692 3.59.985 2.207.757 2.955 1.7 2.955 3.825 0 2.071-1.278 2.856-2.903 2.072Zm-8.424 3.625C-.061 12.15-.271 11.41.304 10.984c.532-.394 1.436-.69 1.436-.69l3.737-1.33v1.515l-2.69.963c-.474.17-.547.411-.161.538.386.126 1.085.09 1.56-.08l1.29-.469v1.356l-.257.043a8.45 8.45 0 0 1-4.018-.323Z"/>
+                            </svg>
+                        </label>
+                    </div>
                 </div>
-            </TemplateColumn>
-        </QuickGrid>
-        <Paginator State=pagination />
+            }
+
+@* Search bar *@
+            <span style="margin-left: auto; display: flex; align-items: center;">
+                <input type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value.ToString(); })" @onkeydown="@OnInput" placeholder="Search by name" />
+                <button @onclick="@(e => FetchData(searchString))">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+            </span>
+        </div>
     </div>
 
+@* Leaderboard grid *@
+    <div class="leaderboard">
+        @if (!loading)
+        {
+            <QuickGrid Items="@data" Pagination=@pagination>
+                <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="SortDirection.Ascending" IsDefaultSortColumn="true" />
+                @if (season == "s3")
+                {
+                    <TemplateColumn Title="24h Change">
+                        <span style="display: flex; align-items: center;">
+                            @if (context.Change > 0)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
+                                </svg>
+                                <p class="m-0" style="padding-left: 5px; color: green;">@context.Change</p>
+                            }
+                            @if (context.Change < 0)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ff0000" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                                </svg>
+                                <p class="m-0" style="padding-left: 5px; color: red;">@context.Change.ToString().Replace("-", "")</p>
+                            }
+                            @if (context.Change == 0)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+                                </svg>
+                                <p class="m-0" style="padding-left: 5px;">@context.Change</p>
+                            }
+                        </span>
+                    </TemplateColumn>
+                }
+                <TemplateColumn Title="Name">
+                    <span>
+                        <p class="m-0">@context.Name</p>
+                        @if (!string.IsNullOrEmpty(context.SteamName))
+                        {
+                            <span style="display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-steam" viewBox="0 0 16 16">
+                                    <path d="M.329 10.333A8.01 8.01 0 0 0 7.99 16C12.414 16 16 12.418 16 8s-3.586-8-8.009-8A8.006 8.006 0 0 0 0 7.468l.003.006 4.304 1.769A2.2 2.2 0 0 1 5.62 8.88l1.96-2.844-.001-.04a3.046 3.046 0 0 1 3.042-3.043 3.046 3.046 0 0 1 3.042 3.043 3.047 3.047 0 0 1-3.111 3.044l-2.804 2a2.223 2.223 0 0 1-3.075 2.11 2.22 2.22 0 0 1-1.312-1.568L.33 10.333Z"/>
+                                    <path d="M4.868 12.683a1.715 1.715 0 0 0 1.318-3.165 1.7 1.7 0 0 0-1.263-.02l1.023.424a1.261 1.261 0 1 1-.97 2.33l-.99-.41a1.7 1.7 0 0 0 .882.84Zm3.726-6.687a2.03 2.03 0 0 0 2.027 2.029 2.03 2.03 0 0 0 2.027-2.029 2.03 2.03 0 0 0-2.027-2.027 2.03 2.03 0 0 0-2.027 2.027m2.03-1.527a1.524 1.524 0 1 1-.002 3.048 1.524 1.524 0 0 1 .002-3.048"/>
+                                </svg>
+                                <p class="m-0" style="padding-left: 5px;">@context.SteamName</p>
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(context.PsnName))
+                        {
+                            <span style="display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-playstation" viewBox="0 0 16 16">
+                                    <path d="M15.858 11.451c-.313.395-1.079.676-1.079.676l-5.696 2.046v-1.509l4.192-1.493c.476-.17.549-.412.162-.538-.386-.127-1.085-.09-1.56.08l-2.794.984v-1.566l.161-.054s.807-.286 1.942-.412c1.135-.125 2.525.017 3.616.43 1.23.39 1.368.962 1.056 1.356M9.625 8.883v-3.86c0-.453-.083-.87-.508-.988-.326-.105-.528.198-.528.65v9.664l-2.606-.827V2c1.108.206 2.722.692 3.59.985 2.207.757 2.955 1.7 2.955 3.825 0 2.071-1.278 2.856-2.903 2.072Zm-8.424 3.625C-.061 12.15-.271 11.41.304 10.984c.532-.394 1.436-.69 1.436-.69l3.737-1.33v1.515l-2.69.963c-.474.17-.547.411-.161.538.386.126 1.085.09 1.56-.08l1.29-.469v1.356l-.257.043a8.45 8.45 0 0 1-4.018-.323Z"/>
+                                </svg>
+                                <p class="m-0" style="padding-left: 5px;">@context.PsnName</p>
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(context.XboxName))
+                        {
+                            <span style="display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-xbox" viewBox="0 0 16 16">
+                                    <path d="M7.202 15.967a8 8 0 0 1-3.552-1.26c-.898-.585-1.101-.826-1.101-1.306 0-.965 1.062-2.656 2.879-4.583C6.459 7.723 7.897 6.44 8.052 6.475c.302.068 2.718 2.423 3.622 3.531 1.43 1.753 2.088 3.189 1.754 3.829-.254.486-1.83 1.437-2.987 1.802-.954.301-2.207.429-3.239.33m-5.866-3.57C.589 11.253.212 10.127.03 8.497c-.06-.539-.038-.846.137-1.95.218-1.377 1.002-2.97 1.945-3.95.401-.417.437-.427.926-.263.595.2 1.23.638 2.213 1.528l.574.519-.313.385C4.056 6.553 2.52 9.086 1.94 10.653c-.315.852-.442 1.707-.306 2.063.091.24.007.15-.3-.319Zm13.101.195c.074-.36-.019-1.02-.238-1.687-.473-1.443-2.055-4.128-3.508-5.953l-.457-.575.494-.454c.646-.593 1.095-.948 1.58-1.25.381-.237.927-.448 1.161-.448.145 0 .654.528 1.065 1.104a8.4 8.4 0 0 1 1.343 3.102c.153.728.166 2.286.024 3.012a9.5 9.5 0 0 1-.6 1.893c-.179.393-.624 1.156-.82 1.404-.1.128-.1.127-.043-.148ZM7.335 1.952c-.67-.34-1.704-.705-2.276-.803a4 4 0 0 0-.759-.043c-.471.024-.45 0 .306-.358A7.8 7.8 0 0 1 6.47.128c.8-.169 2.306-.17 3.094-.005.85.18 1.853.552 2.418.9l.168.103-.385-.02c-.766-.038-1.88.27-3.078.853-.361.176-.676.316-.699.312a12 12 0 0 1-.654-.319Z"/>
+                                </svg>
+                                <p class="m-0" style="padding-left: 5px;">@context.XboxName</p>
+                            </span>
+                        }
+                    </span>
+                </TemplateColumn>
+                @if (season != "s3worldtour")
+                {
+                    <TemplateColumn Title="League">
+                        <div style="display:flex;">
+                            <img style="width:3rem;" src="images/@(context.League.Replace(" ", "_")).png" /> 
+                            <span style="margin-left: 5px;">
+                                <p class="m-0">@context.League</p>
+                                @if (context.RankScore > 0)
+                                {
+                                    <p class="m-0">@string.Format(new CultureInfo("en-us"), "{0:c}", context.RankScore).Replace(".00", "").Replace("$", "")</p>
+                                }
+                            </Span>               
+                        </div>
+                    </TemplateColumn>
+                }
+                else 
+                {
+                    <TemplateColumn Title="Cashouts">
+                        <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Cashouts).Replace(".00", "")</p>
+                    </TemplateColumn>
+                }
+            </QuickGrid>
+        }
+        else
+        {
+@* Loading icon *@
+            <span style="display: flex; align-items: center; justify-content: center; height: 100%">
+                <img style="color: black;" src="images/loading.gif" alt="Loading..." />
+            </span>
+        }
+        <Paginator State=pagination />
+    </div>
+    <div style="margin-top: 1rem; width: 50rem;">
+        <p>This site uses a public API wrapper that can be found <a style="color: white;" href="https://github.com/leonlarsson/the-finals-api">Here!</a></p>
+    </div>
 </div>
+
 
 @code {
     private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private IQueryable<Data>? data = null;
 
     private string searchString = "";
+    private string season = "s3";
+    private string platform = "crossplay";
+    private bool loading = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -83,14 +219,21 @@
 
     private async Task FetchData(string name = "")
     {
+        loading = true;
+        data = null;
+        StateHasChanged();
+
         string baseUrl = "https://api.the-finals-leaderboard.com/";
-        string endpoint = "v1/leaderboard/s3/crossplay";
+        string endpoint = "v1/leaderboard/" + season + "/" + platform;
 
         if (!string.IsNullOrEmpty(name))
             endpoint = endpoint + "?name=" + name;
 
         Root root = await ApiService.Get<Root>(endpoint, baseUrl);
         data = root.Data.AsQueryable();
+        loading = false;
+        StateHasChanged();
+        StateHasChanged();
         StateHasChanged();
     }
 
@@ -100,5 +243,24 @@
         {
             await FetchData(searchString);
         }
+    }
+
+    private async Task SetSeason(string season)
+    {
+        this.season = season;
+        if (!(season == "s2" || season == "s1" || season == "ob"))
+            this.platform = "crossplay";
+
+        await FetchData(searchString);
+    }
+
+    private async Task SetPlatform(string platform)
+    {
+        if (season == "s2" || season == "s1" || season == "ob")
+            this.platform = platform;
+        else 
+            this.platform = "crossplay";
+        
+        await FetchData(searchString);
     }
 }
