@@ -175,10 +175,12 @@ tr:nth-child(even) {
     padding: 3px 8px;
     border-radius: 5px;
     color: black;
+    height: 2rem;
 }
 
 .radio-button input:checked + label {
-    background-color: white;
+    background-color: #1255cf;
+    color: white;
 }
 
 .radio-button label:hover {
@@ -196,12 +198,14 @@ input {
 input[type="text"] {
     border: 1px solid gray;
     border-radius: 5px 0 0 5px;
+    height: 2rem;
 }
 
 input + button {
     border: 1px solid gray;
     border-left: none;
     border-radius: 0 5px 5px 0;
-    background-color: white;
-    color: black;
+    background-color: #1255cf;
+    color: white;
+    height: 2rem;
 }
