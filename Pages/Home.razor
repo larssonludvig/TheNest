@@ -6,33 +6,40 @@
 <div class="content">
     @if (loadout != null)
     {
-        <div class="items" style="gap:2rem;">
-            <div class="item">
-                <h1 class="itemHeader">Build</h1>
-                <ImageCheckbox ImagePath=@($"images/{loadout.Class}.jpg") AltText=@(loadout.Class.Replace("_", " ")) IsDisabled=true />
-            </div>
-            <div class="items">
+        @if (!loading)
+        {
+            <div class="items" style="gap:2rem;">
                 <div class="item">
-                    <h1 class="itemHeader">Specialization</h1>
-                    <ImageCheckbox ImagePath=@($"images/{loadout.Specialization}.png") AltText=@(loadout.Specialization.Replace("_", " ")) IsDisabled=true />
+                    <h1 class="itemHeader">Build</h1>
+                    <ImageCheckbox ImagePath=@($"images/{loadout.Class}.jpg") AltText=@(loadout.Class.Replace("_", " ")) IsDisabled=true />
                 </div>
-                <div class="item">
-                    <h1 class="itemHeader">Weapon</h1>
-                    <ImageCheckbox ImagePath=@($"images/{loadout.Weapon}.png") AltText=@(loadout.Weapon.Replace("_", " ")) IsDisabled=true />
+                <div class="items">
+                    <div class="item">
+                        <h1 class="itemHeader">Specialization</h1>
+                        <ImageCheckbox ImagePath=@($"images/{loadout.Specialization}.png") AltText=@(loadout.Specialization.Replace("_", " ")) IsDisabled=true />
+                    </div>
+                    <div class="item">
+                        <h1 class="itemHeader">Weapon</h1>
+                        <ImageCheckbox ImagePath=@($"images/{loadout.Weapon}.png") AltText=@(loadout.Weapon.Replace("_", " ")) IsDisabled=true />
+                    </div>
                 </div>
-            </div>
-            <div class="items">
-                <div class="item">
-                    <h1 class="itemHeader">Gadgets</h1>
-                    <div class="items">
-                        @foreach (string item in loadout.Gadgets) 
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsDisabled=true />
-                        }
+                <div class="items">
+                    <div class="item">
+                        <h1 class="itemHeader">Gadgets</h1>
+                        <div class="items">
+                            @foreach (string item in loadout.Gadgets) 
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsDisabled=true />
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
+        else 
+        {
+            <img src="images/loader.gif" alt="Loading..." />
+        }
     }
     <div style="height:4rem;" />
 
@@ -41,9 +48,13 @@
 
 @code {
     private Loadout? loadout = null;
+    private bool loading = false;
 
     private async Task GenerateRandomLoadout()
     {
+        loading = true;
+        StateHasChanged();
+
         Dictionary<string, string> headers = new Dictionary<string, string>
         {
             { "removed_classes", await CookieService.GetCookie("classes") },
@@ -53,5 +64,8 @@
         };
 
         loadout = await ApiService.Get<Loadout>("randomizer", headers);
+
+        loading = false;
+        StateHasChanged();
     }
 }

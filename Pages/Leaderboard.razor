@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using System.Globalization
 
-<div class="content">
+<div class="content" style="justify-content: start;">
     <div class="leaderboard-header">
 @* Season radio buttons *@
         <div style="display: flex; gap: 8px;">
@@ -45,7 +45,7 @@
         </div>
     
 @* Platform radio buttons *@
-        <div style="display: flex;">
+        <div style="display: flex; width: 100%;">
             @if (season == "s2" || season == "s1" || season == "ob")
             {
                 <div class="radio-group" style="margin-bottom: 0;">
@@ -102,11 +102,11 @@
         @if (!loading)
         {
             <QuickGrid Items="@data" Pagination=@pagination>
-                <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="SortDirection.Ascending" IsDefaultSortColumn="true" />
+                <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="SortDirection.Ascending" IsDefaultSortColumn="true" Align="Align.Center" />
                 @if (season == "s3")
                 {
-                    <TemplateColumn Title="24h Change">
-                        <span style="display: flex; align-items: center;">
+                    <TemplateColumn Title="24h Change" Align="Align.Center">
+                        <span style="display: flex; align-items: center; justify-content: center;">
                             @if (context.Change > 0)
                             {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-chevron-up" viewBox="0 0 16 16">
@@ -169,7 +169,7 @@
                     <TemplateColumn Title="League">
                         <div style="display:flex;">
                             <img style="width:3rem;" src="images/@(context.League.Replace(" ", "_")).png" /> 
-                            <span style="margin-left: 5px;">
+                            <span style="margin-left: 5px; display: flex; flex-direction: column; justify-content: center;">
                                 <p class="m-0">@context.League</p>
                                 @if (context.RankScore > 0)
                                 {
@@ -191,7 +191,7 @@
         {
 @* Loading icon *@
             <span style="display: flex; align-items: center; justify-content: center; height: 100%">
-                <img style="color: black;" src="images/loading.gif" alt="Loading..." />
+                <img style="color: black;" src="images/loader.gif" alt="Loading..." />
             </span>
         }
         <Paginator State=pagination />
