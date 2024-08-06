@@ -114,7 +114,7 @@ h1:focus {
     padding-bottom: 0.2rem;
 }
 
-.leaderboard {
+.content-area {
     background-color: white;
     border: 1px solid gray;
     border-top: none;
@@ -122,7 +122,7 @@ h1:focus {
     width: 50rem;
 }
 
-.leaderboard-header {
+.content-header {
     width: 50rem;
     background-color: white;
     border: 1px solid gray;

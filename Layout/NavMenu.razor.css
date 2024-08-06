@@ -25,3 +25,10 @@
     font-weight: bold;
     text-decoration: none;
 }
+
+.submenu-link {
+    color: lightgray;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+}

@@ -5,7 +5,7 @@
 @using System.Globalization
 
 <div class="content" style="justify-content: start;">
-    <div class="leaderboard-header">
+    <div class="content-header">
 @* Season radio buttons *@
         <div style="display: flex; gap: 8px;">
             <div class="radio-group">
@@ -98,7 +98,7 @@
     </div>
 
 @* Leaderboard grid *@
-    <div class="leaderboard">
+    <div class="content-area">
         @if (!loading)
         {
             <QuickGrid Items="@data" Pagination=@pagination>
@@ -221,7 +221,7 @@
 
 
 @code {
-    private PaginationState pagination = new PaginationState { ItemsPerPage = 25 };
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private IQueryable<Data>? data = null;
 
     private string searchString = "";
