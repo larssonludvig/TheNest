@@ -140,6 +140,13 @@ main[b-wp84x687sp] {
     font-weight: bold;
     text-decoration: none;
 }
+
+.submenu-link[b-2ta2zykge7] {
+    color: lightgray;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+}
 /* /Pages/Home.razor.rz.scp.css */
 .generateButton[b-3xcte9qnpj] {
     background-color: #1255cf;
