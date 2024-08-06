@@ -209,3 +209,12 @@ input + button {
     color: white;
     height: 2rem;
 }
+
+.summary {
+    color: black;
+    margin-left: 13rem;
+}
+
+.pagination-group {
+    margin-top: -2rem;
+}

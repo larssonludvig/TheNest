@@ -195,6 +195,24 @@
             </span>
         }
         <Paginator State=pagination />
+        <div class="radio-group pagination-group">
+            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 10)">
+                <input type="radio" name="10" checked="@(pagination.ItemsPerPage == 10)" />
+                <label for="10">10</label>
+            </div>
+            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 25)">
+                <input type="radio" name="25" checked="@(pagination.ItemsPerPage == 25)" />
+                <label for="25">25</label>
+            </div>
+            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 50)">
+                <input type="radio" name="50" checked="@(pagination.ItemsPerPage == 50)" />
+                <label for="50">50</label>
+            </div>
+            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 100)">
+                <input type="radio" name="100" checked="@(pagination.ItemsPerPage == 100)" />
+                <label for="100">100</label>
+            </div>
+        </div>
     </div>
     <div style="margin-top: 1rem; width: 50rem;">
         <p>This site uses a public API wrapper that can be found <a style="color: white;" href="https://github.com/leonlarsson/the-finals-api">Here!</a></p>
@@ -203,7 +221,7 @@
 
 
 @code {
-    private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 25 };
     private IQueryable<Data>? data = null;
 
     private string searchString = "";

@@ -40,8 +40,15 @@
         {
             <img src="images/loader.gif" alt="Loading..." />
         }
+        <div style="height:4rem;" />
     }
-    <div style="height:4rem;" />
+    else
+    {
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <p class="error">@errorMessage</p>
+        }
+    }
 
     <button class="generateButton" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
 </div>
@@ -49,9 +56,11 @@
 @code {
     private Loadout? loadout = null;
     private bool loading = false;
+    private string errorMessage = "";
 
     private async Task GenerateRandomLoadout()
     {
+        errorMessage = "";
         loading = true;
         StateHasChanged();
 
@@ -64,6 +73,9 @@
         };
 
         loadout = await ApiService.Get<Loadout>("randomizer", headers);
+
+        if (loadout == null)
+            errorMessage = "Unable to generate loadout, please check your settings and try again.";
 
         loading = false;
         StateHasChanged();
