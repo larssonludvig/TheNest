@@ -166,29 +166,32 @@
         else
         {
 @* Loading icon *@
-            <span style="display: flex; align-items: center; justify-content: center; height: 100%">
+            <span style="display: flex; align-items: center; justify-content: center; height: 100%; margin: 5rem;">
                 <img style="color: black;" src="images/loader.gif" alt="Loading..." />
             </span>
         }
-        <Paginator State=pagination />
-        <div class="radio-group pagination-group">
-            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 10)">
-                <input type="radio" name="10" checked="@(pagination.ItemsPerPage == 10)" />
-                <label for="10">10</label>
+        @if (!loading)
+        {
+            <Paginator State=pagination />
+            <div class="radio-group pagination-group">
+                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 10)">
+                    <input type="radio" name="10" checked="@(pagination.ItemsPerPage == 10)" />
+                    <label for="10">10</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 25)">
+                    <input type="radio" name="25" checked="@(pagination.ItemsPerPage == 25)" />
+                    <label for="25">25</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 50)">
+                    <input type="radio" name="50" checked="@(pagination.ItemsPerPage == 50)" />
+                    <label for="50">50</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 100)">
+                    <input type="radio" name="100" checked="@(pagination.ItemsPerPage == 100)" />
+                    <label for="100">100</label>
+                </div>
             </div>
-            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 25)">
-                <input type="radio" name="25" checked="@(pagination.ItemsPerPage == 25)" />
-                <label for="25">25</label>
-            </div>
-            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 50)">
-                <input type="radio" name="50" checked="@(pagination.ItemsPerPage == 50)" />
-                <label for="50">50</label>
-            </div>
-            <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 100)">
-                <input type="radio" name="100" checked="@(pagination.ItemsPerPage == 100)" />
-                <label for="100">100</label>
-            </div>
-        </div>
+        }
     </div>
     <div style="margin-top: 1rem; width: 50rem;">
         <p>This site uses a public API wrapper that can be found <a style="color: white;" href="https://github.com/leonlarsson/the-finals-api">Here!</a></p>
