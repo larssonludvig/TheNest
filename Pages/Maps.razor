@@ -3,55 +3,104 @@
 @using Domain
 @using BlazorPanzoom
 
-<div class="content" style="justify-content: start;">
-    <div class="content-header">
-        <p style="color: black;">NOTE: The maps on this page have been created as overlays on official maps by <a href="https://www.embark-studios.com/" style="color: black;">Embark Studios</a>. Additionally, since it has been some time since I played the game, I made the maps based on screenshots and from memory. Therefore, some areas may be inaccurate. Feel free to contact me about changes that can be made to improve the maps in general.</p>
-    </div>
-    <div class="content-area">
-        <div class="radio-group">
-            <div class="radio-button"> @* @onclick="@(() => SetMap("Monaco"))" *@
-                <input type="radio" name="Monaco" checked="@(currentMap == "Monaco")" />
-                <label for="Seoul" style="text-decoration: line-through;">MONACO</label>
-            </div>
-            <div class="radio-button" @onclick="@(() => SetMap("Seoul"))">
-                <input type="radio" name="Seoul" checked="@(currentMap == "Seoul")" />
-                <label for="Seoul">SEOUL</label>
-            </div>
-            <div class="radio-button"> @* @onclick="@(() => SetMap("LasVegas"))" *@
-                <input type="radio" name="LasVegas" checked="@(currentMap == "LasVegas")" />
-                <label for="LasVegas" style="text-decoration: line-through;">LAS VEGAS</label>
-            </div>
-            <div class="radio-button"> @* @onclick="@(() => SetMap("SkywayStadium"))" *@
-                <input type="radio" name="SkywayStadium" checked="@(currentMap == "SkywayStadium")" />
-                <label for="SkywayStadium" style="text-decoration: line-through;">SKYWAY STADIUM</label>
-            </div>
-            <div class="radio-button"> @* @onclick="@(() => SetMap("Sys$Horizon"))" *@
-                <input type="radio" name="Sys$Horizon" checked="@(currentMap == "Sys$Horizon")" />
-                <label for="Sys$Horizon" style="text-decoration: line-through;">SYS$HORIZON</label>
-            </div>
-            <div class="radio-button"> @* @onclick="@(() => SetMap("Kyoto"))" *@
-                <input type="radio" name="Kyoto" checked="@(currentMap == "Kyoto")" />
-                <label for="Kyoto" style="text-decoration: line-through;">KYOTO</label>
-            </div>
+@if (!fullScreen)
+{
+    <div class="content" style="justify-content: start;">
+        <div class="content-header">
+            <p style="color: black;">NOTE: The maps on this page have been created as overlays on official maps by <a href="https://www.embark-studios.com/" style="color: black;">Embark Studios</a>. Additionally, since it has been some time since I played the game, I made the maps based on screenshots and from memory. Therefore, some areas may be inaccurate. Feel free to contact me about changes that can be made to improve the maps in general.</p>
         </div>
+        <div class="content-area">
+            <div class="radio-group">
+                <div class="radio-button"> @* @onclick="@(() => SetMap("Monaco"))" *@
+                    <input type="radio" name="Monaco" checked="@(currentMap == "Monaco")" />
+                    <label for="Seoul" style="text-decoration: line-through;">MONACO</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => SetMap("Seoul"))">
+                    <input type="radio" name="Seoul" checked="@(currentMap == "Seoul")" />
+                    <label for="Seoul">SEOUL</label>
+                </div>
+                <div class="radio-button"> @* @onclick="@(() => SetMap("LasVegas"))" *@
+                    <input type="radio" name="LasVegas" checked="@(currentMap == "LasVegas")" />
+                    <label for="LasVegas" style="text-decoration: line-through;">LAS VEGAS</label>
+                </div>
+                <div class="radio-button"> @* @onclick="@(() => SetMap("SkywayStadium"))" *@
+                    <input type="radio" name="SkywayStadium" checked="@(currentMap == "SkywayStadium")" />
+                    <label for="SkywayStadium" style="text-decoration: line-through;">SKYWAY STADIUM</label>
+                </div>
+                <div class="radio-button"> @* @onclick="@(() => SetMap("Sys$Horizon"))" *@
+                    <input type="radio" name="Sys$Horizon" checked="@(currentMap == "Sys$Horizon")" />
+                    <label for="Sys$Horizon" style="text-decoration: line-through;">SYS$HORIZON</label>
+                </div>
+                <div class="radio-button"> @* @onclick="@(() => SetMap("Kyoto"))" *@
+                    <input type="radio" name="Kyoto" checked="@(currentMap == "Kyoto")" />
+                    <label for="Kyoto" style="text-decoration: line-through;">KYOTO</label>
+                </div>
+            </div>
 
-        <div style="border-style: solid; width: 50rem">
-            <Panzoom WheelMode="WheelMode.ZoomWithWheel">
-                <img @ref="@context.ElementReference"
-                    src=@($"images/maps/TheFinals_{currentMap}.png")
-                    alt="image"
-                    style="width: 50rem"/>
-            </Panzoom>
+            <div style="border-style: solid; width: 100%">
+                <div class="map-overlay">
+                    <button class="map-button" @onclick="OnZoomIn">
+                        <i class="bi bi-plus-lg" />
+                    </button>
+                    <button class="map-button" @onclick="OnZoomOut">
+                        <i class="bi bi-dash" />
+                    </button>
+                    <button class="map-button" @onclick="(() => fullScreen = true)">
+                        <i class="bi bi-arrows-angle-expand" />
+                    </button>
+                </div>
+                <Panzoom @ref="panZoom" WheelMode="WheelMode.ZoomWithWheel">
+                    <img @ref="@context.ElementReference"
+                        src=@($"images/maps/TheFinals_{currentMap}.png")
+                        alt="image"
+                        style="width: 50rem"/>
+                </Panzoom>
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div style="width: 95vw; height: 90vh; overflow: hidden;">
+        <div class="map-overlay">
+            <button class="map-button" @onclick="OnZoomIn">
+                <i class="bi bi-plus-lg" />
+            </button>
+            <button class="map-button" @onclick="OnZoomOut">
+                <i class="bi bi-dash" />
+            </button>
+            <button class="map-button" @onclick="(() => fullScreen = false)">
+                <i class="bi bi-arrows-angle-contract" />
+            </button>
+        </div>
+        <Panzoom @ref="panZoom" WheelMode="WheelMode.ZoomWithWheel">
+            <img @ref="@context.ElementReference"
+                src=@($"images/maps/TheFinals_{currentMap}.png")
+                alt="image"
+                style="width: 60rem;"/>
+        </Panzoom>
+    </div>
+}
 
 @code {
+    private Panzoom? panZoom;
     private string currentMap = "Seoul";
+    private bool fullScreen = true;
 
     private void SetMap(string str)
     {
         currentMap = str;
-        Console.WriteLine(currentMap);
+    }
+
+    private async Task OnZoomIn()
+    {
+        if (panZoom != null)
+            await panZoom.ZoomInAsync();
+    }
+
+    private async Task OnZoomOut()
+    {
+        if (panZoom != null)
+            await panZoom.ZoomOutAsync();
     }
 }
