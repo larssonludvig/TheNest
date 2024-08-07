@@ -218,3 +218,7 @@ input + button {
 .pagination-group {
     margin-top: -2rem;
 }
+
+i {
+    color: black;
+}
