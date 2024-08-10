@@ -1,12 +1,3 @@
-.generateButton {
-    background-color: #1255cf;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    font-weight: bolder;
-}
-
 .item img {
     width: 8rem;
 }

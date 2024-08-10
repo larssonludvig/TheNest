@@ -1,0 +1,186 @@
+@page "/loadout"
+@inject Constants Constants
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navManager
+
+<div class="content">
+    <div class="items" style="gap:2rem;">
+        <div class="item">
+            <h1 class="itemHeader">Build</h1>
+            <ImagePicker SelectedItem=@loadout.Class Items=@availableClasses OnClick="ClassChanged" ImageType="jpg" />
+        </div>
+        <div class="items">
+            <div class="item">
+                <h1 class="itemHeader">Specialization</h1>
+                <ImagePicker SelectedItem=@loadout.Specialization Items=@availableSpecializations OnClick="SpecializationChanged" />
+            </div>
+            <div class="item">
+                <h1 class="itemHeader">Weapon</h1>
+                <ImagePicker SelectedItem=@loadout.Weapon Items=@availableWeapons OnClick="WeaponChanged" />
+            </div>
+        </div>
+        <div class="items">
+            <div class="item">
+                <h1 class="itemHeader">Gadgets</h1>
+                <div class="items">
+                    <ImagePicker SelectedItem=@loadout.Gadgets[0] Items=@availableGadgets OnClick="Gadget1Changed" />
+                    <ImagePicker SelectedItem=@loadout.Gadgets[1] Items=@availableGadgets OnClick="Gadget2Changed" />
+                    <ImagePicker SelectedItem=@loadout.Gadgets[2] Items=@availableGadgets OnClick="Gadget3Changed" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height:4rem;" />
+    <button class="large-button" @onclick="Share">
+        Share
+        <i class="bi bi-link" style="color: white;" />
+    </button>
+    @if (copied)
+    {
+        <p>Copied to clipboard!</p>
+    }
+</div>
+
+@code {
+    public Loadout loadout = new Loadout();
+    private List<string> availableClasses = new List<string>();
+    private List<string> availableSpecializations = new List<string>();
+    private List<string> availableWeapons = new List<string>();
+    private List<string> availableGadgets = new List<string>();
+
+    private bool copied = false;
+
+
+    protected override void OnInitialized()
+    {
+        string uri = navManager.Uri;
+        if (uri.Contains("class="))
+            loadout.Class = uri.Split("class=")[1].Split("&")[0];
+        if (uri.Contains("spec="))
+            loadout.Specialization = uri.Split("spec=")[1].Split("&")[0];
+        if (uri.Contains("weapon="))
+            loadout.Weapon = uri.Split("weapon=")[1].Split("&")[0];
+        if (uri.Contains("gadget1="))
+            loadout.Gadgets.Add(uri.Split("gadget1=")[1].Split("&")[0]);
+        if (uri.Contains("gadget2="))
+            loadout.Gadgets.Add(uri.Split("gadget2=")[1].Split("&")[0]);
+        if (uri.Contains("gadget3="))
+            loadout.Gadgets.Add(uri.Split("gadget3=")[1]);
+
+        while (loadout.Gadgets.Count < 3)
+            loadout.Gadgets.Add("");
+
+
+
+
+        availableClasses = Constants.Classes;
+        availableSpecializations = Constants.LSpecializations.Union(Constants.MSpecializations).Union(Constants.HSpecializations).ToList();
+        availableWeapons = Constants.LWeapons.Union(Constants.MWeapons).Union(Constants.HWeapons).ToList();
+        availableGadgets = Constants.LGadgets.Union(Constants.MGadgets).Union(Constants.HGadgets).ToList();
+    }
+
+    private void ClassChanged(string str)
+    {
+        if (str == loadout.Class)
+            return;
+
+        loadout = new Loadout();
+        // To fix nullpointer exception
+        loadout.Gadgets = new List<string> { "", "", "" };
+
+
+        loadout.Class = str;
+
+        SetAvailableItems(str);
+    }
+
+    private void SpecializationChanged(string str)
+    {
+        if (loadout.Class != "Light" && Constants.LSpecializations.Contains(str))
+            SetAvailableItems("Light");
+        else if (loadout.Class != "Medium" && Constants.MSpecializations.Contains(str))
+            SetAvailableItems("Medium");
+        else if (loadout.Class != "Heavy" && Constants.HSpecializations.Contains(str))
+            SetAvailableItems("Heavy");
+
+        loadout.Specialization = str;
+    }
+
+    private void WeaponChanged(string str)
+    {
+        if (loadout.Class != "Light" && Constants.LWeapons.Contains(str))
+            SetAvailableItems("Light");
+        else if (loadout.Class != "Medium" && Constants.MWeapons.Contains(str))
+            SetAvailableItems("Medium");
+        else if (loadout.Class != "Heavy" && Constants.HWeapons.Contains(str))
+            SetAvailableItems("Heavy");
+
+        loadout.Weapon = str;
+    }
+
+    private void Gadget1Changed(string str)
+    {
+        if (!string.IsNullOrEmpty(loadout.Gadgets[0]) && !availableGadgets.Contains(loadout.Gadgets[0]))
+            availableGadgets.Add(loadout.Gadgets[0]);
+
+        loadout.Gadgets[0] = str;
+        availableGadgets.Remove(str);
+    }
+
+    private void Gadget2Changed(string str)
+    {
+        if (!string.IsNullOrEmpty(loadout.Gadgets[1]) && !availableGadgets.Contains(loadout.Gadgets[1]))
+            availableGadgets.Add(loadout.Gadgets[1]);
+
+        loadout.Gadgets[1] = str;
+        availableGadgets.Remove(str);
+    }
+
+    private void Gadget3Changed(string str)
+    {
+        if (!string.IsNullOrEmpty(loadout.Gadgets[2]) && !availableGadgets.Contains(loadout.Gadgets[2]))
+            availableGadgets.Add(loadout.Gadgets[2]);
+
+        loadout.Gadgets[2] = str;
+        availableGadgets.Remove(str);
+    }
+
+    private void SetAvailableItems(string c)
+    {
+        loadout.Class = c;
+
+        loadout.Gadgets = new List<string> { "", "", "" };
+
+        switch (c)
+        {
+            case "Light":
+                availableSpecializations = Constants.LSpecializations;
+                availableWeapons = Constants.LWeapons;
+                availableGadgets = Constants.LGadgets;
+                break;
+            case "Medium":
+                availableSpecializations = Constants.MSpecializations;
+                availableWeapons = Constants.MWeapons;
+                availableGadgets = Constants.MGadgets;
+                break;
+            case "Heavy":
+                availableSpecializations = Constants.HSpecializations;
+                availableWeapons = Constants.HWeapons;
+                availableGadgets = Constants.HGadgets;
+                break;
+        }
+    }
+
+    private void Share()
+    {
+        string baseUri;
+        if (navManager.Uri.Contains("?"))
+            baseUri = navManager.Uri.Split("?")[0];
+        else
+            baseUri = navManager.Uri;
+
+        string url = $"{baseUri}?class={loadout.Class}&spec={loadout.Specialization}&weapon={loadout.Weapon}&gadget1={loadout.Gadgets[0]}&gadget2={loadout.Gadgets[1]}&gadget3={loadout.Gadgets[2]}";
+        jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
+        copied = true;
+    }
+}

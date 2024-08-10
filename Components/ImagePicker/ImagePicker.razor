@@ -1,0 +1,45 @@
+@namespace Components
+
+<div class="image-area" @onclick="() => expanded = !expanded" style=@(IsDisabled?"":"cursor:pointer;")>
+    <div class="image-layer1">
+        <img class="image" src=@($"images/{SelectedItem}.{ImageType}") alt=@SelectedItem?.Replace("_", " ") onerror="this.src='images/404.png'" />
+        <i class="bi bi-caret-down-fill image-drop"></i>
+    </div>
+    <p class="image-label">@SelectedItem?.Replace("_", " ")</p>
+
+    @if (expanded)
+    {
+        <div class="shadow" />
+        <div style="position: relative;">
+            <div class="items" style="position: absolute; width: 30rem; top: 0; left: -4rem; z-index: 5;">
+                @foreach (var item in Items)
+                {
+                    <div class="item" @onclick="() => Clicked(item)">
+                        <div class="image-area">
+                            <div class="image-layer1">
+                                <img class="image" src=@($"images/{item}.{ImageType}") alt=item onerror="this.src='images/404.png'" />
+                            </div>
+                            <p class="image-label">@item.Replace("_", " ")</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public bool IsDisabled { get; set; } = false;
+    [Parameter] public List<string> Items { get; set; } = new List<string>();
+    [Parameter] public EventCallback<string> OnClick { get; set; }
+    [Parameter] public string? SelectedItem { get; set; }
+    [Parameter] public string ImageType { get; set; } = "png";
+
+    private bool expanded = false;
+
+    private void Clicked(string item)
+    {
+        if (OnClick.HasDelegate)
+            OnClick.InvokeAsync(item);
+    }
+}

@@ -50,7 +50,7 @@
         }
     }
 
-    <button class="generateButton" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
+    <button class="large-button" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
 </div>
 
 @code {
@@ -60,6 +60,7 @@
 
     private async Task GenerateRandomLoadout()
     {
+        loadout = null;
         errorMessage = "";
         loading = true;
         StateHasChanged();

@@ -1,16 +1,16 @@
-@namespace Components.ImageCheckbox
+@namespace Components
 
-<div class="area" @onclick=ToggleChecked style=@(IsDisabled?"":"cursor:pointer;")>
-    <div class="layer1">
+<div class="image-area" @onclick=ToggleChecked style=@(IsDisabled?"":"cursor:pointer;")>
+    <div class="image-layer1">
         <img class="image" src=@ImagePath alt=@AltText onerror="this.src='images/404.png'" />
     </div>
     @if (IsChecked)
     {
-        <div class="layer2">
-            <img class="cross" src=@(WhiteCross ? "images/close.svg" : "images/close_red.svg") alt="Checked" />
+        <div class="image-layer2">
+            <img class="image-cross" src=@(WhiteCross ? "images/close.svg" : "images/close_red.svg") alt="Checked" />
         </div>
     }
-    <p class="label">@AltText</p>
+    <p class="image-label">@AltText</p>
 </div>
 
 @code {
