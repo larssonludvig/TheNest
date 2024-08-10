@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "TheNest",
   "resources": {
-    "hash": "sha256-Y9L8yZPp64wUoUWSYAyZnQ3GIW1j/kKDXjYkBBrNhfQ=",
+    "hash": "sha256-a+gwrL74JNPe0krWIhUVtjb6C1pOhRbt7GrMs2IcnDI=",
     "jsModuleNative": {
       "dotnet.native.8.0.7.pvkr2na9g4.js": "sha256-tFsxPBbhkdn6GKNBKvCRLzrfAHdyM86odYTe0MtrwMk="
     },
@@ -40,20 +40,20 @@
       "System.Diagnostics.DiagnosticSource.wasm": "sha256-YCeuue5GQg9KT1jiRfcFz5uyjJ+hwRjByoJsEgiow7c=",
       "System.Linq.Expressions.wasm": "sha256-Zjd+eEBNhDzkOr6veY6EHWL5yNMAmwtexudcM7y6bec=",
       "System.Linq.Queryable.wasm": "sha256-mG9LbkPT2+Eokcyiz/NlyTdC42wWK71KSpxJDzdkvPI=",
-      "System.Linq.wasm": "sha256-QHZBu0OKh+Yi2b9++L78S9z0C1JFEqROX/HjPq/CN/0=",
+      "System.Linq.wasm": "sha256-8exBXILJRH+MYiXofPWOcchHgDNIBB12co1LUMRowo8=",
       "System.Memory.wasm": "sha256-oeDqUq7qFsn5dYS1i8+vhQcZCxJxuEbP9DGgk5Ugz6w=",
       "System.Net.Http.wasm": "sha256-EPqNU8P2aDJ0NTsV3b9DylfyOn5Fv8YLf+1LQeryP6Q=",
       "System.Net.Primitives.wasm": "sha256-pvIZ9QdJ8DSUQqtaJ7T2Y9eMJIhPUf9ERdwXmhE95Fc=",
-      "System.Private.CoreLib.wasm": "sha256-AMvTbJfF7JYGkD0E5K8NnOtVlGgPmGStSkIkvUMKv/I=",
+      "System.Private.CoreLib.wasm": "sha256-NST3MBP3iJzdaM9jV+TYcM0rV1sXX+K3zQ9BolRqjpU=",
       "System.Private.Uri.wasm": "sha256-8OgFaqpw7KDYgs2gaNFOoarkwEQkfV1thV3SkuWTMfU=",
       "System.Runtime.InteropServices.JavaScript.wasm": "sha256-8m7q6IfvTajy/UhTPL/oSXLq+HE7txOHKCFLDDkFoyA=",
       "System.Runtime.Serialization.Primitives.wasm": "sha256-QcqXNQ1PRVUCENFLvuGPhFE0NGlpDEN3NzLwvmYbofg=",
-      "System.Runtime.wasm": "sha256-jX2cdt+rE2tsBH1N2GkzffdZt/aa5sh202+F7ttIxzk=",
+      "System.Runtime.wasm": "sha256-JxIGgCJOfz6lkbQ1cu63thgA7rAiTO+/z3cBxtQ12Xw=",
       "System.Text.Encodings.Web.wasm": "sha256-4ASLPI+R+3lvUZI8lVAOpIPzNEwiqbxX910GoFqMC+A=",
       "System.Text.Json.wasm": "sha256-NMfF3RDDI16SO63zw6GZseRwSe74BXa7hFamebuvJIQ=",
       "System.Text.RegularExpressions.wasm": "sha256-S8ZfFQkhEU7qfOpYZSZieDFJUrg+CBXYcTzj+1rf4Eg=",
       "System.Threading.wasm": "sha256-LB7jgWcCXLlLzm8MDqhra+CcVLgkxyR7PWKAdbVpftM=",
-      "TheNest.wasm": "sha256-yNoPVerV4tPQkgzB/P32WxusDd0vzbfAdSNot3LRTGc="
+      "TheNest.wasm": "sha256-a5fuCOnRdeYM39djvl+qLEqzBEGrZIqY/yDuX84plUo="
     }
   },
   "cacheBootResources": true,
