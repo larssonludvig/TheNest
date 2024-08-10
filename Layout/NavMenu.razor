@@ -1,6 +1,5 @@
 ﻿<div class="menu"> 
     <div class="top-row ps-3 navbar navbar-dark">
-        <!-- <h1>MENU</h1> -->
         <button class="btn btn-menu" style="margin-left:auto;" @onclick="ToggleMenu">
             <img src="images/close.svg" alt="Close" style="margin-right:0.7rem" />
         </button>
@@ -8,12 +7,11 @@
 
     <nav class="content">
         <a class="menu-link" @onclick="ToggleMenu" href="loadout">LOADOUT</a>
-        <a class="menu-link" @onclick="ToggleMenu" href="">RANDOMIZER</a>
+        <a class="menu-link" @onclick="ToggleMenu" href="randomizer">RANDOMIZER</a>
         <a class="submenu-link" @onclick="ToggleMenu" href="options">OPTIONS</a>
         <a class="menu-link" @onclick="ToggleMenu" href="leaderboard">LEADERBOARD</a>
         <a class="menu-link" @onclick="ToggleMenu" href="maps">MAPS</a>
-        <!-- <a class="menu-link" @onclick="ToggleMenu" href="support">SUPPORT</a> -->
-        <a class="menu-link" @onclick="ToggleMenu" href="about">ABOUT</a>
+        <a class="menu-link" @onclick="ToggleMenu" href="">ABOUT</a>
     </nav>
 
 </div>
