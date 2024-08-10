@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject CookieService CookieService
+@using System.Reflection
 
 <div class="page">
     @if (menuOpen)
@@ -11,6 +12,7 @@
         <div class="top-row px-4">
             @* <a href=""><img src="images/thefinals.png" alt="THE FINALS" style="height:2rem;" /></a> *@
             <h1 class="m-0">THE NEST</h1>
+            <p class="version-text">@version</p>
             <button class="btn btn-menu" style="margin-left:auto;" @onclick="ToggleMenu">
                 <img src="images/menu.svg" alt="Menu" />
             </button>
@@ -28,6 +30,8 @@
 }
 
 @code {
+    private string version = ""; 
+
     private bool menuOpen = false;
     private bool cookieConsent = false;
 
@@ -35,6 +39,7 @@
     {
         if (firstRender) {
             cookieConsent = await CookieService.GetCookie("cookieConsent") == "true";
+            version = GetVersion();
             StateHasChanged();
         }
     }
@@ -43,5 +48,12 @@
     {
         menuOpen = !menuOpen;
         StateHasChanged();
+    }
+
+    private string GetVersion()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        version = "v." + assembly?.GetName()?.Version?.ToString().Substring(0, 5);
+        return version;
     }
 }
