@@ -118,7 +118,7 @@ h1:focus {
     background-color: white;
     border: 1px solid gray;
     border-top: none;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 5px 5px;
     width: 50rem;
 }
 
@@ -126,7 +126,7 @@ h1:focus {
     width: 50rem;
     background-color: white;
     border: 1px solid gray;
-    border-radius: 8px 8px 0 0;
+    border-radius: 5px 5px 0 0;
     padding: 8px;
 }
 
@@ -254,6 +254,7 @@ i {
     padding: 1rem 2rem;
     font-size: 1.5rem;
     font-weight: bolder;
+    border-radius: 5px;
 }
 
 .image-area {
@@ -274,7 +275,7 @@ i {
     height: 8rem;
     object-fit: cover;
     object-position: 0 0;
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-radius: 5px 5px 0 0;
 }
 
 .image-layer2 {
@@ -294,7 +295,7 @@ i {
     text-align: center;
     background-color: #1255cf;
     width: 100%;
-    border-radius: 0 0 0.5rem 0.5rem;
+    border-radius: 0 0 5px 5px;
     padding: 0.5rem 0;
     color: white;
 }
@@ -317,10 +318,21 @@ i {
 }
 
 .shadow {
-    position: absolute;
+    position: fixed;
     background-color: rgba(0, 0, 0, 0.2);
     height: 100vh;
     width: 100vw;
     top: 0;
     left: 0;
+    z-index: 5;
+}
+
+.item img {
+    width: 8rem;
+}
+
+@media only screen and (max-width: 60rem) {
+    .items {
+        justify-content: center;
+    }
 }
