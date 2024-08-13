@@ -9,9 +9,9 @@
 
     @if (expanded)
     {
-        <div class="shadow" />
+        <div class="shadow fade-in" />
         <div style="position: relative;">
-            <div class="items" style="position: absolute; width: 30rem; top: 0; left: -4rem; z-index: 5;">
+            <div class="items fade-in" style="position: absolute; width: 30rem; top: 0; left: -4rem; z-index: 5;">
                 @foreach (var item in Items)
                 {
                     <div class="item" @onclick="() => Clicked(item)">

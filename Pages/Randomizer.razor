@@ -3,12 +3,12 @@
 @inject Constants Constants
 @inject ApiService ApiService
 
-<div class="content">
+<div class="content fade-in">
     @if (loadout != null)
     {
         @if (!loading)
         {
-            <div class="items" style="gap:2rem;">
+            <div class="items fade-in" style="gap:2rem;">
                 <div class="item">
                     <h1 class="itemHeader">Build</h1>
                     <ImageCheckbox ImagePath=@($"images/{loadout.Class}.jpg") AltText=@(loadout.Class.Replace("_", " ")) IsDisabled=true />
