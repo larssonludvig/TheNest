@@ -286,7 +286,7 @@ i {
 }
 
 .image-cross {
-    width: 4rem;
+    width: 4rem !important;
 }
 
 .image-label {

@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject CookieService CookieService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.Reflection
 
 <div class="page">
@@ -24,21 +24,14 @@
     </main>
 </div>
 
-@if (cookieConsent == false)
-{
-    <CookiePopup OnAccept=StateHasChanged />
-}
-
 @code {
     private string version = ""; 
 
     private bool menuOpen = false;
-    private bool cookieConsent = false;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender) {
-            cookieConsent = await CookieService.GetCookie("cookieConsent") == "true";
             version = GetVersion();
             StateHasChanged();
         }

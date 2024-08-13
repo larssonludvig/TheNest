@@ -1,161 +1,152 @@
 ﻿@page "/options"
-@inject CookieService CookieService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject Constants Constants
 
-@if (cookieConsent)
-{
-    <h2>Click on items to exclude from randomizer</h2>
-    <br />
+<h2>Click on items to exclude from randomizer</h2>
+<br />
 
-    <div class="items">
-        <div class="item">
-            <h1 class="itemHeader">Classes</h1>
-            <div class="items">
-                @if (selectedClasses != null)
+<div class="items">
+    <div class="item">
+        <h1 class="itemHeader">Classes</h1>
+        <div class="items">
+            @if (selectedClasses != null)
+            {
+                foreach (string item in Constants.Classes)
                 {
-                    foreach (string item in Constants.Classes)
+                    <ImageCheckbox ImagePath=@($"images/{item}.jpg") AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) WhiteCross=true />
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="build">
+    <h1 class="itemHeader">Light</h1>
+    <div class="items large-items">
+        <div class="item">
+            <h1 class="itemHeader">Specializations</h1>
+            <div class="items">
+                @if (selectedSpecializations != null)
+                {
+                    foreach (string item in Constants.LSpecializations)
                     {
-                        <ImageCheckbox ImagePath=@($"images/{item}.jpg") AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) WhiteCross=true />
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                    }
+                }
+            </div>
+        </div>
+        <div class="item">
+            <h1 class="itemHeader">Weapons</h1>
+            <div class="items">
+                @if (selectedWeapons != null)
+                {
+                    foreach (string item in Constants.LWeapons)
+                    {
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                    }
+                }
+            </div>
+        </div>
+        <div class="item">
+            <h1 class="itemHeader">Gadgets</h1>
+            <div class="items">
+                @if (selectedGadgets != null)
+                {
+                    foreach (string item in Constants.LGadgets)
+                    {
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                     }
                 }
             </div>
         </div>
     </div>
+</div>
 
-    <div class="build">
-        <h1 class="itemHeader">Light</h1>
-        <div class="items large-items">
-            <div class="item">
-                <h1 class="itemHeader">Specializations</h1>
-                <div class="items">
-                    @if (selectedSpecializations != null)
+<div class="build">
+    <h1 class="itemHeader">Medium</h1>
+    <div class="items large-items">
+        <div class="item">
+            <h1 class="itemHeader">Specializations</h1>
+            <div class="items">
+                @if (selectedSpecializations != null)
+                {
+                    foreach (string item in Constants.MSpecializations)
                     {
-                        foreach (string item in Constants.LSpecializations)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
-                        }
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                     }
-                </div>
+                }
             </div>
-            <div class="item">
-                <h1 class="itemHeader">Weapons</h1>
-                <div class="items">
-                    @if (selectedWeapons != null)
+        </div>
+        <div class="item">
+            <h1 class="itemHeader">Weapons</h1>
+            <div class="items">
+                @if (selectedWeapons != null)
+                {
+                    foreach (string item in Constants.MWeapons)
                     {
-                        foreach (string item in Constants.LWeapons)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
-                        }
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                     }
-                </div>
+                }
             </div>
-            <div class="item">
-                <h1 class="itemHeader">Gadgets</h1>
-                <div class="items">
-                    @if (selectedGadgets != null)
+        </div>
+        <div class="item">
+            <h1 class="itemHeader">Gadgets</h1>
+            <div class="items">
+                @if (selectedGadgets != null)
+                {
+                    foreach (string item in Constants.MGadgets)
                     {
-                        foreach (string item in Constants.LGadgets)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
-                        }
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                     }
-                </div>
+                }
             </div>
         </div>
     </div>
+</div>
 
-    <div class="build">
-        <h1 class="itemHeader">Medium</h1>
-        <div class="items large-items">
-            <div class="item">
-                <h1 class="itemHeader">Specializations</h1>
-                <div class="items">
-                    @if (selectedSpecializations != null)
+<div class="build">
+    <h1 class="itemHeader">Heavy</h1>
+    <div class="items large-items">
+        <div class="item">
+            <h1 class="itemHeader">Specializations</h1>
+            <div class="items">
+                @if (selectedSpecializations != null)
+                {
+                    foreach (string item in Constants.HSpecializations)
                     {
-                        foreach (string item in Constants.MSpecializations)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
-                        }
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                     }
-                </div>
+                }
             </div>
-            <div class="item">
-                <h1 class="itemHeader">Weapons</h1>
-                <div class="items">
-                    @if (selectedWeapons != null)
+        </div>
+        <div class="item">
+            <h1 class="itemHeader">Weapons</h1>
+            <div class="items">
+                @if (selectedWeapons != null)
+                {
+                    foreach (string item in Constants.HWeapons)
                     {
-                        foreach (string item in Constants.MWeapons)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
-                        }
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                     }
-                </div>
+                }
             </div>
-            <div class="item">
-                <h1 class="itemHeader">Gadgets</h1>
-                <div class="items">
-                    @if (selectedGadgets != null)
+        </div>
+        <div class="item">
+            <h1 class="itemHeader">Gadgets</h1>
+            <div class="items">
+                @if (selectedGadgets != null)
+                {
+                    foreach (string item in Constants.HGadgets)
                     {
-                        foreach (string item in Constants.MGadgets)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
-                        }
+                        <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                     }
-                </div>
+                }
             </div>
         </div>
     </div>
-
-    <div class="build">
-        <h1 class="itemHeader">Heavy</h1>
-        <div class="items large-items">
-            <div class="item">
-                <h1 class="itemHeader">Specializations</h1>
-                <div class="items">
-                    @if (selectedSpecializations != null)
-                    {
-                        foreach (string item in Constants.HSpecializations)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
-                        }
-                    }
-                </div>
-            </div>
-            <div class="item">
-                <h1 class="itemHeader">Weapons</h1>
-                <div class="items">
-                    @if (selectedWeapons != null)
-                    {
-                        foreach (string item in Constants.HWeapons)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
-                        }
-                    }
-                </div>
-            </div>
-            <div class="item">
-                <h1 class="itemHeader">Gadgets</h1>
-                <div class="items">
-                    @if (selectedGadgets != null)
-                    {
-                        foreach (string item in Constants.HGadgets)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <h1>Accept Cookies To Change Options</h1>
-}
+</div>
 
 @code {
-    private bool cookieConsent = false;
-
     private List<string> selectedClasses = new List<string>();
     private List<string> selectedSpecializations = new List<string>();
     private List<string> selectedWeapons = new List<string>();
@@ -163,40 +154,36 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        cookieConsent = await CookieService.GetCookie("cookieConsent") == "true";
+        // Classes
+        string? cookieClass = await localStorage.GetItemAsync<string>("classes");
+        if (!string.IsNullOrEmpty(cookieClass)) {
+            selectedClasses = cookieClass.Split(",").ToList();
+        } else {
+            selectedClasses = new List<string>();
+        }
 
-        if (cookieConsent) {
-            // Classes
-            string cookie = await CookieService.GetCookie("classes");
-            if (cookie != null) {
-                selectedClasses = cookie.Split(",").ToList();
-            } else {
-                selectedClasses = new List<string>();
-            }
+        // Specializations
+        string? cookieSpecializations = await localStorage.GetItemAsync<string>("specializations");
+        if (!string.IsNullOrEmpty(cookieSpecializations)) {
+            selectedSpecializations = cookieSpecializations.Split(",").ToList();
+        } else {
+            selectedSpecializations = new List<string>();
+        }
 
-            // Specializations
-            string cookieSpecializations = await CookieService.GetCookie("specializations");
-            if (cookieSpecializations != null) {
-                selectedSpecializations = cookieSpecializations.Split(",").ToList();
-            } else {
-                selectedSpecializations = new List<string>();
-            }
+        // Weapons
+        string? cookieWeapons = await localStorage.GetItemAsync<string>("weapons");
+        if (!string.IsNullOrEmpty(cookieWeapons)) {
+            selectedWeapons = cookieWeapons.Split(",").ToList();
+        } else {
+            selectedWeapons = new List<string>();
+        }
 
-            // Weapons
-            string cookieWeapons = await CookieService.GetCookie("weapons");
-            if (cookieWeapons != null) {
-                selectedWeapons = cookieWeapons.Split(",").ToList();
-            } else {
-                selectedWeapons = new List<string>();
-            }
-
-            // Gadgets
-            string cookieGadgets = await CookieService.GetCookie("gadgets");
-            if (cookieGadgets != null) {
-                selectedGadgets = cookieGadgets.Split(",").ToList();
-            } else {
-                selectedGadgets = new List<string>();
-            }
+        // Gadgets
+        string? cookieGadgets = await localStorage.GetItemAsync<string>("gadgets");
+        if (!string.IsNullOrEmpty(cookieGadgets)) {
+            selectedGadgets = cookieGadgets.Split(",").ToList();
+        } else {
+            selectedGadgets = new List<string>();
         }
 
         StateHasChanged();
@@ -210,7 +197,7 @@ else
             selectedClasses.Add(selectedClass);
         }
 
-        await CookieService.SetCookie("classes", string.Join(",", selectedClasses));
+        await localStorage.SetItemAsync("classes", string.Join(",", selectedClasses));
     }
 
     private async Task SelectSpecialization(string selectedSpecialization) {
@@ -221,7 +208,7 @@ else
             selectedSpecializations.Add(selectedSpecialization);
         }
 
-        await CookieService.SetCookie("specializations", string.Join(",", selectedSpecializations));
+        await localStorage.SetItemAsync("specializations", string.Join(",", selectedSpecializations));
     }
 
     private async Task SelectWeapon(string selectedWeapon) {
@@ -232,7 +219,7 @@ else
             selectedWeapons.Add(selectedWeapon);
         }
 
-        await CookieService.SetCookie("weapons", string.Join(",", selectedWeapons));
+        await localStorage.SetItemAsync("weapons", string.Join(",", selectedWeapons));
     }
 
     private async Task SelectGadget(string selectedGadget) {
@@ -243,6 +230,6 @@ else
             selectedGadgets.Add(selectedGadget);
         }
 
-        await CookieService.SetCookie("gadgets", string.Join(",", selectedGadgets));
+        await localStorage.SetItemAsync("gadgets", string.Join(",", selectedGadgets));
     }
 }

@@ -1,5 +1,5 @@
 ﻿@page "/randomizer"
-@inject CookieService CookieService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject Constants Constants
 @inject ApiService ApiService
 
@@ -67,10 +67,10 @@
 
         Dictionary<string, string> headers = new Dictionary<string, string>
         {
-            { "removed_classes", await CookieService.GetCookie("classes") },
-            { "removed_specializations", await CookieService.GetCookie("specializations") },
-            { "removed_weapons", await CookieService.GetCookie("weapons") },
-            { "removed_gadgets", await CookieService.GetCookie("gadgets") }
+            { "removed_classes", await localStorage.GetItemAsync<string>("classes") ?? "" },
+            { "removed_specializations", await localStorage.GetItemAsync<string>("specializations") ?? "" },
+            { "removed_weapons", await localStorage.GetItemAsync<string>("weapons") ?? "" },
+            { "removed_gadgets", await localStorage.GetItemAsync<string>("gadgets") ?? "" }
         };
 
         loadout = await ApiService.Get<Loadout>("randomizer", headers);

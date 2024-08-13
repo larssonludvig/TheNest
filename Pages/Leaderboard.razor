@@ -78,7 +78,7 @@
 
 @* Search bar *@
             <span style="margin-left: auto; display: flex; align-items: center;">
-                <input type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString(); })" @onkeydown="@OnInput" placeholder="Search by name" />
+                <input type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by name" />
                 <button @onclick="@(e => FetchData(searchString))">
                     <i class="bi bi-search" style="color: white;" />
                 </button>
