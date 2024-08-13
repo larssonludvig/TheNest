@@ -1,27 +1,5 @@
 @import '_content/Microsoft.AspNetCore.Components.QuickGrid/Microsoft.AspNetCore.Components.QuickGrid.bundle.scp.css';
 
-/* /Components/CookieManager/CookiePopup.razor.rz.scp.css */
-.cookie-popup[b-79qkp638xp] {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    padding: 1rem;
-    margin: 2rem;
-    background-color: var(--black);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
-    width: 30rem;
-    flex-direction: column;
-    max-width: 85%;
-}
-
-.cookie-popup > img[b-79qkp638xp] {
-    cursor: pointer;
-    margin-left: auto;
-    width: 1rem;
-}
 /* /Layout/MainLayout.razor.rz.scp.css */
 .page[b-wp84x687sp] {
     position: relative;
@@ -134,14 +112,4 @@ img[b-6h3tfdbaa6] {
         justify-content: center;
     }
 
-}
-/* /Pages/Randomizer.razor.rz.scp.css */
-.item img[b-x9r42b3z99] {
-    width: 8rem;
-}
-
-@media only screen and (max-width: 60rem) {
-    .items[b-x9r42b3z99] {
-        justify-content: center;
-    }
 }
