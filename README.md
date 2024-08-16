@@ -1,9 +1,9 @@
 # The Nest
 ### Corner of the internet for seagulls to rest
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Canamo/TheNest/main.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/larssonludvig/TheNest/main.yml)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![issues](https://img.shields.io/github/issues-raw/canamo/TheNest)
+![issues](https://img.shields.io/github/issues-raw/larssonludvig/TheNest)
 
 **The Nest** is a website written in Microsoft Blazor webassembly. The site is meant to serve as a collection of features that can be of use to different games and communities. 
 
