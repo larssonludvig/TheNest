@@ -7,10 +7,9 @@ public class Constants {
     
     public List<string> MSpecializations = new List<string> {"Guardian_Turret", "Healing_Beam", "Dematerializer"};
     public List<string> MWeapons = new List<string> {"AKM", "FCAR", "CL-40", "R.357", "Model_1887", "Riot_Shield", "FAMAS", "Dual_Blades"};
-    public List<string> MGadgets = new List<string> {"APS_Turret", "Defibrillator", "Explosive_Mine", "Flashbang", "Frag_Grenade", "Gas_Grenade", "Gas_Mine", "Glitch_Trap", "Goo_Grenade", "Jump_Pad", "Pyro_Grenade", "Sonar_Grenade", "Tracking_Dart", "Zipline", "Data_Reshaper"};
+    public List<string> MGadgets = new List<string> {"APS_Turret", "Defibrillator", "Explosive_Mine", "Flashbang", "Frag_Grenade", "Gas_Grenade", "Gas_Mine", "Glitch_Trap", "Goo_Grenade", "Jump_Pad", "Pyro_Grenade", "Zipline", "Data_Reshaper"};
 
     public List<string> HSpecializations = new List<string> {"Charge_N_Slam", "Goo_Gun", "Mesh_Shield", "Winch_Claw"};
     public List<string> HWeapons = new List<string> {"M60", "Lewis_Gun", "Flamethrower", "MGL32", "SA1216", "Sledgehammer", "KS-23", "Spear"};
     public List<string> HGadgets = new List<string> {"Frag_Grenade", "Flashbang", "Pyro_Grenade", "Goo_Grenade", "Gas_Grenade", "C4", "Explosive_Mine", "Pyro_Mine", "Barricade", "RPG-7", "Dome_Shield", "Anti-Gravity_Cube", "Motion_Sensor"};
-
 }
