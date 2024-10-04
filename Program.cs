@@ -11,6 +11,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazorPanzoomServices();
+builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddScoped<Constants>();
 builder.Services.AddScoped<ApiService>();

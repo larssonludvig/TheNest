@@ -15,6 +15,8 @@ namespace Domain
         public string League { get; set; } = "";
         public int RankScore { get; set; } = 0;
         public int Cashouts { get; set; } = 0;
+        public string Sponsor { get; set; } = "";
+        public int Fans { get; set; } = 0; 
     }
 
     public class Meta

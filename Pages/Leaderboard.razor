@@ -1,5 +1,6 @@
 @page "/leaderboard"
 @inject ApiService ApiService
+@inject NavigationManager _nav
 @using Domain
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using System.Globalization
@@ -8,40 +9,34 @@
     <div class="content-header">
 @* Season radio buttons *@
         <div style="display: flex; gap: 8px;">
+
             <div class="radio-group">
-                <div class="radio-button" @onclick="@(() => SetSeason("s3worldtour"))">
-                    <input type="radio" name="s3worldtour" checked="@(season == "s3worldtour")" />
-                    <label for="s3worldtour">World Tour</label>
+                <div class="radio-button" @onclick="@(() => SetSeason("s4"))">
+                    <input type="radio" name="s4" checked="@(season == "s4")" />
+                    <label for="s4">Ranked</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => SetSeason("s4worldtour"))">
+                    <input type="radio" name="s4worldtour" checked="@(season == "s4worldtour")" />
+                    <label for="s4worldtour">World Tour</label>
+                </div>
+                <div class="radio-button" @onclick="@(() => SetSeason("s4sponsor"))">
+                    <input type="radio" name="s4sponsor" checked="@(season == "s4sponsor")" />
+                    <label for="s4sponsor">Sponsor</label>
                 </div>
             </div>
-            <div class="radio-group">
-                <div class="radio-button" @onclick="@(() => SetSeason("s3"))">
-                    <input type="radio" name="s3" checked="@(season == "s3")" />
-                    <label for="s3">Season 3</label>
-                </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("s2"))">
-                    <input type="radio" name="s2" checked="@(season == "s2")" />
-                    <label for="s2">Season 2</label>
-                </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("s1"))">
-                    <input type="radio" name="s1" checked="@(season == "s1")" />
-                    <label for="s1">Season 1</label>
-                </div>
-            </div>
-            <div class="radio-group">
-                <div class="radio-button" @onclick="@(() => SetSeason("ob"))">
-                    <input type="radio" name="ob" checked="@(season == "ob")" />
-                    <label for="ob">Open Beta</label>
-                </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("cb2"))">
-                    <input type="radio" name="s1" checked="@(season == "cb2")" />
-                    <label for="cb2">Closed Beta 2</label>
-                </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("cb1"))">
-                    <input type="radio" name="cb1" checked="@(season == "cb1")" />
-                    <label for="cb1">Closed Beta 1</label>
-                </div>
-            </div>
+
+            <Dropdown>
+                <DropdownToggleButton>Old Leaderboards</DropdownToggleButton>
+                <DropdownMenu>
+                    <DropdownItem @onclick="@(() => SetSeason("s3worldtour"))">Season 3 World Tour</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s3"))">Season 3</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s2"))">Season 2</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s1"))">Season 1</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("ob"))">Open Beta</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("cb2"))">Closed Beta 2</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("cb1"))">Closed Beta 1</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
         </div>
     
 @* Platform radio buttons *@
@@ -91,7 +86,7 @@
         @if (!loading)
         {
             <QuickGrid Items="@data" Pagination=@pagination>
-                <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="SortDirection.Ascending" IsDefaultSortColumn="true" Align="Align.Center" />
+                <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Ascending" IsDefaultSortColumn="true" Align="Align.Center" />
                 @if (season == "s3")
                 {
                     <TemplateColumn Title="24h Change" Align="Align.Center">
@@ -140,7 +135,22 @@
                         }
                     </span>
                 </TemplateColumn>
-                @if (season != "s3worldtour")
+                @if (season == "s4worldtour" || season == "s3worldtour")
+                {
+                    <TemplateColumn Title="Cashouts">
+                        <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Cashouts).Replace(".00", "")</p>
+                    </TemplateColumn>
+                }
+                else if (season == "s4sponsor")
+                {
+                    <TemplateColumn Title="Sponsor">
+                        <p>@context.Sponsor</p>
+                    </TemplateColumn>
+                    <TemplateColumn Title="Fans">
+                        <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Fans).Replace(".00", "").Replace("$", "")</p>
+                    </TemplateColumn>
+                }
+                else 
                 {
                     <TemplateColumn Title="League">
                         <div style="display:flex;">
@@ -155,12 +165,6 @@
                         </div>
                     </TemplateColumn>
                 }
-                else 
-                {
-                    <TemplateColumn Title="Cashouts">
-                        <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Cashouts).Replace(".00", "")</p>
-                    </TemplateColumn>
-                }
             </QuickGrid>
         }
         else
@@ -173,24 +177,15 @@
         @if (!loading)
         {
             <Paginator State=pagination />
-            <div class="radio-group pagination-group">
-                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 10)">
-                    <input type="radio" name="10" checked="@(pagination.ItemsPerPage == 10)" />
-                    <label for="10">10</label>
-                </div>
-                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 25)">
-                    <input type="radio" name="25" checked="@(pagination.ItemsPerPage == 25)" />
-                    <label for="25">25</label>
-                </div>
-                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 50)">
-                    <input type="radio" name="50" checked="@(pagination.ItemsPerPage == 50)" />
-                    <label for="50">50</label>
-                </div>
-                <div class="radio-button" @onclick="@(() => pagination.ItemsPerPage = 100)">
-                    <input type="radio" name="100" checked="@(pagination.ItemsPerPage == 100)" />
-                    <label for="100">100</label>
-                </div>
-            </div>
+            <Dropdown class="pagination-group">
+                <DropdownToggleButton>@pagination.ItemsPerPage</DropdownToggleButton>
+                <DropdownMenu>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 10)">10</DropdownItem>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 25)">25</DropdownItem>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 50)">50</DropdownItem>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 100)">100</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
         }
     </div>
     <div style="margin-top: 1rem; width: 50rem;">
@@ -200,17 +195,20 @@
 
 
 @code {
+    [Parameter, SupplyParameterFromQuery]
+    public string season { get; set; } = "s4";
+
     private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private IQueryable<Data>? data = null;
 
     private string searchString = "";
-    private string season = "s3";
     private string platform = "crossplay";
     private bool loading = false;
 
     protected override async Task OnInitializedAsync()
     {
         data = default;
+        Console.WriteLine(season);
         await FetchData();
     }
 
@@ -219,6 +217,9 @@
         loading = true;
         data = null;
         StateHasChanged();
+
+        if (string.IsNullOrEmpty(season))
+            season = "s4";
 
         string baseUrl = "https://api.the-finals-leaderboard.com/";
         string endpoint = "v1/leaderboard/" + season + "/" + platform;
@@ -229,8 +230,6 @@
         Root root = await ApiService.Get<Root>(endpoint, baseUrl);
         data = root.Data.AsQueryable();
         loading = false;
-        StateHasChanged();
-        StateHasChanged();
         StateHasChanged();
     }
 
@@ -244,6 +243,7 @@
 
     private async Task SetSeason(string season)
     {
+        _nav.NavigateTo("/leaderboard?season=" + season);
         this.season = season;
         if (!(season == "s2" || season == "s1" || season == "ob"))
             this.platform = "crossplay";
