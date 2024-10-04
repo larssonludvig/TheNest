@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using System.Globalization
 
-<div class="content fade-in" style="justify-content: start;">
+<div class="content fade-in" style="justify-content: start; top: 7rem;">
     <div class="content-header">
 @* Season radio buttons *@
         <div style="display: flex; gap: 8px;">
@@ -243,7 +243,7 @@
 
     private async Task SetSeason(string season)
     {
-        _nav.NavigateTo("/leaderboard?season=" + season);
+        _nav.NavigateTo("/TheNest/leaderboard?season=" + season);
         this.season = season;
         if (!(season == "s2" || season == "s1" || season == "ob"))
             this.platform = "crossplay";

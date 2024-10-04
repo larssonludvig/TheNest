@@ -31,6 +31,14 @@ a, .btn-link {
     flex-direction: column;
     width: 100%;
     min-height: 80vh;
+    position: absolute;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.content::-webkit-scrollbar {
+    display: none;
 }
 
 body {
@@ -73,6 +81,9 @@ h1:focus {
     height: 4.5rem;
     display: flex;
     align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100vw;
 }
 
 .top-row > img {
@@ -364,4 +375,10 @@ i {
 .dropdown:hover {
     background-color: #f2f2f2;
     color: black;
+}
+
+article {
+    height: 100vh !important;
+    overflow-y: scroll;
+    top: 0;
 }

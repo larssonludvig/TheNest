@@ -2,149 +2,152 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject Constants Constants
 
-<h2>Click on items to exclude from randomizer</h2>
-<br />
 
-<div class="items fade-in">
-    <div class="item">
-        <h1 class="itemHeader">Classes</h1>
-        <div class="items">
-            @if (selectedClasses != null)
-            {
-                foreach (string item in Constants.Classes)
+<div class="content fade-in" style="justify-content: start; top: 7rem;">
+    <h2>Click on items to exclude from randomizer</h2>
+    <br />
+
+    <div class="items fade-in">
+        <div class="item">
+            <h1 class="itemHeader">Classes</h1>
+            <div class="items">
+                @if (selectedClasses != null)
                 {
-                    <ImageCheckbox ImagePath=@($"images/{item}.jpg") AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) WhiteCross=true />
+                    foreach (string item in Constants.Classes)
+                    {
+                        <ImageCheckbox ImagePath=@($"images/{item}.jpg") AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) WhiteCross=true />
+                    }
                 }
-            }
-        </div>
-    </div>
-</div>
-
-<div class="fade-in">
-@* Light *@
-    <div class="build">
-        <h1 class="itemHeader">Light</h1>
-        <div class="items large-items">
-            <div class="item">
-                <h1 class="itemHeader">Specializations</h1>
-                <div class="items">
-                    @if (selectedSpecializations != null)
-                    {
-                        foreach (string item in Constants.LSpecializations)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
-                        }
-                    }
-                </div>
-            </div>
-            <div class="item">
-                <h1 class="itemHeader">Weapons</h1>
-                <div class="items">
-                    @if (selectedWeapons != null)
-                    {
-                        foreach (string item in Constants.LWeapons)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
-                        }
-                    }
-                </div>
-            </div>
-            <div class="item">
-                <h1 class="itemHeader">Gadgets</h1>
-                <div class="items">
-                    @if (selectedGadgets != null)
-                    {
-                        foreach (string item in Constants.LGadgets)
-                        {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
-                        }
-                    }
-                </div>
             </div>
         </div>
     </div>
 
-@* Medium *@
-    <div class="build">
-        <h1 class="itemHeader">Medium</h1>
-        <div class="items large-items">
-            <div class="item">
-                <h1 class="itemHeader">Specializations</h1>
-                <div class="items">
-                    @if (selectedSpecializations != null)
-                    {
-                        foreach (string item in Constants.MSpecializations)
+    <div class="fade-in">
+    @* Light *@
+        <div class="build">
+            <h1 class="itemHeader">Light</h1>
+            <div class="items large-items">
+                <div class="item">
+                    <h1 class="itemHeader">Specializations</h1>
+                    <div class="items">
+                        @if (selectedSpecializations != null)
                         {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            foreach (string item in Constants.LSpecializations)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            }
                         }
-                    }
+                    </div>
                 </div>
-            </div>
-            <div class="item">
-                <h1 class="itemHeader">Weapons</h1>
-                <div class="items">
-                    @if (selectedWeapons != null)
-                    {
-                        foreach (string item in Constants.MWeapons)
+                <div class="item">
+                    <h1 class="itemHeader">Weapons</h1>
+                    <div class="items">
+                        @if (selectedWeapons != null)
                         {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            foreach (string item in Constants.LWeapons)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            }
                         }
-                    }
+                    </div>
                 </div>
-            </div>
-            <div class="item">
-                <h1 class="itemHeader">Gadgets</h1>
-                <div class="items">
-                    @if (selectedGadgets != null)
-                    {
-                        foreach (string item in Constants.MGadgets)
+                <div class="item">
+                    <h1 class="itemHeader">Gadgets</h1>
+                    <div class="items">
+                        @if (selectedGadgets != null)
                         {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            foreach (string item in Constants.LGadgets)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            }
                         }
-                    }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-@* Heavy *@
-    <div class="build">
-        <h1 class="itemHeader">Heavy</h1>
-        <div class="items large-items">
-            <div class="item">
-                <h1 class="itemHeader">Specializations</h1>
-                <div class="items">
-                    @if (selectedSpecializations != null)
-                    {
-                        foreach (string item in Constants.HSpecializations)
+    @* Medium *@
+        <div class="build">
+            <h1 class="itemHeader">Medium</h1>
+            <div class="items large-items">
+                <div class="item">
+                    <h1 class="itemHeader">Specializations</h1>
+                    <div class="items">
+                        @if (selectedSpecializations != null)
                         {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            foreach (string item in Constants.MSpecializations)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            }
                         }
-                    }
+                    </div>
+                </div>
+                <div class="item">
+                    <h1 class="itemHeader">Weapons</h1>
+                    <div class="items">
+                        @if (selectedWeapons != null)
+                        {
+                            foreach (string item in Constants.MWeapons)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="item">
+                    <h1 class="itemHeader">Gadgets</h1>
+                    <div class="items">
+                        @if (selectedGadgets != null)
+                        {
+                            foreach (string item in Constants.MGadgets)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            }
+                        }
+                    </div>
                 </div>
             </div>
-            <div class="item">
-                <h1 class="itemHeader">Weapons</h1>
-                <div class="items">
-                    @if (selectedWeapons != null)
-                    {
-                        foreach (string item in Constants.HWeapons)
+        </div>
+
+    @* Heavy *@
+        <div class="build">
+            <h1 class="itemHeader">Heavy</h1>
+            <div class="items large-items">
+                <div class="item">
+                    <h1 class="itemHeader">Specializations</h1>
+                    <div class="items">
+                        @if (selectedSpecializations != null)
                         {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            foreach (string item in Constants.HSpecializations)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
+                            }
                         }
-                    }
+                    </div>
                 </div>
-            </div>
-            <div class="item">
-                <h1 class="itemHeader">Gadgets</h1>
-                <div class="items">
-                    @if (selectedGadgets != null)
-                    {
-                        foreach (string item in Constants.HGadgets)
+                <div class="item">
+                    <h1 class="itemHeader">Weapons</h1>
+                    <div class="items">
+                        @if (selectedWeapons != null)
                         {
-                            <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            foreach (string item in Constants.HWeapons)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
+                            }
                         }
-                    }
+                    </div>
+                </div>
+                <div class="item">
+                    <h1 class="itemHeader">Gadgets</h1>
+                    <div class="items">
+                        @if (selectedGadgets != null)
+                        {
+                            foreach (string item in Constants.HGadgets)
+                            {
+                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         </div>
