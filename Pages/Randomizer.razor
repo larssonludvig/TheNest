@@ -2,6 +2,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject Constants Constants
 @inject ApiService ApiService
+@inject NavigationManager _nav
 
 <div class="content fade-in">
     @if (loadout != null)
@@ -113,7 +114,12 @@
         }
     }
 
-    <button class="large-button" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
+    <div style="display: flex; gap: 1rem;">
+        <button class="large-button" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
+        <button class="large-button" @onclick="@(() => _nav.NavigateTo("./options"))">
+            <i class="bi bi-gear" style="color: white" />
+        </button>
+    </div>
 </div>
 
 @code {
