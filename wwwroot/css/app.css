@@ -382,3 +382,25 @@ article {
     overflow-y: scroll;
     top: 0;
 }
+
+.reel {
+    position: relative;
+    width: 8rem;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.scroll-in {
+    position: relative;
+    animation: scrollIn 3.0s ease forwards;
+}
+
+@keyframes scrollIn {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}

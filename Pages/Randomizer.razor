@@ -6,40 +6,103 @@
 <div class="content fade-in">
     @if (loadout != null)
     {
-        @if (!loading)
-        {
-            <div class="items fade-in" style="gap:2rem;">
-                <div class="item">
-                    <h1 class="itemHeader">Build</h1>
-                    <ImageCheckbox ImagePath=@($"images/{loadout.Class}.jpg") AltText=@(loadout.Class.Replace("_", " ")) IsDisabled=true />
-                </div>
-                <div class="items">
-                    <div class="item">
-                        <h1 class="itemHeader">Specialization</h1>
-                        <ImageCheckbox ImagePath=@($"images/{loadout.Specialization}.png") AltText=@(loadout.Specialization.Replace("_", " ")) IsDisabled=true />
-                    </div>
-                    <div class="item">
-                        <h1 class="itemHeader">Weapon</h1>
-                        <ImageCheckbox ImagePath=@($"images/{loadout.Weapon}.png") AltText=@(loadout.Weapon.Replace("_", " ")) IsDisabled=true />
-                    </div>
-                </div>
-                <div class="items">
-                    <div class="item">
-                        <h1 class="itemHeader">Gadgets</h1>
-                        <div class="items">
-                            @foreach (string item in loadout.Gadgets) 
-                            {
-                                <ImageCheckbox ImagePath=@($"images/{item}.png") AltText=@(item.Replace("_", " ")) IsDisabled=true />
+        <div class="items fade-in" style="gap:2rem;">
+            <div class="item">
+                <h1 class="itemHeader">Build</h1>
+
+                <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
+                    @if (headers != null && loadout != null)
+                    {
+                        <div class="reel scroll-in">
+                            <ImageCheckbox ImagePath="@($"images/{loadout.Class}.jpg")" AltText="@(loadout.Class.Replace("_", " "))" IsDisabled="true" />
+                            @{
+                                foreach (var item in Constants.Classes)
+                                {
+                                    <ImageCheckbox ImagePath="@($"images/{item}.jpg")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                }
                             }
                         </div>
+                    }
+                </div>
+            </div>
+            <div class="items">
+                <div class="item">
+                    <h1 class="itemHeader">Specialization</h1>
+
+                    <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
+                        @if (headers != null && loadout != null)
+                        {
+                            <div class="reel scroll-in">
+                                <ImageCheckbox ImagePath="@($"images/{loadout.Specialization}.png")" AltText="@(loadout.Specialization.Replace("_", " "))" IsDisabled="true" />
+                                @{
+                                    List<string> specializations = new List<string> (Constants.LSpecializations.Count + Constants.MSpecializations.Count + Constants.HSpecializations.Count);
+                                    specializations.AddRange(Constants.LSpecializations);
+                                    specializations.AddRange(Constants.MSpecializations);
+                                    specializations.AddRange(Constants.HSpecializations);
+
+                                    foreach (var item in specializations)
+                                    {
+                                        <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="item">
+                    <h1 class="itemHeader">Weapon</h1>
+
+                    <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
+                        @if (headers != null && loadout != null)
+                        {
+                            <div class="reel scroll-in">
+                                <ImageCheckbox ImagePath="@($"images/{loadout.Weapon}.png")" AltText="@(loadout.Weapon.Replace("_", " "))" IsDisabled="true" />
+                                @{
+                                    List<string> weapons = new List<string> (Constants.LWeapons.Count + Constants.MWeapons.Count + Constants.HWeapons.Count);
+                                    weapons.AddRange(Constants.LWeapons);
+                                    weapons.AddRange(Constants.MWeapons);
+                                    weapons.AddRange(Constants.HWeapons);
+
+                                    foreach (var item in weapons)
+                                    {
+                                        <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                    }
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
-        }
-        else 
-        {
-            <img src="images/loader.gif" alt="Loading..." />
-        }
+            <div class="items">
+                <div class="item">
+                    <h1 class="itemHeader">Gadgets</h1>
+                    <div class="items">
+                        @foreach (string item in loadout.Gadgets) 
+                        {
+                            <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
+                                @if (headers != null && loadout != null)
+                                {
+                                    <div class="reel scroll-in">
+                                        <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                        @{
+                                            List<string> gadgets = new List<string> (Constants.LGadgets.Count + Constants.MGadgets.Count + Constants.HGadgets.Count);
+                                            gadgets.AddRange(Constants.LGadgets);
+                                            gadgets.AddRange(Constants.MGadgets);
+                                            gadgets.AddRange(Constants.HGadgets);
+
+                                            foreach (var gadget in gadgets)
+                                            {
+                                                <ImageCheckbox ImagePath="@($"images/{gadget}.png")" AltText="@(gadget.Replace("_", " "))" IsDisabled="true" />
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
         <div style="height:4rem;" />
     }
     else
@@ -55,17 +118,15 @@
 
 @code {
     private Loadout? loadout = null;
-    private bool loading = false;
     private string errorMessage = "";
+    private Dictionary<string, string>? headers = null;
 
     private async Task GenerateRandomLoadout()
     {
         loadout = null;
-        errorMessage = "";
-        loading = true;
         StateHasChanged();
 
-        Dictionary<string, string> headers = new Dictionary<string, string>
+        headers = new Dictionary<string, string>
         {
             { "removed_classes", await localStorage.GetItemAsync<string>("classes") ?? "" },
             { "removed_specializations", await localStorage.GetItemAsync<string>("specializations") ?? "" },
@@ -78,7 +139,6 @@
         if (loadout == null)
             errorMessage = "Unable to generate loadout, please check your settings and try again.";
 
-        loading = false;
         StateHasChanged();
     }
 }
