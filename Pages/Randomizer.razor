@@ -7,6 +7,10 @@
 <div class="content fade-in">
     @if (loadout != null)
     {
+        @* Play audio *@
+        <audio autoplay><source src="audio/roll.mp3" /></audio>
+
+        @*  *@
         <div class="items fade-in" style="gap:2rem;">
             <div class="item">
                 <h1 class="itemHeader">Build</h1>
@@ -40,6 +44,7 @@
                                     specializations.AddRange(Constants.LSpecializations);
                                     specializations.AddRange(Constants.MSpecializations);
                                     specializations.AddRange(Constants.HSpecializations);
+                                    specializations = Shuffle(specializations);
 
                                     foreach (var item in specializations)
                                     {
@@ -63,6 +68,7 @@
                                     weapons.AddRange(Constants.LWeapons);
                                     weapons.AddRange(Constants.MWeapons);
                                     weapons.AddRange(Constants.HWeapons);
+                                    weapons = Shuffle(weapons);
 
                                     foreach (var item in weapons)
                                     {
@@ -90,6 +96,7 @@
                                             gadgets.AddRange(Constants.LGadgets);
                                             gadgets.AddRange(Constants.MGadgets);
                                             gadgets.AddRange(Constants.HGadgets);
+                                            gadgets = Shuffle(gadgets);
 
                                             foreach (var gadget in gadgets)
                                             {
@@ -146,5 +153,18 @@
             errorMessage = "Unable to generate loadout, please check your settings and try again.";
 
         StateHasChanged();
+    }
+
+    private List<T> Shuffle<T>(List<T> list) {
+        Random rng = new Random();
+
+        for (int i = list.Count; i > 0; i--) {
+            int j = rng.Next(i);
+            T value = list[j];
+            list[j] = list[i - 1];
+            list[i - 1] = value;
+        }
+
+        return list;
     }
 }
