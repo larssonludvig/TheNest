@@ -8,7 +8,10 @@
     @if (loadout != null)
     {
         @* Play audio *@
-        <audio autoplay><source src="audio/roll.mp3" /></audio>
+        @if (!mute)
+        {
+            <audio autoplay><source src="audio/roll.mp3" /></audio>
+        }
 
         @*  *@
         <div class="items fade-in" style="gap:2rem;">
@@ -121,11 +124,48 @@
         }
     }
 
-    <div style="display: flex; gap: 1rem;">
+    <div>
         <button class="large-button" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
-        <button class="large-button" @onclick="@(() => _nav.NavigateTo("./options"))">
+    </div>
+
+@* Options *@
+    <div class="content-options form-check">
+        <h2>
             <i class="bi bi-gear" style="color: white" />
-        </button>
+            Options
+        </h2>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                @* <p class="options-header">Items to include:</p>
+                <div @onclick="@(() => type = RandomizerType.NEW_ACCOUNT)">
+                    <input type="radio" checked="@(type == RandomizerType.NEW_ACCOUNT))"
+                        name="type" style=""/>
+                    <label>New Account</label>
+                </div>
+                <div @onclick="@(() => type = RandomizerType.ALL_UNLOCKED)">
+                    <input type="radio" checked="@(type == RandomizerType.ALL_UNLOCKED))"
+                        name="type" style=""/>
+                    <label>All items unlocked</label>
+                </div>
+                <div @onclick="@(() => type = RandomizerType.ALL_UNLOCKED)">
+                    <input type="radio" checked="@(type == RandomizerType.CUSTOM))"
+                        name="type" style=""/>
+                    <label>Custom</label>
+                </div> *@
+                <p>You can change the included items <a style="color: white;" href="./randomizer/options">Here!</a></p>   
+                <p class="options-header">Audio:</p>
+                <Switch @bind-value="mute" Label="Mute audio" />
+            </div>
+
+            @* <div style="flex: 1; flex-direction: column;"> *@
+                @* <p class="options-header">Animation:</p>
+                <div style="display: flex; gap: 5px;">
+                    <p style="margin: 0;">Duration (s):</p>
+                    <input class="dark-input" type="number" placeholder="0.00"
+                        @bind="duration" min="0"/>
+                </div> *@
+            @* </div> *@
+        </div>
     </div>
 </div>
 
@@ -133,19 +173,55 @@
     private Loadout? loadout = null;
     private string errorMessage = "";
     private Dictionary<string, string>? headers = null;
+    private Boolean mute = false;
+    private RandomizerType type = RandomizerType.CUSTOM;
+    private double duration = 2.0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        mute = await localStorage.GetItemAsync<bool>("randomizer_mute");
+        duration = await localStorage.GetItemAsync<double>("randomizer_duration");
+        if (duration == 0)
+            duration = 2.0;
+        string storedType = await localStorage.GetItemAsync<string>("randomizer_type") ?? "CUSTOM";
+        Enum.TryParse(storedType, out type);
+    }
 
     private async Task GenerateRandomLoadout()
     {
+        // TODO: Remove force of type
+        type = RandomizerType.CUSTOM;
+
+
         loadout = null;
         StateHasChanged();
 
-        headers = new Dictionary<string, string>
-        {
-            { "removed_classes", await localStorage.GetItemAsync<string>("classes") ?? "" },
-            { "removed_specializations", await localStorage.GetItemAsync<string>("specializations") ?? "" },
-            { "removed_weapons", await localStorage.GetItemAsync<string>("weapons") ?? "" },
-            { "removed_gadgets", await localStorage.GetItemAsync<string>("gadgets") ?? "" }
-        };
+        // Update some settings
+        await localStorage.SetItemAsync("randomizer_mute", mute);
+        await localStorage.SetItemAsync("randomizer_type", type);
+
+        Console.WriteLine("gen with: " + type);
+
+        switch (type) {
+            case RandomizerType.ALL_UNLOCKED:
+                headers = new Dictionary<string, string>();
+                break;
+
+            case RandomizerType.NEW_ACCOUNT:
+                headers = new Dictionary<string, string> {
+                    { "new_account", "true" }
+                };
+                break;
+
+            default: 
+                headers = new Dictionary<string, string> {
+                    { "removed_classes", await localStorage.GetItemAsync<string>("classes") ?? "" },
+                    { "removed_specializations", await localStorage.GetItemAsync<string>("specializations") ?? "" },
+                    { "removed_weapons", await localStorage.GetItemAsync<string>("weapons") ?? "" },
+                    { "removed_gadgets", await localStorage.GetItemAsync<string>("gadgets") ?? "" }
+                };
+                break;
+        }
 
         loadout = await ApiService.Get<Loadout>("randomizer", headers);
 

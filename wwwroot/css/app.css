@@ -199,7 +199,7 @@ tr:nth-child(even) {
     cursor: pointer;
 }
 
-input {
+.radio-button input {
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
@@ -207,7 +207,13 @@ input {
     appearance: none;
 }
 
-input[type="text"] {
+.searchbar {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.searchbar input[type="text"] {
     border: 1px solid gray;
     border-radius: 5px 0 0 5px;
     height: 2rem;
@@ -403,4 +409,31 @@ article {
     to {
         transform: translateY(0);
     }
+}
+
+.content-options {
+    background-color: rgba(0, 0, 0, 0.25);
+    margin-top: 2rem;
+    border-radius: 5px;
+    padding: 1rem;
+    color: lightgray;
+    max-width: 50rem;
+    width: 100%;
+}
+
+.options-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.dark-input {
+    background-color: rgba(0, 0, 0, 0.3);
+    outline: none;
+    box-shadow: none;
+    border: 1px solid var(--dark-gray);
+    padding: 0 0.5rem;
+    width: 4rem;
+    height: 2rem;
+    border-radius: 5px;
+    color: white;
 }
