@@ -34,85 +34,94 @@
                 </div>
             </div>
             <div class="items">
-                <div class="item">
-                    <h1 class="itemHeader">Specialization</h1>
+                @if (rollSpecialization)
+                {
+                    <div class="item">
+                        <h1 class="itemHeader">Specialization</h1>
 
-                    <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
-                        @if (headers != null && loadout != null)
-                        {
-                            <div class="reel scroll-in">
-                                <ImageCheckbox ImagePath="@($"images/{loadout.Specialization}.png")" AltText="@(loadout.Specialization.Replace("_", " "))" IsDisabled="true" />
-                                @{
-                                    List<string> specializations = new List<string> (Constants.LSpecializations.Count + Constants.MSpecializations.Count + Constants.HSpecializations.Count);
-                                    specializations.AddRange(Constants.LSpecializations);
-                                    specializations.AddRange(Constants.MSpecializations);
-                                    specializations.AddRange(Constants.HSpecializations);
-                                    specializations = Shuffle(specializations);
+                        <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
+                            @if (headers != null && loadout != null)
+                            {
+                                <div class="reel scroll-in">
+                                    <ImageCheckbox ImagePath="@($"images/{loadout.Specialization}.png")" AltText="@(loadout.Specialization.Replace("_", " "))" IsDisabled="true" />
+                                    @{
+                                        List<string> specializations = new List<string> (Constants.LSpecializations.Count + Constants.MSpecializations.Count + Constants.HSpecializations.Count);
+                                        specializations.AddRange(Constants.LSpecializations);
+                                        specializations.AddRange(Constants.MSpecializations);
+                                        specializations.AddRange(Constants.HSpecializations);
+                                        specializations = Shuffle(specializations);
 
-                                    foreach (var item in specializations)
-                                    {
-                                        <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
-                                    }
-                                }
-                            </div>
-                        }
-                    </div>
-                </div>
-                <div class="item">
-                    <h1 class="itemHeader">Weapon</h1>
-
-                    <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
-                        @if (headers != null && loadout != null)
-                        {
-                            <div class="reel scroll-in">
-                                <ImageCheckbox ImagePath="@($"images/{loadout.Weapon}.png")" AltText="@(loadout.Weapon.Replace("_", " "))" IsDisabled="true" />
-                                @{
-                                    List<string> weapons = new List<string> (Constants.LWeapons.Count + Constants.MWeapons.Count + Constants.HWeapons.Count);
-                                    weapons.AddRange(Constants.LWeapons);
-                                    weapons.AddRange(Constants.MWeapons);
-                                    weapons.AddRange(Constants.HWeapons);
-                                    weapons = Shuffle(weapons);
-
-                                    foreach (var item in weapons)
-                                    {
-                                        <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
-                                    }
-                                }
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="items">
-                <div class="item">
-                    <h1 class="itemHeader">Gadgets</h1>
-                    <div class="items">
-                        @foreach (string item in loadout.Gadgets) 
-                        {
-                            <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
-                                @if (headers != null && loadout != null)
-                                {
-                                    <div class="reel scroll-in">
-                                        <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
-                                        @{
-                                            List<string> gadgets = new List<string> (Constants.LGadgets.Count + Constants.MGadgets.Count + Constants.HGadgets.Count);
-                                            gadgets.AddRange(Constants.LGadgets);
-                                            gadgets.AddRange(Constants.MGadgets);
-                                            gadgets.AddRange(Constants.HGadgets);
-                                            gadgets = Shuffle(gadgets);
-
-                                            foreach (var gadget in gadgets)
-                                            {
-                                                <ImageCheckbox ImagePath="@($"images/{gadget}.png")" AltText="@(gadget.Replace("_", " "))" IsDisabled="true" />
-                                            }
+                                        foreach (var item in specializations)
+                                        {
+                                            <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
                                         }
-                                    </div>
-                                }
-                            </div>
-                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (rollWeapon)
+                {
+                    <div class="item">
+                        <h1 class="itemHeader">Weapon</h1>
+
+                        <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
+                            @if (headers != null && loadout != null)
+                            {
+                                <div class="reel scroll-in">
+                                    <ImageCheckbox ImagePath="@($"images/{loadout.Weapon}.png")" AltText="@(loadout.Weapon.Replace("_", " "))" IsDisabled="true" />
+                                    @{
+                                        List<string> weapons = new List<string> (Constants.LWeapons.Count + Constants.MWeapons.Count + Constants.HWeapons.Count);
+                                        weapons.AddRange(Constants.LWeapons);
+                                        weapons.AddRange(Constants.MWeapons);
+                                        weapons.AddRange(Constants.HWeapons);
+                                        weapons = Shuffle(weapons);
+
+                                        foreach (var item in weapons)
+                                        {
+                                            <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (rollGadgets)
+            {
+                <div class="items">
+                    <div class="item">
+                        <h1 class="itemHeader">Gadgets</h1>
+                        <div class="items">
+                            @foreach (string item in loadout.Gadgets) 
+                            {
+                                <div style="max-height: 10.5rem; overflow: hidden; margin-bottom: 2rem;">
+                                    @if (headers != null && loadout != null)
+                                    {
+                                        <div class="reel scroll-in">
+                                            <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                            @{
+                                                List<string> gadgets = new List<string> (Constants.LGadgets.Count + Constants.MGadgets.Count + Constants.HGadgets.Count);
+                                                gadgets.AddRange(Constants.LGadgets);
+                                                gadgets.AddRange(Constants.MGadgets);
+                                                gadgets.AddRange(Constants.HGadgets);
+                                                gadgets = Shuffle(gadgets);
+
+                                                foreach (var gadget in gadgets)
+                                                {
+                                                    <ImageCheckbox ImagePath="@($"images/{gadget}.png")" AltText="@(gadget.Replace("_", " "))" IsDisabled="true" />
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
         <div style="height:4rem;" />
     }
@@ -152,19 +161,23 @@
                         name="type" style=""/>
                     <label>Custom</label>
                 </div> *@
-                <p>You can change the included items <a style="color: white;" href="./randomizer/options">Here!</a></p>   
+                <p>You can change the included items <a style="color: white;" href="./randomizer/options">Here!</a></p>
                 <p class="options-header">Audio:</p>
                 <Switch @bind-value="mute" Label="Mute audio" />
             </div>
 
-            @* <div style="flex: 1; flex-direction: column;"> *@
+            <div style="flex: 1; flex-direction: column;">
+                <p class="options-header">Roll Settings:</p>
+                <Switch @bind-value="rollSpecialization" Label="Roll specialization" />
+                <Switch @bind-value="rollWeapon" Label="Roll weapon" />
+                <Switch @bind-value="rollGadgets" Label="Roll gadgets" />
                 @* <p class="options-header">Animation:</p>
                 <div style="display: flex; gap: 5px;">
                     <p style="margin: 0;">Duration (s):</p>
                     <input class="dark-input" type="number" placeholder="0.00"
                         @bind="duration" min="0"/>
                 </div> *@
-            @* </div> *@
+            </div>
         </div>
     </div>
 </div>
@@ -176,6 +189,10 @@
     private Boolean mute = false;
     private RandomizerType type = RandomizerType.CUSTOM;
     private double duration = 2.0;
+
+    private bool rollSpecialization = true;
+    private bool rollWeapon = true;
+    private bool rollGadgets = true;
 
     protected override async Task OnInitializedAsync()
     {
