@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![issues](https://img.shields.io/github/issues-raw/larssonludvig/TheNest)
 
-**The Nest** is a website written in Microsoft Blazor webassembly. It is meant to serve as a collection of features that can be of use to different games and communities. 
+**The Nest** is a website written in Microsoft Blazor webassembly. It is meant to serve as a collection of features that can be of use to different games and communities.
 
 ---
 
@@ -24,9 +24,12 @@ Currently, the site contains a collection of tools that can be used for the game
 * Merge repositories for frontend and backend
 * Move backend API from Spring boot to ASP.NET
 * Change so the backend can be run as a container
-* Create a home page that is not the about page
+* Create a home page that is not the About page
 * Move the site from Github pages to a domain
 * General refactorization on the codebase
+* Update leaderboard for season 5
+  * Fix problems with URLs for the leaderboard. Currently, it adds `/TheNest/` To the URL. It should be removed.
+  * Move URL creation to some util class
 
 ## Licensing
 This project, and all code it contains, are licensed under the [*Apache License*](https://www.apache.org/licenses/LICENSE-2.0).
