@@ -27,7 +27,6 @@ Currently, the site contains a collection of tools that can be used for the game
 * Create a home page that is not the About page
 * Move the site from Github pages to a domain
 * General refactorization on the codebase
-* Create a back/arrow button on the options page to bo to the randomizer
 
 ## Licensing
 This project, and all code it contains, are licensed under the [*Apache License*](https://www.apache.org/licenses/LICENSE-2.0).
