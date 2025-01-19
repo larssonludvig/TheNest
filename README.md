@@ -30,6 +30,7 @@ Currently, the site contains a collection of tools that can be used for the game
 * Update leaderboard for season 5
   * Fix problems with URLs for the leaderboard. Currently, it adds `/TheNest/` To the URL. It should be removed.
   * Move URL creation to some util class
+* Create a back/arrow button on the options page to bo to the randomizer
 
 ## Licensing
 This project, and all code it contains, are licensed under the [*Apache License*](https://www.apache.org/licenses/LICENSE-2.0).
