@@ -244,7 +244,7 @@
 
     private async Task SetSeason(string season)
     {
-        _nav.NavigateTo("/TheNest/leaderboard?season=" + season);
+        _nav.NavigateTo("/leaderboard?season=" + season);
         this.season = season;
         if (!(season == "s2" || season == "s1" || season == "ob"))
             this.platform = "crossplay";

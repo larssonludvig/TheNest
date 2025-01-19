@@ -28,7 +28,6 @@ Currently, the site contains a collection of tools that can be used for the game
 * Move the site from Github pages to a domain
 * General refactorization on the codebase
 * Update leaderboard for season 5
-  * Fix problems with URLs for the leaderboard. Currently, it adds `/TheNest/` To the URL. It should be removed.
   * Move URL creation to some util class
 * Create a back/arrow button on the options page to bo to the randomizer
 
