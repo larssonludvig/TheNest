@@ -9,7 +9,7 @@ namespace Components.ApiService
     public class ApiService
     {
         private HttpClient _httpClient = new HttpClient();
-        public readonly string _baseUrl = "https://thenest.larssonludvig.com/";
+        public readonly string _baseUrl = "https://api.plopparn.tv/";
 
         public Task Initialize(string? baseUrl = null)
         {
