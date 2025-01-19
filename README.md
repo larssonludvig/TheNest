@@ -27,8 +27,6 @@ Currently, the site contains a collection of tools that can be used for the game
 * Create a home page that is not the About page
 * Move the site from Github pages to a domain
 * General refactorization on the codebase
-* Update leaderboard for season 5
-  * Move URL creation to some util class
 * Create a back/arrow button on the options page to bo to the randomizer
 
 ## Licensing

@@ -7,30 +7,32 @@
 
 <div class="content fade-in" style="justify-content: start; top: 7rem;">
     <div class="content-header">
-        <p style="color: black;">Currently not updated for s5...</p>
 @* Season radio buttons *@
         <div style="display: flex; gap: 8px;">
 
             <div class="radio-group">
-                <div class="radio-button" @onclick="@(() => SetSeason("s4"))">
-                    <input type="radio" name="s4" checked="@(season == "s4")" />
-                    <label for="s4">Ranked</label>
+                <div class="radio-button" @onclick="@(() => SetSeason("s5"))">
+                    <input type="radio" name="s5" checked="@(season == "s5")" />
+                    <label for="s5">Ranked</label>
                 </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("s4worldtour"))">
-                    <input type="radio" name="s4worldtour" checked="@(season == "s4worldtour")" />
-                    <label for="s4worldtour">World Tour</label>
+                <div class="radio-button" @onclick="@(() => SetSeason("s5worldtour"))">
+                    <input type="radio" name="s5worldtour" checked="@(season == "s5worldtour")" />
+                    <label for="s5worldtour">World Tour</label>
                 </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("s4sponsor"))">
-                    <input type="radio" name="s4sponsor" checked="@(season == "s4sponsor")" />
-                    <label for="s4sponsor">Sponsor</label>
+                <div class="radio-button" @onclick="@(() => SetSeason("s5sponsor"))">
+                    <input type="radio" name="s5sponsor" checked="@(season == "s5sponsor")" />
+                    <label for="s5sponsor">Sponsor</label>
                 </div>
             </div>
 
             <Dropdown>
                 <DropdownToggleButton>Old Leaderboards</DropdownToggleButton>
                 <DropdownMenu>
+                    <DropdownItem @onclick="@(() => SetSeason("s4"))">Season 4 Ranked</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s4worldtour"))">Season 4 World Tour</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s4sponsor"))">Season 4 Sponsor</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s3"))">Season 3 Ranked</DropdownItem>
                     <DropdownItem @onclick="@(() => SetSeason("s3worldtour"))">Season 3 World Tour</DropdownItem>
-                    <DropdownItem @onclick="@(() => SetSeason("s3"))">Season 3</DropdownItem>
                     <DropdownItem @onclick="@(() => SetSeason("s2"))">Season 2</DropdownItem>
                     <DropdownItem @onclick="@(() => SetSeason("s1"))">Season 1</DropdownItem>
                     <DropdownItem @onclick="@(() => SetSeason("ob"))">Open Beta</DropdownItem>
@@ -136,13 +138,13 @@
                         }
                     </span>
                 </TemplateColumn>
-                @if (season == "s4worldtour" || season == "s3worldtour")
+                @if (season.Contains("worldtour"))
                 {
                     <TemplateColumn Title="Cashouts">
                         <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Cashouts).Replace(".00", "")</p>
                     </TemplateColumn>
                 }
-                else if (season == "s4sponsor")
+                else if (season.Contains("sponsor"))
                 {
                     <TemplateColumn Title="Sponsor">
                         <p>@context.Sponsor</p>
@@ -197,7 +199,7 @@
 
 @code {
     [Parameter, SupplyParameterFromQuery]
-    public string season { get; set; } = "s4";
+    public string season { get; set; } = "s5";
 
     private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private IQueryable<Data>? data = null;
@@ -220,7 +222,7 @@
         StateHasChanged();
 
         if (string.IsNullOrEmpty(season))
-            season = "s4";
+            season = "s5";
 
         string baseUrl = "https://api.the-finals-leaderboard.com/";
         string endpoint = "v1/leaderboard/" + season + "/" + platform;
