@@ -3,29 +3,29 @@
 @inject IJSRuntime jsRuntime
 @inject NavigationManager navManager
 
-<div class="content fade-in">
+<div class="page-content fade-in">
     <div class="items" style="gap:2rem;">
         <div class="item">
             <h1 class="itemHeader">Build</h1>
-            <ImagePicker SelectedItem=@loadout.Class Items=@availableClasses OnClick="ClassChanged" ImageType="jpg" />
+            <ImagePicker ImagePath=@($"images/builds/{loadout.Class}.jpg") Label=@loadout.Class Items=@availableClasses OnClick="ClassChanged" />
         </div>
         <div class="items">
             <div class="item">
                 <h1 class="itemHeader">Specialization</h1>
-                <ImagePicker SelectedItem=@loadout.Specialization Items=@availableSpecializations OnClick="SpecializationChanged" />
+                <ImagePicker ImagePath=@($"images/specializations/{loadout.Specialization}.png") Label=@loadout.Specialization Items=@availableSpecializations OnClick="SpecializationChanged" />
             </div>
             <div class="item">
                 <h1 class="itemHeader">Weapon</h1>
-                <ImagePicker SelectedItem=@loadout.Weapon Items=@availableWeapons OnClick="WeaponChanged" />
+                <ImagePicker ImagePath=@($"images/weapons/{loadout.Weapon}.png") Label=@loadout.Weapon Items=@availableWeapons OnClick="WeaponChanged" />
             </div>
         </div>
         <div class="items">
             <div class="item">
                 <h1 class="itemHeader">Gadgets</h1>
                 <div class="items">
-                    <ImagePicker SelectedItem=@loadout.Gadgets[0] Items=@availableGadgets OnClick="Gadget1Changed" />
-                    <ImagePicker SelectedItem=@loadout.Gadgets[1] Items=@availableGadgets OnClick="Gadget2Changed" />
-                    <ImagePicker SelectedItem=@loadout.Gadgets[2] Items=@availableGadgets OnClick="Gadget3Changed" />
+                    <ImagePicker ImagePath=@($"images/gadgets/{loadout.Gadgets[0]}.png") Label=@loadout.Gadgets[0] Items=@availableGadgets OnClick="Gadget1Changed" />
+                    <ImagePicker ImagePath=@($"images/gadgets/{loadout.Gadgets[1]}.png") Label=@loadout.Gadgets[1] Items=@availableGadgets OnClick="Gadget2Changed" />
+                    <ImagePicker ImagePath=@($"images/gadgets/{loadout.Gadgets[2]}.png") Label=@loadout.Gadgets[2] Items=@availableGadgets OnClick="Gadget3Changed" />
                 </div>
             </div>
         </div>

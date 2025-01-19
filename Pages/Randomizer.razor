@@ -6,7 +6,7 @@
 
 <div class="fade-in" style='position: absolute; top: 0; left: 0; height: 100vh; width: 100vw; background-image: url("images/thefinalsbackground.png"); background-position: center; background-repeat: no-repeat; background-size: cover;' />
 
-<div class="content fade-in">
+<div class="page-content fade-in">
     @if (loadout != null)
     {
         @* Play audio *@
@@ -24,11 +24,11 @@
                     @if (headers != null && loadout != null)
                     {
                         <div class="reel scroll-in">
-                            <ImageCheckbox ImagePath="@($"images/{loadout.Class}.jpg")" AltText="@(loadout.Class.Replace("_", " "))" IsDisabled="true" />
+                            <ImageCheckbox ImagePath="@($"images/builds/{loadout.Class}.jpg")" AltText="@(loadout.Class.Replace("_", " "))" IsDisabled="true" />
                             @{
                                 foreach (var item in Constants.Classes)
                                 {
-                                    <ImageCheckbox ImagePath="@($"images/{item}.jpg")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                    <ImageCheckbox ImagePath="@($"images/builds/{item}.jpg")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
                                 }
                             }
                         </div>
@@ -45,7 +45,7 @@
                             @if (headers != null && loadout != null)
                             {
                                 <div class="reel scroll-in">
-                                    <ImageCheckbox ImagePath="@($"images/{loadout.Specialization}.png")" AltText="@(loadout.Specialization.Replace("_", " "))" IsDisabled="true" />
+                                    <ImageCheckbox ImagePath="@($"images/specializations/{loadout.Specialization}.png")" AltText="@(loadout.Specialization.Replace("_", " "))" IsDisabled="true" />
                                     @{
                                         List<string> specializations = new List<string> (Constants.LSpecializations.Count + Constants.MSpecializations.Count + Constants.HSpecializations.Count);
                                         specializations.AddRange(Constants.LSpecializations);
@@ -55,7 +55,7 @@
 
                                         foreach (var item in specializations)
                                         {
-                                            <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                            <ImageCheckbox ImagePath="@($"images/specializations/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
                                         }
                                     }
                                 </div>
@@ -72,7 +72,7 @@
                             @if (headers != null && loadout != null)
                             {
                                 <div class="reel scroll-in">
-                                    <ImageCheckbox ImagePath="@($"images/{loadout.Weapon}.png")" AltText="@(loadout.Weapon.Replace("_", " "))" IsDisabled="true" />
+                                    <ImageCheckbox ImagePath="@($"images/weapons/{loadout.Weapon}.png")" AltText="@(loadout.Weapon.Replace("_", " "))" IsDisabled="true" />
                                     @{
                                         List<string> weapons = new List<string> (Constants.LWeapons.Count + Constants.MWeapons.Count + Constants.HWeapons.Count);
                                         weapons.AddRange(Constants.LWeapons);
@@ -82,7 +82,7 @@
 
                                         foreach (var item in weapons)
                                         {
-                                            <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                            <ImageCheckbox ImagePath="@($"images/weapons/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
                                         }
                                     }
                                 </div>
@@ -103,7 +103,7 @@
                                     @if (headers != null && loadout != null)
                                     {
                                         <div class="reel scroll-in">
-                                            <ImageCheckbox ImagePath="@($"images/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
+                                            <ImageCheckbox ImagePath="@($"images/gadgets/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
                                             @{
                                                 List<string> gadgets = new List<string> (Constants.LGadgets.Count + Constants.MGadgets.Count + Constants.HGadgets.Count);
                                                 gadgets.AddRange(Constants.LGadgets);
@@ -113,7 +113,7 @@
 
                                                 foreach (var gadget in gadgets)
                                                 {
-                                                    <ImageCheckbox ImagePath="@($"images/{gadget}.png")" AltText="@(gadget.Replace("_", " "))" IsDisabled="true" />
+                                                    <ImageCheckbox ImagePath="@($"images/gadgets/{gadget}.png")" AltText="@(gadget.Replace("_", " "))" IsDisabled="true" />
                                                 }
                                             }
                                         </div>

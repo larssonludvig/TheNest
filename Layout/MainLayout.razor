@@ -9,12 +9,14 @@
     }
 
     <main>
-        <article class="content px-4">
-            @Body
-        </article>
+        @if (!menuOpen)
+        {
+            <article class="content px-4">
+                @Body
+            </article>
+        }
 
         <div class="top-row px-4">
-            @* <a href=""><img src="images/thefinals.png" alt="THE FINALS" style="height:2rem;" /></a> *@
             <h1 class="m-0">THE NEST</h1>
             <p class="version-text">@version</p>
             <button class="btn btn-menu" style="margin-left:auto;" @onclick="ToggleMenu">
@@ -26,7 +28,6 @@
 
 @code {
     private string version = ""; 
-
     private bool menuOpen = false;
 
     protected override void OnAfterRender(bool firstRender)
