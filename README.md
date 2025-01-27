@@ -23,11 +23,14 @@ Currently, the site contains a collection of tools that can be used for the game
 ## Planned Changes
 * Merge repositories for frontend and backend
 * Move backend API from Spring boot to ASP.NET
-* Change so the backend can be run as a container
-* Change so update to items is done in one project. Could be done by having get endpoints for items
+* Change so the backend can be run as a docker container
+* Unify location for items between frontend and backend. Possibly by creating API endpoint
 * Create a home page that is not the About page
 * Move the site from Github pages to a domain
 * General refactorization on the codebase
+* Create a database for longterm storage
+  * Store min rank of Ruby over time
+  * Store history of leaderboard and players
 
 ## Licensing
 This project, and all code it contains, are licensed under the [*Apache License*](https://www.apache.org/licenses/LICENSE-2.0).
