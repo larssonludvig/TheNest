@@ -26,7 +26,6 @@ Currently, the site contains a collection of tools that can be used for the game
 * Change so the backend can be run as a docker container
 * Unify location for items between frontend and backend. Possibly by creating API endpoint
 * Create a home page that is not the About page
-* Move the site from Github pages to a domain
 * General refactorization on the codebase
 * Create a database for longterm storage
   * Store min rank of Ruby over time
