@@ -1,0 +1,8 @@
+certifi==2024.12.14
+charset-normalizer==3.4.1
+idna==3.10
+mysql-connector==2.2.9
+mysql-connector-python==9.2.0
+requests==2.32.3
+schedule==1.2.2
+urllib3==2.3.0
