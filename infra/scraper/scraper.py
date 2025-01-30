@@ -8,7 +8,6 @@ def connect_to_db():
     try:
         connection = mysql.connector.connect(
             user='root',
-            password='SubmeonofIsMyWife',
             host='10.138.230.11',
             port='3306',
             database='thefinals'
