@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: scraper
-  namespace: mysql-server
+  namespace: database
 spec:
   replicas: 1
   selector:

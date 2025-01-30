@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: hostpath-pvc
-  namespace: mysql-server
+  namespace: database
 spec:
   accessModes:
     - ReadWriteOnce
