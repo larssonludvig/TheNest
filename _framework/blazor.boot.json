@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "TheNest",
   "resources": {
-    "hash": "sha256-60JpxJRBlYHP1KaTHITW7Jl7fZfZVUCthtqNEcauAP0=",
+    "hash": "sha256-JLJGdHixqugsSUecUFehWTOtcOkb5s6zEcKeIHeA0GM=",
     "jsModuleNative": {
       "dotnet.native.8.0.12.5019ia6r61.js": "sha256-B6DNRvFeCUi3jbx9uKpuj+hV9cN0KG4RdZj1FgBZwj8="
     },
@@ -64,7 +64,7 @@
       "System.Text.RegularExpressions.wasm": "sha256-HPHgHWJJtAGnivWEte9sFzkTFjGUC5Eil7jDWjs2GT4=",
       "System.Threading.wasm": "sha256-XOzlkL6xfkW/Ik4vy9oR4kN5+cT8NjEKC7zBbafajMs=",
       "System.wasm": "sha256-tMf6lZhvCyLVXi3StlyVuo8/Ozl9VCeSEJXsZ9kx8fE=",
-      "TheNest.wasm": "sha256-HmgyafogjKRClwO5nzMS247RnZc5AU4JAs96K51kZrc="
+      "TheNest.wasm": "sha256-RIBD1JmpBatbDi9Zp7khetnbg1Gn7L5YHAnhlBkL5dY="
     }
   },
   "cacheBootResources": true,
