@@ -38,7 +38,7 @@ spec:
           configMap:
             name: mysql-config
             items:
-            - key: main-config
+            - key: mysql.cnf
               path: mysql.cnf
         - name: mysql-storage
           persistentVolumeClaim:
