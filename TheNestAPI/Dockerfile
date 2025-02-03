@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Copy the project files and restore dependencies
 COPY *.csproj ./
+RUN dotnet clean
 RUN dotnet restore
 
 # Copy the remaining files and build the app

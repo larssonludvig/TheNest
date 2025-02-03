@@ -8,7 +8,8 @@ def connect_to_db():
     try:
         connection = mysql.connector.connect(
             user='root',
-            host='10.138.230.11',
+            host='10.43.114.2',
+            password='<pass>',
             port='3306',
             database='thefinals'
         )
@@ -28,7 +29,7 @@ def insert_data(data):
             timestamp = datetime.now()
             for item in data.get('data'):
                 cursor.execute("""
-                    INSERT INTO leaderboard (name, rank_pos, change_pos, steamName, xboxName, leagueNumber, league, rankScore, timestamp)
+                    INSERT INTO Leaderboard (name, rank_pos, change_pos, steamName, xboxName, leagueNumber, league, rankScore, timestamp)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """, (
                         item.get('name'), item.get('rank'), item.get('change'), item.get('steamName'), item.get('xboxName'), item.get('leagueNumber'), item.get('league'), item.get('rankScore'), timestamp

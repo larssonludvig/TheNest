@@ -20,9 +20,18 @@ namespace TheNestAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Leaderboard>>> GetLeaderboard()
+        [Route("{name}")]
+        public async Task<ActionResult<IEnumerable<Leaderboard>>> GetLeaderboard(string name, [FromQuery(Name = "from")] DateTime? from, [FromQuery(Name = "to")] DateTime? to)
         {
-            return await _context.Leaderboard.ToListAsync();
+            // if not given, set last week
+            if (from == null || to == null)
+            {
+                from = DateTime.Now.AddDays(-7);
+                to = DateTime.Now;
+            }
+
+            var temp = await _context.Leaderboard.Where(x => x.name == name && x.timestamp >= from && x.timestamp <= to).ToListAsync();
+            return temp;
         }
     }
 }
