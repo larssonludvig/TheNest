@@ -242,7 +242,7 @@
                 break;
         }
 
-        loadout = await ApiService.Get<Loadout>("randomizer", headers);
+        loadout = await ApiService.Get<Loadout>("items/randomizer", headers);
 
         if (loadout == null)
             errorMessage = "Unable to generate loadout, please check your settings and try again.";

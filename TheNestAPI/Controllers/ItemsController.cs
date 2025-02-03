@@ -57,19 +57,19 @@ namespace TheNestAPI.Controllers
             switch (build.name)
             {
                 case "Light":
-                    specializations = await _context.Specializations.Where(s => s.light == true).ToListAsync();
-                    weapons = await _context.Weapons.Where(s => s.light == true).ToListAsync();
-                    gadgets = await _context.Gadgets.Where(s => s.light == true).ToListAsync();
+                    specializations = await _context.Specializations.Where(s => s.light == true && !removed_specializations.Contains(s.name)).ToListAsync();
+                    weapons = await _context.Weapons.Where(s => s.light == true && !removed_weapons.Contains(s.name)).ToListAsync();
+                    gadgets = await _context.Gadgets.Where(s => s.light == true && !removed_gadgets.Contains(s.name)).ToListAsync();
                     break;
                 case "Medium":
-                    specializations = await _context.Specializations.Where(s => s.medium == true).ToListAsync();
-                    weapons = await _context.Weapons.Where(s => s.medium == true).ToListAsync();
-                    gadgets = await _context.Gadgets.Where(s => s.medium == true).ToListAsync();
+                    specializations = await _context.Specializations.Where(s => s.medium == true && !removed_specializations.Contains(s.name)).ToListAsync();
+                    weapons = await _context.Weapons.Where(s => s.medium == true && !removed_weapons.Contains(s.name)).ToListAsync();
+                    gadgets = await _context.Gadgets.Where(s => s.medium == true && !removed_gadgets.Contains(s.name)).ToListAsync();
                     break;
                 case "Heavy":
-                    specializations = await _context.Specializations.Where(s => s.heavy == true).ToListAsync();
-                    weapons = await _context.Weapons.Where(s => s.heavy == true).ToListAsync();
-                    gadgets = await _context.Gadgets.Where(s => s.heavy == true).ToListAsync();
+                    specializations = await _context.Specializations.Where(s => s.heavy == true && !removed_specializations.Contains(s.name)).ToListAsync();
+                    weapons = await _context.Weapons.Where(s => s.heavy == true && !removed_weapons.Contains(s.name)).ToListAsync();
+                    gadgets = await _context.Gadgets.Where(s => s.heavy == true && !removed_gadgets.Contains(s.name)).ToListAsync();
                     break;
                 default:
                     return NotFound("Failed to fetch build data based on generated build.");
@@ -89,7 +89,7 @@ namespace TheNestAPI.Controllers
             
             // Randomize three Gadgets
             List<string> selectedGadgets = new List<string>();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Gadgets g = gadgets[random.Next(gadgets.Count)];
                 selectedGadgets.Add(g.name);
