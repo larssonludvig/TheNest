@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![issues](https://img.shields.io/github/issues-raw/larssonludvig/TheNest)
 
-**The Nest** is a website written in Microsoft Blazor webassembly. It is meant to serve as a collection of features that can be of use to different games and communities.
+**The Nest** is a website written in Microsoft Blazor Webassembly and ASP.NET Core. It is meant to serve as a collection of features that can be of use to different games and communities.
 
 ---
 
@@ -21,15 +21,11 @@ Currently, the site contains a collection of tools that can be used for the game
 ||Maps|__Under Development__. Detailed maps about from the game.
 
 ## Planned Changes
-* Merge repositories for frontend and backend
-* Move backend API from Spring boot to ASP.NET
-* Change so the backend can be run as a docker container
 * Unify location for items between frontend and backend. Possibly by creating API endpoint
 * Create a home page that is not the About page
 * General refactorization on the codebase
-* Create a database for longterm storage
-  * Store min rank of Ruby over time
-  * Store history of leaderboard and players
+* Graph for viewing individual players ranking history
+* Graph for viewing the history for ruby rank
 
 ## Licensing
 This project, and all code it contains, are licensed under the [*Apache License*](https://www.apache.org/licenses/LICENSE-2.0).
