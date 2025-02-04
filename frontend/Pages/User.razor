@@ -1,0 +1,139 @@
+@page "/users/{name}"
+@inject ApiService ApiService
+@inject NavigationManager _nav
+@using Domain
+
+<div class="page-content fade-in">
+    <div class="content-header">
+        <div style="display: flex; align-items: center;">
+            <div style="margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo("/leaderboard");})>
+                <i class="bi bi-arrow-left h1 text-black"/>
+            </div>
+            <img style="width:2.5rem; height: 2.5rem;" src="images/ranks/@(user?.League.Replace(" ", "_")).png" />
+            <h2 style="color: black; margin: 0;">@(user?.Name)</h2>
+        </div>
+        <div style="display: flex;">
+            @if (!string.IsNullOrEmpty(user?.SteamName))
+            {
+                <p style="color: black; opacity: 0.7; margin: 0 1rem 0 0;"><i class="bi bi-steam"/> @(user?.SteamName)</p>
+            }
+            @if (!string.IsNullOrEmpty(user?.PsnName))
+            {
+                <p style="color: black; opacity: 0.7; margin-right: 0 1rem 0 0;"><i class="bi bi-playstation"/> @(user?.PsnName)</p>
+            }
+            @if (!string.IsNullOrEmpty(user?.XboxName))
+            {
+                <p style="color: black; opacity: 0.7; margin: 0;"><i class="bi bi-xbox"/> @(user?.XboxName)</p>
+            }
+        </div>
+    </div>
+    <div class="content-area p-2">
+        <h3 style="color: black;">Rank over time:</h3>
+        <div class="container-fluid overflow-x-auto">
+            <LineChart @ref="historyChart" Width="750" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? name { get; set; }
+    private string? urlFriendlyName { get; set; }
+
+    private Domain.User? user = null;
+    private UserHistory? history = null;
+    private LineChart historyChart = default!;
+    private LineChartOptions historyChartOptions = default!;
+    private ChartData historyChartData = default!;
+
+    private bool loading = false;
+    private string? error = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        urlFriendlyName = name?.Replace("#", "%23");
+        await FetchUser();
+        await FetchHistory();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (historyChart != null)
+        {
+            await historyChart.InitializeAsync(historyChartData, historyChartOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task FetchUser()
+    {
+        loading = true;
+        user = null;
+        StateHasChanged();
+
+        if (string.IsNullOrEmpty(name))
+            error = "No user specified";
+        else
+        {
+            user = await ApiService.Get<Domain.User>($"user/{urlFriendlyName}", null);
+
+            if (history == null)
+            {
+                error = "Unable to fetch user. Please check if the username is correct.";
+                return;
+            }
+        }
+        
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async Task FetchHistory()
+    {
+        loading = true;
+        history = null;
+        StateHasChanged();
+
+        if (string.IsNullOrEmpty(name))
+        {
+            error = "No user specified";
+        }
+        else
+        {
+            history = await ApiService.Get<UserHistory>($"user/{urlFriendlyName}/history", null);
+
+            if (history == null)
+            {
+                error = "Unable to fetch history for user. Please check if the username is correct.";
+                return;
+            }
+        }
+
+        // Set up history chart
+        var colors = ColorUtility.CategoricalTwelveColors;
+        var labels = history?.Timestamps?.Select(x => x.ToString()).ToList();
+        
+        var datasets = new List<IChartDataset>();
+        datasets.Add(new LineChartDataset
+        {
+            Label = "Rank",
+            Data = history?.Ranks?.Select(x => (double?)x).ToList(),
+            BackgroundColor = "#0fb5ae",
+            BorderColor = "#0fb5ae",
+            BorderWidth = 2,
+            HoverBorderWidth = 4
+        });
+
+        historyChartData = new ChartData { Labels = labels, Datasets = datasets };
+
+        historyChartOptions = new();
+        historyChartOptions.Responsive = true;
+        historyChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
+        historyChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Time", Display = true };
+        historyChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Rank", Display = true };
+        historyChartOptions.Scales.Y!.Min = (double?)history?.Ranks?.Min() - 100;
+
+        loading = false;
+        StateHasChanged();
+    }
+}

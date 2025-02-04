@@ -167,6 +167,11 @@
                             </Span>               
                         </div>
                     </TemplateColumn>
+                    <TemplateColumn>
+                        <div style="display: flex; margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo($"/users/{context.Name.Replace("#", "%23")}");})>
+                            <i class="bi bi-graph-up h2 text-black" style="margin: 0 !important;"/>
+                        </div>
+                    </TemplateColumn>
                 }
             </QuickGrid>
         }
