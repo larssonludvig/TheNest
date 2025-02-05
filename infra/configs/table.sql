@@ -1,14 +1,15 @@
 CREATE TABLE leaderboard (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    rank_pos INT NOT NULL,
-    change_pos INT NOT NULL,
-    steamName VARCHAR(255),
-    xboxName VARCHAR(255),
-    leagueNumber INT NOT NULL,
-    league VARCHAR(255) NOT NULL,
-    rankScore INT NOT NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    RankPosition INT NOT NULL,
+    ChangeAmount INT NOT NULL,
+    SteamName VARCHAR(255),
+    XboxName VARCHAR(255),
+    PsnName VARCHAR(255),
+    LeagueNumber INT NOT NULL,
+    League VARCHAR(255) NOT NULL,
+    RankScore INT NOT NULL,
+    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Builds (
@@ -22,11 +23,11 @@ INSERT INTO Builds (name) VALUES
 ('Heavy');
 
 CREATE TABLE Specializations (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    heavy BOOLEAN,
-    medium BOOLEAN,
-    light BOOLEAN
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Heavy BOOLEAN,
+    Medium BOOLEAN,
+    Light BOOLEAN
 );
 
 INSERT INTO Specializations (name, heavy, medium, light) VALUES
@@ -42,11 +43,11 @@ INSERT INTO Specializations (name, heavy, medium, light) VALUES
 ('Grappling_Hook', FALSE, FALSE, TRUE);
 
 CREATE TABLE Weapons (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    heavy BOOLEAN,
-    medium BOOLEAN,
-    light BOOLEAN
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Heavy BOOLEAN,
+    Medium BOOLEAN,
+    Light BOOLEAN
 );
 
 INSERT INTO Weapons (name, heavy, medium, light) VALUES
@@ -85,11 +86,11 @@ INSERT INTO Weapons (name, heavy, medium, light) VALUES
 
 
 CREATE TABLE Gadgets (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    heavy BOOLEAN,
-    medium BOOLEAN,
-    light BOOLEAN
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Heavy BOOLEAN,
+    Medium BOOLEAN,
+    Light BOOLEAN
 );
 
 INSERT INTO Gadgets (name, heavy, medium, light) VALUES
