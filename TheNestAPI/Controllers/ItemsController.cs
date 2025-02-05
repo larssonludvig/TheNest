@@ -42,7 +42,7 @@ namespace TheNestAPI.Controllers
         )
         {
             // Build
-            List<Builds> builds = await _context.Builds.Where(b => !removed_classes.Contains(b.name)).ToListAsync();
+            List<Builds> builds = await _context.Builds.Where(b => !removed_classes.Contains(b.Name)).ToListAsync();
             
             if (builds.Count == 0)
                 return NotFound("No builds available after filtering");
@@ -54,22 +54,22 @@ namespace TheNestAPI.Controllers
             List<Weapons> weapons;
             List<Specializations> specializations;
             List<Gadgets> gadgets;
-            switch (build.name)
+            switch (build.Name)
             {
                 case "Light":
-                    specializations = await _context.Specializations.Where(s => s.light == true && !removed_specializations.Contains(s.name)).ToListAsync();
-                    weapons = await _context.Weapons.Where(s => s.light == true && !removed_weapons.Contains(s.name)).ToListAsync();
-                    gadgets = await _context.Gadgets.Where(s => s.light == true && !removed_gadgets.Contains(s.name)).ToListAsync();
+                    specializations = await _context.Specializations.Where(s => s.Light == true && !removed_specializations.Contains(s.Name)).ToListAsync();
+                    weapons = await _context.Weapons.Where(s => s.Light == true && !removed_weapons.Contains(s.Name)).ToListAsync();
+                    gadgets = await _context.Gadgets.Where(s => s.Light == true && !removed_gadgets.Contains(s.Name)).ToListAsync();
                     break;
                 case "Medium":
-                    specializations = await _context.Specializations.Where(s => s.medium == true && !removed_specializations.Contains(s.name)).ToListAsync();
-                    weapons = await _context.Weapons.Where(s => s.medium == true && !removed_weapons.Contains(s.name)).ToListAsync();
-                    gadgets = await _context.Gadgets.Where(s => s.medium == true && !removed_gadgets.Contains(s.name)).ToListAsync();
+                    specializations = await _context.Specializations.Where(s => s.Medium == true && !removed_specializations.Contains(s.Name)).ToListAsync();
+                    weapons = await _context.Weapons.Where(s => s.Medium == true && !removed_weapons.Contains(s.Name)).ToListAsync();
+                    gadgets = await _context.Gadgets.Where(s => s.Medium == true && !removed_gadgets.Contains(s.Name)).ToListAsync();
                     break;
                 case "Heavy":
-                    specializations = await _context.Specializations.Where(s => s.heavy == true && !removed_specializations.Contains(s.name)).ToListAsync();
-                    weapons = await _context.Weapons.Where(s => s.heavy == true && !removed_weapons.Contains(s.name)).ToListAsync();
-                    gadgets = await _context.Gadgets.Where(s => s.heavy == true && !removed_gadgets.Contains(s.name)).ToListAsync();
+                    specializations = await _context.Specializations.Where(s => s.Heavy == true && !removed_specializations.Contains(s.Name)).ToListAsync();
+                    weapons = await _context.Weapons.Where(s => s.Heavy == true && !removed_weapons.Contains(s.Name)).ToListAsync();
+                    gadgets = await _context.Gadgets.Where(s => s.Heavy == true && !removed_gadgets.Contains(s.Name)).ToListAsync();
                     break;
                 default:
                     return NotFound("Failed to fetch build data based on generated build.");
@@ -92,15 +92,15 @@ namespace TheNestAPI.Controllers
             for (int i = 0; i < 3; i++)
             {
                 Gadgets g = gadgets[random.Next(gadgets.Count)];
-                selectedGadgets.Add(g.name);
+                selectedGadgets.Add(g.Name);
                 gadgets.Remove(g);
             }
 
             return new Loadout
             {
-                Class = build.name,
-                Weapon = weapon.name,
-                Specialization = specialization.name,
+                Class = build.Name,
+                Weapon = weapon.Name,
+                Specialization = specialization.Name,
                 Gadgets = selectedGadgets
             };
         }
