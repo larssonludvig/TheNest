@@ -100,7 +100,7 @@
         }
         else
         {
-            history = await ApiService.Get<UserHistory>($"user/{urlFriendlyName}/history", null);
+            history = await ApiService.Get<UserHistory>($"leaderboard/{urlFriendlyName}/history", null);
 
             if (history == null)
             {
