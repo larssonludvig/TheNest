@@ -3,6 +3,7 @@
 @inject Constants Constants
 @inject ApiService ApiService
 @inject NavigationManager _nav
+@inject IJSRuntime jsRuntime
 
 <div class="fade-in" style='position: absolute; top: 0; left: 0; height: 100vh; width: 100vw; background-image: url("images/thefinalsbackground.png"); background-position: center; background-repeat: no-repeat; background-size: cover;' />
 
@@ -129,14 +130,28 @@
     }
     else
     {
+        @if (loading)
+        {
+            <Spinner Color="SpinnerColor.Primary" />
+        }
         @if (!string.IsNullOrEmpty(errorMessage))
         {
             <p class="error">@errorMessage</p>
         }
     }
 
-    <div>
-        <button class="large-button" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
+    <div style="text-align: center;">
+        <div>
+            <button class="large-button" @onclick="GenerateRandomLoadout">Generate Random Loadout</button>
+            <button class="large-button" @onclick="Share">
+                Share
+                <i class="bi bi-link" style="color: white;" />
+            </button>
+        </div>
+        @if (copied)
+        {
+            <p>Copied to clipboard!</p>
+        }
     </div>
 
 @* Options *@
@@ -196,6 +211,9 @@
     private bool rollWeapon = true;
     private bool rollGadgets = true;
 
+    private bool loading = false;
+    private bool copied = false;
+
     protected override async Task OnInitializedAsync()
     {
         mute = await localStorage.GetItemAsync<bool>("randomizer_mute");
@@ -211,7 +229,8 @@
         // TODO: Remove force of type
         type = RandomizerType.CUSTOM;
 
-
+        copied = false;
+        loading = true;
         loadout = null;
         StateHasChanged();
 
@@ -247,6 +266,7 @@
         if (loadout == null)
             errorMessage = "Unable to generate loadout, please check your settings and try again.";
 
+        loading = false;
         StateHasChanged();
     }
 
@@ -261,5 +281,21 @@
         }
 
         return list;
+    }
+
+    private void Share()
+    {
+        if (loadout != null) {
+            string baseUri;
+            if (_nav.Uri.Contains("?"))
+                baseUri = _nav.Uri.Split("?")[0];
+            else
+                baseUri = _nav.Uri;
+
+            string url = $"{baseUri}?class={loadout.Class}&spec={loadout.Specialization}&weapon={loadout.Weapon}&gadget1={loadout.Gadgets[0]}&gadget2={loadout.Gadgets[1]}&gadget3={loadout.Gadgets[2]}";
+            url = url.Replace("randomizer", "loadout");
+            jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
+            copied = true;
+        }
     }
 }

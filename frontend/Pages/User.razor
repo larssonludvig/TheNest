@@ -7,30 +7,38 @@
     <div class="content-header">
         <div style="display: flex; align-items: center;">
             <div style="margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo("/leaderboard");})>
-                <i class="bi bi-arrow-left h1 text-black"/>
+                <i class="bi bi-arrow-left h1" style="color: #DBDBDB;"/>
             </div>
             <img style="width:2.5rem; height: 2.5rem;" src="images/ranks/@(user?.League.Replace(" ", "_")).png" />
-            <h2 style="color: black; margin: 0;">@(user?.Name)</h2>
+            <h2 style="color: #DBDBDB; margin: 0;">@(user?.Name)</h2>
         </div>
         <div style="display: flex;">
             @if (!string.IsNullOrEmpty(user?.SteamName))
             {
-                <p style="color: black; opacity: 0.7; margin: 0 1rem 0 0;"><i class="bi bi-steam"/> @(user?.SteamName)</p>
+                <p style="color: #ABABAB; opacity: 0.7; margin: 0 1rem 0 0;"><i class="bi bi-steam" style="color: #ABABAB;"/> @(user?.SteamName)</p>
             }
             @if (!string.IsNullOrEmpty(user?.PsnName))
             {
-                <p style="color: black; opacity: 0.7; margin-right: 0 1rem 0 0;"><i class="bi bi-playstation"/> @(user?.PsnName)</p>
+                <p style="color: #ABABAB; opacity: 0.7; margin-right: 0 1rem 0 0;"><i class="bi bi-playstation" style="color: #ABABAB;"/> @(user?.PsnName)</p>
             }
             @if (!string.IsNullOrEmpty(user?.XboxName))
             {
-                <p style="color: black; opacity: 0.7; margin: 0;"><i class="bi bi-xbox"/> @(user?.XboxName)</p>
+                <p style="color: #ABABAB; opacity: 0.7; margin: 0;"><i class="bi bi-xbox" style="color: #ABABAB;"/> @(user?.XboxName)</p>
             }
         </div>
     </div>
     <div class="content-area p-2">
-        <h3 style="color: black;">Rank over time:</h3>
-        <div class="container-fluid overflow-x-auto">
-            <LineChart @ref="historyChart" Width="750" />
+        
+        <h3 style="color: #DBDBDB;">Rank over time:</h3>
+        <div style="width: 100%; height: 2px; background-color: #DBDBDB;" />
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            @if (loading)
+            {
+                <Spinner Color="SpinnerColor.Primary" />
+            }
+            <div class="container-fluid overflow-x-auto">
+                <LineChart @ref="historyChart" Width="750" />
+            </div>
         </div>
     </div>
 </div>
@@ -129,8 +137,8 @@
         historyChartOptions = new();
         historyChartOptions.Responsive = true;
         historyChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
-        historyChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Time", Display = true };
-        historyChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Rank", Display = true };
+        historyChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Time", Display = true, Color = "#DBDBDB" };
+        historyChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Rank", Display = true, Color = "#DBDBDB" };
         historyChartOptions.Scales.Y!.Min = (double?)history?.Ranks?.Min() - 100;
 
         loading = false;

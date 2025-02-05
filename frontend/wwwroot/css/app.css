@@ -138,8 +138,8 @@ h1:focus {
 }
 
 .content-area {
-    background-color: white;
-    border: 1px solid gray;
+    background-color: #373737;
+    border: 2px solid #252525;
     border-top: none;
     border-radius: 0 0 5px 5px;
     width: 50rem;
@@ -147,8 +147,8 @@ h1:focus {
 
 .content-header {
     width: 50rem;
-    background-color: white;
-    border: 1px solid gray;
+    background-color: #373737;
+    border: 2px solid #252525;
     border-radius: 5px 5px 0 0;
     padding: 8px;
 }
@@ -158,17 +158,18 @@ table {
 }
 
 th {
-    color: black;
+    color: #DBDBDB;
     border-bottom: 1px solid gray;
 }
 
 th .sort-indicator {
     margin-left: auto;
+    color: #DBDBDB;
 }
 
 tr {
     height: 4rem;
-    color: black;
+    color: #DBDBDB;
 }
 
 tr:first-child {
@@ -176,34 +177,39 @@ tr:first-child {
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #2c2c2c;
 }
 
 .pagination-text {
-    color: black;
+    color: #DBDBDB;
+}
+
+.summary {
+    color: #DBDBDB !important;
 }
 
 .radio-group {
     display: flex;
     gap: 8px;
-    background-color: #f2f2f2;
+    background-color: #373737;
     padding: 5px;
     border-radius: 5px;
-    color: black;
+    color: #DBDBDB;
     width: max-content;
     margin-bottom: 8px;
+    border: 2px solid #252525;
 }
 
 .radio-button label {
     padding: 3px 8px;
     border-radius: 5px;
-    color: black;
+    color: #DBDBDB;
     height: 2rem;
 }
 
 .radio-button input:checked + label {
     background-color: #1255cf;
-    color: white;
+    color: #DBDBDB;
 }
 
 .radio-button label:hover {
@@ -224,14 +230,23 @@ tr:nth-child(even) {
     align-items: center;
 }
 
+.searchbarinput {
+    background-color: #373737;
+    color: #DBDBDB;
+}
+
+::placeholder {
+    color: #ABABAB;
+}
+
 .searchbar input[type="text"] {
-    border: 1px solid gray;
+    border: 1px solid #252525;
     border-radius: 5px 0 0 5px;
     height: 2rem;
 }
 
 input + button {
-    border: 1px solid gray;
+    border: 1px solid #252525;
     border-left: none;
     border-radius: 0 5px 5px 0;
     background-color: #1255cf;
@@ -383,15 +398,19 @@ i {
 }
 
 .dropdown {
-    background-color: #f2f2f2;
-    color: black;
+    background-color: #373737;
+    color: #DBDBDB;
     margin-bottom: 8px;
     border-radius: 5px;
+    outline: 2px solid #252525;
 }
 
 .dropdown:hover {
-    background-color: #f2f2f2;
-    color: black;
+    background-color: #2b2b2b;
+}
+
+.dropdown-toggle {
+    color: #DBDBDB !important;
 }
 
 article {

@@ -50,25 +50,25 @@
                     <div class="radio-button" @onclick="@(() => SetPlatform("crossplay"))">
                         <input type="radio" name="crossplay" checked="@(platform == "crossplay")" />
                         <label for="crossplay">
-                            <i class="bi bi-globe2" style='color: @(platform == "crossplay" ? "white" : "black")' />
+                            <i class="bi bi-globe2" style="color: #DBDBDB" />
                         </label>
                     </div>
                     <div class="radio-button" @onclick="@(() => SetPlatform("steam"))">
                         <input type="radio" name="steam" checked="@(platform == "steam")" />
                         <label for="steam">
-                            <i class="bi bi-steam" style='color: @(platform == "steam" ? "white" : "black")' />
+                            <i class="bi bi-steam" style="color: #DBDBDB" />
                         </label>
                     </div>
                     <div class="radio-button" @onclick="@(() => SetPlatform("xbox"))">
                         <input type="radio" name="xbox" checked="@(platform == "xbox")" />
                         <label for="xbox">
-                            <i class="bi bi-xbox" style='color: @(platform == "xbox" ? "white" : "black")' />
+                            <i class="bi bi-xbox" style="color: #DBDBDB" />
                         </label>
                     </div>
                     <div class="radio-button" @onclick="@(() => SetPlatform("psn"))">
                         <input type="radio" name="psn" checked="@(platform == "psn")" />
                         <label for="psn">
-                            <i class="bi bi-playstation" style='color: @(platform == "psn" ? "white" : "black")' />
+                            <i class="bi bi-playstation" style="color: #DBDBDB" />
                         </label>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
 
 @* Search bar *@
             <span class="searchbar">
-                <input type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by name" />
+                <input class="searchbarinput" type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by name" />
                 <button @onclick="@(e => FetchData(searchString))">
                     <i class="bi bi-search" style="color: white;" />
                 </button>
@@ -88,98 +88,97 @@
     <div class="content-area">
         @if (!loading)
         {
-            <QuickGrid Items="@data" Pagination=@pagination>
-                <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Ascending" IsDefaultSortColumn="true" Align="Align.Center" />
-                @if (season == "s3")
-                {
-                    <TemplateColumn Title="24h Change" Align="Align.Center">
-                        <span style="display: flex; align-items: center; justify-content: center;">
-                            @if (context.Change > 0)
+            <div class="grid">
+                <QuickGrid Items="@data" Pagination=@pagination>
+                    <PropertyColumn Property="@(x => x.Rank)" Sortable="true" InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Ascending" IsDefaultSortColumn="true" Align="Align.Center" />
+                    <TemplateColumn Title="Name">
+                        <span>
+                            <p class="m-0" style="color: #DBDBDB;">@context.Name</p>
+                            @if (!string.IsNullOrEmpty(context.SteamName))
                             {
-                                <i class="bi bi-chevron-up" style="color: green;" />
-                                <p class="m-0" style="padding-left: 5px; color: green;">@context.Change</p>
+                                <span style="display: flex; align-items: center;">
+                                    <i class="bi bi-steam" style="color: #DBDBDB;" />
+                                    <p class="m-0" style="padding-left: 5px;">@context.SteamName</p>
+                                </span>
                             }
-                            @if (context.Change < 0)
+                            @if (!string.IsNullOrEmpty(context.PsnName))
                             {
-                                <i class="bi bi-chevron-down" style="color: red;" />
-                                <p class="m-0" style="padding-left: 5px; color: red;">@context.Change.ToString().Replace("-", "")</p>
+                                <span style="display: flex; align-items: center;">
+                                    <i class="bi bi-playstation" style="color: #DBDBDB;" />
+                                    <p class="m-0" style="padding-left: 5px;">@context.PsnName</p>
+                                </span>
                             }
-                            @if (context.Change == 0)
+                            @if (!string.IsNullOrEmpty(context.XboxName))
                             {
-                                <i class="bi bi-dash" />
-                                <p class="m-0" style="padding-left: 5px;">@context.Change</p>
+                                <span style="display: flex; align-items: center;">
+                                    <i class="bi bi-xbox" style="color: #DBDBDB;" />
+                                    <p class="m-0" style="padding-left: 5px;">@context.XboxName</p>
+                                </span>
                             }
                         </span>
                     </TemplateColumn>
-                }
-                <TemplateColumn Title="Name">
-                    <span>
-                        <p class="m-0">@context.Name</p>
-                        @if (!string.IsNullOrEmpty(context.SteamName))
-                        {
-                            <span style="display: flex; align-items: center;">
-                                <i class="bi bi-steam" />
-                                <p class="m-0" style="padding-left: 5px;">@context.SteamName</p>
-                            </span>
-                        }
-                        @if (!string.IsNullOrEmpty(context.PsnName))
-                        {
-                            <span style="display: flex; align-items: center;">
-                                <i class="bi bi-playstation" />
-                                <p class="m-0" style="padding-left: 5px;">@context.PsnName</p>
-                            </span>
-                        }
-                        @if (!string.IsNullOrEmpty(context.XboxName))
-                        {
-                            <span style="display: flex; align-items: center;">
-                                <i class="bi bi-xbox" />
-                                <p class="m-0" style="padding-left: 5px;">@context.XboxName</p>
-                            </span>
-                        }
-                    </span>
-                </TemplateColumn>
-                @if (season.Contains("worldtour"))
-                {
-                    <TemplateColumn Title="Cashouts">
-                        <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Cashouts).Replace(".00", "")</p>
-                    </TemplateColumn>
-                }
-                else if (season.Contains("sponsor"))
-                {
-                    <TemplateColumn Title="Sponsor">
-                        <p>@context.Sponsor</p>
-                    </TemplateColumn>
-                    <TemplateColumn Title="Fans">
-                        <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Fans).Replace(".00", "").Replace("$", "")</p>
-                    </TemplateColumn>
-                }
-                else 
-                {
-                    <TemplateColumn Title="League">
-                        <div style="display:flex;">
-                            <img style="width:3rem;" src="images/ranks/@(context.League.Replace(" ", "_")).png" /> 
-                            <span style="margin-left: 5px; display: flex; flex-direction: column; justify-content: center;">
-                                <p class="m-0">@context.League</p>
-                                @if (context.RankScore > 0)
+                    @if (season.Contains("worldtour"))
+                    {
+                        <TemplateColumn Title="Cashouts">
+                            <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Cashouts).Replace(".00", "")</p>
+                        </TemplateColumn>
+                    }
+                    else if (season.Contains("sponsor"))
+                    {
+                        <TemplateColumn Title="Sponsor">
+                            <p>@context.Sponsor</p>
+                        </TemplateColumn>
+                        <TemplateColumn Title="Fans">
+                            <p>@string.Format(new CultureInfo("en-us"), "{0:c}", context.Fans).Replace(".00", "").Replace("$", "")</p>
+                        </TemplateColumn>
+                    }
+                    else 
+                    {
+                        <TemplateColumn Title="24h Change" Align="Align.Center">
+                            <span style="display: flex; align-items: center; justify-content: center;">
+                                @if (context.Change > 0)
                                 {
-                                    <p class="m-0">@string.Format(new CultureInfo("en-us"), "{0:c}", context.RankScore).Replace(".00", "").Replace("$", "")</p>
+                                    <i class="bi bi-chevron-up" style="color: green;" />
+                                    <p class="m-0" style="padding-left: 5px; color: green;">@context.Change</p>
                                 }
-                            </Span>               
-                        </div>
-                    </TemplateColumn>
-                    <TemplateColumn>
-                        <div style="display: flex; margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo($"/users/{context.Name.Replace("#", "%23")}");})>
-                            <i class="bi bi-graph-up h2 text-black" style="margin: 0 !important;"/>
-                        </div>
-                    </TemplateColumn>
-                }
-            </QuickGrid>
+                                @if (context.Change < 0)
+                                {
+                                    <i class="bi bi-chevron-down" style="color: red;" />
+                                    <p class="m-0" style="padding-left: 5px; color: red;">@context.Change.ToString().Replace("-", "")</p>
+                                }
+                                @if (context.Change == 0)
+                                {
+                                    <i class="bi bi-dash" style="color: #DBDBDB;" />
+                                    <p class="m-0" style="padding-left: 5px;">@context.Change</p>
+                                }
+                            </span>
+                        </TemplateColumn>
+                        <TemplateColumn Title="League">
+                            <div style="display: flex;">
+                                <img style="width: 3rem;" src="images/ranks/@(context.League.Replace(" ", "_")).png" /> 
+                                <span style="margin-left: 5px; display: flex; flex-direction: column; justify-content: center;">
+                                    <p class="m-0">@context.League</p>
+                                    @if (context.RankScore > 0)
+                                    {
+                                        <p class="m-0">@string.Format(new CultureInfo("en-us"), "{0:c}", context.RankScore).Replace(".00", "").Replace("$", "")</p>
+                                    }
+                                </Span>               
+                            </div>
+                        </TemplateColumn>
+                        <TemplateColumn>
+                            <div style="display: flex; margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo($"/users/{context.Name.Replace("#", "%23")}");})>
+                                <i class="bi bi-graph-up h2" style="margin: 0 !important; color: #DBDBDB;"/>
+                            </div>
+                        </TemplateColumn>
+                    }
+                </QuickGrid>
+            </div>
         }
         else
         {
 @* Loading icon *@
             <span style="display: flex; align-items: center; justify-content: center; height: 100%; margin: 5rem;">
-                <img style="color: black;" src="images/loader.gif" alt="Loading..." />
+                <Spinner Color="SpinnerColor.Primary" />
             </span>
         }
         @if (!loading)
