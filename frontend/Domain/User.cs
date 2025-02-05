@@ -1,0 +1,13 @@
+namespace Domain
+{
+    public class User
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public int Rank { get; set; }
+        public string? SteamName { get; set; } = null;
+        public string? XboxName { get; set; } = null;
+        public string? PsnName { get; set; } = null;
+        public string League { get; set; } = "";
+    }
+}
