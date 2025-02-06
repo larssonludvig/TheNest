@@ -30,6 +30,8 @@ namespace TheNestAPI.Controllers
                 Id = res.Id,
                 Name = res.Name,
                 Rank = res.RankPosition,
+                RankScore = res.RankScore,
+                Change = res.ChangeAmount,
                 SteamName = res.SteamName,
                 XboxName = res.XboxName,
                 PsnName = res.PsnName,

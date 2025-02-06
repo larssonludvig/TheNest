@@ -9,36 +9,86 @@
             <div style="margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo("/leaderboard");})>
                 <i class="bi bi-arrow-left h1" style="color: #DBDBDB;"/>
             </div>
-            <img style="width:2.5rem; height: 2.5rem;" src="images/ranks/@(user?.League.Replace(" ", "_")).png" />
-            <h2 style="color: #DBDBDB; margin: 0;">@(user?.Name)</h2>
-        </div>
-        <div style="display: flex;">
-            @if (!string.IsNullOrEmpty(user?.SteamName))
-            {
-                <p style="color: #ABABAB; opacity: 0.7; margin: 0 1rem 0 0;"><i class="bi bi-steam" style="color: #ABABAB;"/> @(user?.SteamName)</p>
-            }
-            @if (!string.IsNullOrEmpty(user?.PsnName))
-            {
-                <p style="color: #ABABAB; opacity: 0.7; margin-right: 0 1rem 0 0;"><i class="bi bi-playstation" style="color: #ABABAB;"/> @(user?.PsnName)</p>
-            }
-            @if (!string.IsNullOrEmpty(user?.XboxName))
-            {
-                <p style="color: #ABABAB; opacity: 0.7; margin: 0;"><i class="bi bi-xbox" style="color: #ABABAB;"/> @(user?.XboxName)</p>
-            }
+            <div>
+                <h2 style="color: #DBDBDB; margin: 0;">@(user?.Name)</h2>
+                <div style="display: flex;">
+                    @if (!string.IsNullOrEmpty(user?.SteamName))
+                    {
+                        <p style="color: #ABABAB; opacity: 0.7; margin: 0 1rem 0 0;"><i class="bi bi-steam" style="color: #ABABAB;"/> @(user?.SteamName)</p>
+                    }
+                    @if (!string.IsNullOrEmpty(user?.PsnName))
+                    {
+                        <p style="color: #ABABAB; opacity: 0.7; margin-right: 0 1rem 0 0;"><i class="bi bi-playstation" style="color: #ABABAB;"/> @(user?.PsnName)</p>
+                    }
+                    @if (!string.IsNullOrEmpty(user?.XboxName))
+                    {
+                        <p style="color: #ABABAB; opacity: 0.7; margin: 0;"><i class="bi bi-xbox" style="color: #ABABAB;"/> @(user?.XboxName)</p>
+                    }
+                </div>
+            </div>
         </div>
     </div>
     <div class="content-area p-2">
-        
-        <h3 style="color: #DBDBDB;">Rank over time:</h3>
-        <div style="width: 100%; height: 2px; background-color: #DBDBDB;" />
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            @if (loading)
-            {
-                <Spinner Color="SpinnerColor.Primary" />
-            }
-            <div class="container-fluid overflow-x-auto">
-                <LineChart @ref="historyChart" Width="750" />
+@* RANK *@
+        <h3 style="color: #DBDBDB; margin: 0 0 0 4px;">Rank</h3>
+        <div style="width: 100%; height: 2px; background-color: #DBDBDB; margin-bottom: 1rem" />
+        <div style="display: flex;">
+            <div style="flex: 1%; display: flex; align-items: center; flex-direction: column;">
+                <p style="font-size: 1.5rem; color: #DBDBDB; margin: 0;">Rank Score</p>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <img style="width: 3.5rem; height: 3.5rem;" src="images/ranks/@(user?.League.Replace(" ", "_")).png" />
+                    <p style="font-size: 2.5rem; color: #DBDBDB; margin: 0;">@user?.RankScore</p>
+                </div>
             </div>
+            <div style="flex: 1%; display: flex; align-items: center; flex-direction: column;">
+                <p style="font-size: 1.5rem; color: #DBDBDB; margin: 0;">Rank</p>
+                <p style="font-size: 2.5rem; color: #DBDBDB; margin: 0;">@user?.Rank</p>
+            </div>
+            <div style="flex: 1%; display: flex; align-items: center; flex-direction: column;">
+                <p style="font-size: 1.5rem; color: #DBDBDB; margin: 0;">Change 24h</p>
+                <div style="display: flex; align-items: center;">
+                    @if (user?.Change > 0)
+                    {
+                        <i class="bi bi-chevron-up h2 m-0" style="color: green;" />
+                        <p style="font-size: 2.5rem; color: green; margin: 0;">@user?.Change</p>
+                    }
+                    @if (user?.Change < 0)
+                    {
+                        <i class="bi bi-chevron-down h2 m-0" style="color: red;" />
+                        <p style="font-size: 2.5rem; color: red; margin: 0;">@user?.Change.ToString().Replace("-", "")</p>
+                    }
+                    @if (user?.Change == 0)
+                    {
+                        <i class="bi bi-dash h2 m-0" style="color: #DBDBDB;" />
+                        <p style="font-size: 2.5rem; color: #DBDBDB; margin: 0;">@user?.Change</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+@* RANK OVER TIME *@
+        <h3 style="color: #DBDBDB; margin: 1rem 0 0 4px;">Rank over time</h3>
+        <div style="width: 100%; height: 2px; background-color: #DBDBDB; margin-bottom: 1rem;" />
+        <div>
+            <div style="display: flex; gap: 0.5rem; width: 100%; justify-content: end; padding: 0 1rem; max-height: 1.5rem;">
+                <p style="margin: 0;">Include Ruby</p>
+                <div @onclick="FetchRankHistory">
+                    <Switch @bind-value="includeRuby" style="margin: 0;" />
+                </div>
+                <i class="bi bi-arrow-clockwise text-white h4 m-0" @onclick="FetchRankHistory" />
+            </div>
+            @if (!loading)
+            {
+                <div class="container-fluid overflow-x-auto">
+                    <LineChart @ref="historyChart" Width="750" />
+                </div>
+            }
+            else
+            {
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 375px;">
+                    <Spinner Color="SpinnerColor.Primary" />
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -49,10 +99,12 @@
     private string? urlFriendlyName { get; set; }
 
     private Domain.User? user = null;
-    private UserHistory? history = null;
+    private LeaderboardHistory? history = null;
     private LineChart historyChart = default!;
     private LineChartOptions historyChartOptions = default!;
     private ChartData historyChartData = default!;
+    private bool includeRuby = false;
+    private LeaderboardHistory? rubyHistory = null;
 
     private bool loading = false;
     private string? error = null;
@@ -61,7 +113,7 @@
     {
         urlFriendlyName = name?.Replace("#", "%23");
         await FetchUser();
-        await FetchHistory();
+        await FetchRankHistory();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -96,10 +148,11 @@
         StateHasChanged();
     }
 
-    private async Task FetchHistory()
+    private async Task FetchRankHistory()
     {
         loading = true;
         history = null;
+        rubyHistory = null;
         StateHasChanged();
 
         if (string.IsNullOrEmpty(name))
@@ -108,7 +161,7 @@
         }
         else
         {
-            history = await ApiService.Get<UserHistory>($"leaderboard/{urlFriendlyName}/history", null);
+            history = await ApiService.Get<LeaderboardHistory>($"leaderboard/{urlFriendlyName}/history", null);
 
             if (history == null)
             {
@@ -124,13 +177,29 @@
         var datasets = new List<IChartDataset>();
         datasets.Add(new LineChartDataset
         {
-            Label = "Rank",
+            Label = history?.Name,
             Data = history?.Ranks?.Select(x => (double?)x).ToList(),
             BackgroundColor = "#0fb5ae",
             BorderColor = "#0fb5ae",
             BorderWidth = 2,
             HoverBorderWidth = 4
         });
+        int minValue = (int)history?.Ranks?.Min();
+
+        if (includeRuby)
+        {
+            rubyHistory = await ApiService.Get<LeaderboardHistory>($"leaderboard/ruby/history", null);
+            datasets.Add(new LineChartDataset
+            {
+                Label = rubyHistory?.Name,
+                Data = rubyHistory?.Ranks?.Select(x => (double?)x).ToList(),
+                BackgroundColor = "#E0115F",
+                BorderColor = "#E0115F",
+                BorderWidth = 2,
+                HoverBorderWidth = 4
+            });
+            minValue = Math.Min(minValue, (int)rubyHistory?.Ranks?.Min());
+        }
 
         historyChartData = new ChartData { Labels = labels, Datasets = datasets };
 
@@ -139,7 +208,9 @@
         historyChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
         historyChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = "Time", Display = true, Color = "#DBDBDB" };
         historyChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = "Rank", Display = true, Color = "#DBDBDB" };
-        historyChartOptions.Scales.Y!.Min = (double?)history?.Ranks?.Min() - 100;
+        historyChartOptions.Scales.Y!.Min = (double?)minValue - 100;
+        historyChartOptions.Scales.X!.Ticks = new ChartAxesTicks { Color = "#ABABAB" };
+        historyChartOptions.Scales.Y!.Ticks = new ChartAxesTicks { Color = "#ABABAB" };
 
         loading = false;
         StateHasChanged();
