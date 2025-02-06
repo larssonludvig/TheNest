@@ -1,6 +1,6 @@
 namespace Domain
 {
-    public class UserHistory
+    public class LeaderboardHistory
     {
         public string Name { get; set; } = "";
         public List<int>? Ranks { get; set; } 

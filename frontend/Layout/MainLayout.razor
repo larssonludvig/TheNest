@@ -47,7 +47,7 @@
     private string GetVersion()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        version = "v." + assembly?.GetName()?.Version?.ToString().Substring(0, 5);
+        version = "v" + assembly?.GetName()?.Version?.ToString().Substring(0, 5);
         return version;
     }
 }
