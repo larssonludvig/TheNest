@@ -24,11 +24,14 @@ namespace TheNestAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult<LeaderboardEntry>> GetLeaderboardEntry(string name)
         {
-            Leaderboard entry = await _context.Leaderboard
+            Leaderboard? entry = await _context.Leaderboard
                 .Where(x => x.Name == name)
                 .OrderByDescending(x => x.Timestamp)
                 .FirstOrDefaultAsync();
             
+            if (entry == null)
+                return NotFound("Failed to get leaderboard by username.");
+
             return new LeaderboardEntry {
                 Name = entry.Name,
                 Rank = entry.RankScore,

@@ -4,6 +4,7 @@ namespace TheNestAPI.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } = "";
+        public string? ClubTag { get; set; } = null;
         public int RankPosition { get; set; }
         public int ChangeAmount { get; set; }
         public string? SteamName { get; set; } = null;
