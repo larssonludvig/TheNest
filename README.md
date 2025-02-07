@@ -18,14 +18,13 @@ Currently, the site contains a collection of tools that can be used for the game
 ||Randomizer|Loadout randomizer. Allows the user to randomize loadouts for the game fully.|
 ||Randomizer options|Allows the user to exclude items and gadgets from the randomizer. Options are stored locally in the browser.|
 ||Leaderboards|Allows the user to view the different leaderboards that are publicly available from [*Embark*](https://www.embark-studios.com/).|
+||User Page|Displays rank history for player and other stats.|
 ||Maps|__Under Development__. Detailed maps about from the game.
 
 ## Planned Changes
 * Unify location for items between frontend and backend. Possibly by creating API endpoint
 * Create a home page that is not the About page
 * General refactorization on the codebase
-* Graph for viewing individual players ranking history
-* Graph for viewing the history for ruby rank
 
 ## Licensing
 This project, and all code it contains, are licensed under the [*Apache License*](https://www.apache.org/licenses/LICENSE-2.0).
