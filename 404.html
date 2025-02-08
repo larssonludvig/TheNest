@@ -19,9 +19,9 @@
     var l = window.location;
     var parameters = window.location.search;
 
-    console.log(l.pathname + window.location.search);
+    console.log(l.protocol + '/?' + l.pathname);
 
-    l.replace(l.protocol + '/?' + l.pathname);
+    // l.replace(l.protocol + '/?' + l.pathname);
 </script>
 
 <body>
