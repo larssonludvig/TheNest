@@ -31,7 +31,7 @@
                 return s
             }).join('&');
             window.history.replaceState(null, null,
-                l.pathname.slice(0, -1) + decoded + l.hash
+                l.pathname.slice(0, -1) + decoded.replace("&", "?") + l.hash
             );
         }
     }(window.location))
