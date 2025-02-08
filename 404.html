@@ -19,8 +19,8 @@
     var l = window.location;
     var parameters = window.location.search;
 
-    var url = l.protocol + '/?' + l.pathname + parameters.replaceAll("?", "&");
-    url = url.replace("&", "?");
+    var url = l.protocol + '/?' + l.pathname + parameters.replaceAll("?", "/~and~/");
+    url = url.replace("/~and~/", "?");
 
     l.replace(url);
 </script>
