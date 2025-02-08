@@ -17,8 +17,11 @@
 <script type="text/javascript">
     var pathSegmentsToKeep = 1;
     var l = window.location;
+    var parameters = window.location.search;
 
-    l.replace(l.protocol + '/?' + l.pathname);
+    console.log(l.protocol + '/?' + l.pathname + parameters);
+
+    l.replace(l.protocol + '/?' + l.pathname + parameters);
 </script>
 
 <body>
