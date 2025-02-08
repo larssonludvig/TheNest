@@ -17,11 +17,8 @@
 <script type="text/javascript">
     var pathSegmentsToKeep = 1;
     var l = window.location;
-    var parameters = window.location.search;
 
-    console.log(l.protocol + 'plopparn.tv/?' + l.pathname + parameters);
-
-    l.replace(l.protocol + 'plopparn.tv/?' + l.pathname + parameters);
+    l.replace(l.protocol + '/?' + l.pathname);
 </script>
 
 <body>
