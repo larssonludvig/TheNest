@@ -29,10 +29,10 @@ def insert_data(data):
             timestamp = datetime.now()
             for item in data.get('data'):
                 cursor.execute("""
-                    INSERT INTO Leaderboard (Name, RankPosition, ChangeAmount, SteamName, XboxName, PsnName, LeagueNumber, League, RankScore, Timestamp)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO Leaderboard (Name, ClubTag, RankPosition, ChangeAmount, SteamName, XboxName, PsnName, LeagueNumber, League, RankScore, Timestamp)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """, (
-                        item.get('name'), item.get('rank'), item.get('change'), item.get('steamName'), item.get('xboxName'), item.get('psnName'), item.get('leagueNumber'), item.get('league'), item.get('rankScore'), timestamp
+                        item.get('name'), item.get('clubTag'), item.get('rank'), item.get('change'), item.get('steamName'), item.get('xboxName'), item.get('psnName'), item.get('leagueNumber'), item.get('league'), item.get('rankScore'), timestamp
                     )
                 )
             print("Inserted scraped values.")

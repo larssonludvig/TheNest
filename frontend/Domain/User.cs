@@ -4,6 +4,7 @@ namespace Domain
     {
         public int Id { get; set; }
         public string Name { get; set; } = "";
+        public string? ClubTag { get; set; } = "";
         public int Rank { get; set; }
         public int RankScore { get; set; }
         public int Change { get; set; }

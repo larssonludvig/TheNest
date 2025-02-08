@@ -10,7 +10,13 @@
                 <i class="bi bi-arrow-left h1" style="color: #DBDBDB;"/>
             </div>
             <div>
-                <h2 style="color: #DBDBDB; margin: 0;">@(user?.Name)</h2>
+                <div style="display: flex;">
+                    @if (user?.ClubTag != null)
+                    {
+                        <h2 style="color: #DBDBDB; margin: 0;">[@(user?.ClubTag)] </h2>
+                    }
+                    <h2 style="color: #DBDBDB; margin: 0;">@(user?.Name)</h2>
+                </div>
                 <div style="display: flex;">
                     @if (!string.IsNullOrEmpty(user?.SteamName))
                     {
@@ -127,7 +133,6 @@
 
     private async Task FetchUser()
     {
-        loading = true;
         user = null;
         StateHasChanged();
 
@@ -144,7 +149,6 @@
             }
         }
         
-        loading = false;
         StateHasChanged();
     }
 

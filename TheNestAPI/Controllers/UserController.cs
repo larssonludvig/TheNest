@@ -21,7 +21,7 @@ namespace TheNestAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult<User>> GetUser(string name)
         {
-            Leaderboard? res = await _context.Leaderboard.Where(x => x.Name == name).FirstOrDefaultAsync();
+            Leaderboard? res = await _context.Leaderboard.Where(x => x.Name == name).OrderByDescending(x => x.Timestamp).FirstOrDefaultAsync();
             
             if (res == null)
                 return NotFound($"User {name} does not exist.");
@@ -29,6 +29,7 @@ namespace TheNestAPI.Controllers
             return new User {
                 Id = res.Id,
                 Name = res.Name,
+                ClubTag = res.ClubTag,
                 Rank = res.RankPosition,
                 RankScore = res.RankScore,
                 Change = res.ChangeAmount,
