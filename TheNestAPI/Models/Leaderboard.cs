@@ -14,5 +14,6 @@ namespace TheNestAPI.Models
         public string League { get; set; } = "";
         public int RankScore { get; set; }
         public DateTime? Timestamp { get; set; }
+        public string? Season { get; set; } = null;
     }
 }
