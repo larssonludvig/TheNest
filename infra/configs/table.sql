@@ -3,13 +3,24 @@ CREATE TABLE leaderboard (
     Name VARCHAR(255) NOT NULL,
     RankPosition INT NOT NULL,
     ChangeAmount INT NOT NULL,
-    SteamName VARCHAR(255),
-    XboxName VARCHAR(255),
-    PsnName VARCHAR(255),
+    -- SteamName VARCHAR(255),
+    -- XboxName VARCHAR(255),
+    -- PsnName VARCHAR(255),
     LeagueNumber INT NOT NULL,
     League VARCHAR(255) NOT NULL,
     RankScore INT NOT NULL,
     Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Users (
+    Name VARCHAR(255) PRIMARY KEY,
+    SteamName VARCHAR(255),
+    XboxName VARCHAR(255),
+    PsnName VARCHAR(255)
+);
+
+CREATE TABLE Ranks (
+    
 );
 
 CREATE TABLE Builds (

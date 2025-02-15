@@ -229,7 +229,11 @@
             season = "s5";
 
         string baseUrl = "https://api.the-finals-leaderboard.com/";
-        string endpoint = "v1/leaderboard/" + season + "/" + platform;
+        string endpoint = "";
+        if (season.Contains("cb"))
+            endpoint = "v1/leaderboard/" + season;
+        else
+            endpoint = "v1/leaderboard/" + season + "/" + platform;
 
         if (!string.IsNullOrEmpty(name))
             endpoint = endpoint + "?name=" + name;
