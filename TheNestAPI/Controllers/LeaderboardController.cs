@@ -89,7 +89,8 @@ namespace TheNestAPI.Controllers
                     x.RankPosition == 500 &&
                     x.Timestamp.HasValue &&
                     DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
+                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0 && 
+                    x.Season == "s5"
                 ).ToListAsync();
             }
             else
@@ -97,7 +98,8 @@ namespace TheNestAPI.Controllers
                 res = await _context.Leaderboard.Where(x =>
                     x.RankPosition == 500 &&
                     x.Timestamp.HasValue &&
-                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
+                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0 && 
+                    x.Season == "s5"
                 ).ToListAsync();
             }
 

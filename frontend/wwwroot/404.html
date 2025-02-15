@@ -17,8 +17,12 @@
 <script type="text/javascript">
     var pathSegmentsToKeep = 1;
     var l = window.location;
+    var parameters = window.location.search;
 
-    l.replace(l.protocol + '/?' + l.pathname);
+    var url = l.protocol + '/?' + l.pathname + parameters.replaceAll("?", "&");
+    // url = url.replace("&", "?");
+
+    l.replace(url);
 </script>
 
 <body>

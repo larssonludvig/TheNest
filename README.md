@@ -24,7 +24,13 @@ Currently, the site contains a collection of tools that can be used for the game
 ## Planned Changes
 * Unify location for items between frontend and backend. Possibly by creating API endpoint
 * Create a home page that is not the About page
+* Move user information out of Leaderboard db table. Currently, too much duplicate data is stored.
+* Page for only ruby history
+* Prediction of ruby change over time
+* Add results of previous seasons to database so it can be fetched as rank history over seasons.
+* Option to randomize reserve loadout
 * General refactorization on the codebase
+* General styling of the site
 
 ## Licensing
 This project, and all code it contains, are licensed under the [*Apache License*](https://www.apache.org/licenses/LICENSE-2.0).
