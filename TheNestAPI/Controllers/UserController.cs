@@ -59,28 +59,35 @@ namespace TheNestAPI.Controllers
 
             foreach (Leaderboard item in res)
             {
+                if (string.IsNullOrEmpty(item.Season))
+                    break;
+
+                Leagues league = await _context.Leagues
+                    .Where(x => x.Id == item.LeagueNumber)
+                    .FirstOrDefaultAsync();
+
                 switch (item.Season)
                 {
                     case "cb1":
-                        user.CB1 = item.League;
+                        user.CB1 = league.Name;
                         break;
                     case "cb2":
-                        user.CB2 = item.League;
+                        user.CB2 = league.Name;
                         break;
                     case "ob":
-                        user.OB = item.League;
+                        user.OB = league.Name;
                         break;
                     case "s1":
-                        user.S1 = item.League;
+                        user.S1 = league.Name;
                         break;
                     case "s2":
-                        user.S2 = item.League;
+                        user.S2 = league.Name;
                         break;
                     case "s3":
-                        user.S3 = item.League;
+                        user.S3 = league.Name;
                         break;
                     case "s4":
-                        user.S4 = item.League;
+                        user.S4 = league.Name;
                         break;
                     default:
                         break;

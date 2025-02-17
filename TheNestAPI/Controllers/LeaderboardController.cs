@@ -29,13 +29,17 @@ namespace TheNestAPI.Controllers
                 .OrderByDescending(x => x.Timestamp)
                 .FirstOrDefaultAsync();
             
+            Leagues league = await _context.Leagues
+                .Where(x => x.Id == entry.LeagueNumber)
+                .FirstOrDefaultAsync();
+
             if (entry == null)
                 return NotFound("Failed to get leaderboard by username.");
 
             return new LeaderboardEntry {
                 Name = entry.Name,
                 Rank = entry.RankScore,
-                League = entry.League,
+                League = league.Name,
                 Timestamp = entry.Timestamp
             };
         }
