@@ -20,18 +20,6 @@ namespace TheNestAPI.Controllers
             _context = context;
         }
 
-        // [HttpGet]
-        // public async Task<ActionResult<IEnumerable<>>> GetLeaderboard(string name, [FromQuery(Name = "from")] DateTime? from, [FromQuery(Name = "to")] DateTime? to)
-        // {
-        //     return null;
-        // }
-
-//             @RequestHeader(value = "removed_classes", required = false, defaultValue = "") String rC,
-//             @RequestHeader(value = "removed_specializations", required = false, defaultValue = "") String rS,
-//             @RequestHeader(value = "removed_weapons", required = false, defaultValue = "") String rW,
-//             @RequestHeader(value = "removed_gadgets", required = false, defaultValue = "") String rG
-
-
         [HttpGet]
         [Route("randomizer")]
         public async Task<ActionResult<Loadout>> GetRandomLoadout(

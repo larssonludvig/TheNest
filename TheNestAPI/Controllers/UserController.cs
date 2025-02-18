@@ -25,6 +25,14 @@ namespace TheNestAPI.Controllers
             
             if (res == null)
                 return NotFound($"User {name} does not exist.");
+
+            Leagues league = await _context.Leagues
+                .Where(x => x.Id == res.LeagueNumber)
+                .FirstOrDefaultAsync();
+
+            Users user = await _context.Users
+                .Where(x => x.Name == name)
+                .FirstOrDefaultAsync();
             
             return new User
             {
@@ -34,10 +42,10 @@ namespace TheNestAPI.Controllers
                 Rank = res.RankPosition,
                 RankScore = res.RankScore,
                 Change = res.ChangeAmount,
-                SteamName = res.SteamName,
-                XboxName = res.XboxName,
-                PsnName = res.PsnName,
-                League = res.League
+                SteamName = user.SteamName,
+                XboxName = user.XboxName,
+                PsnName = user.PsnName,
+                League = league.Name
             };
         }
 
