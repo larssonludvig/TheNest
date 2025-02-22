@@ -9,5 +9,6 @@ namespace TheNestAPI.Models
         public string? SteamName { get; set; } = null;
         public string? XboxName { get; set; } = null;
         public string? PsnName { get; set; } = null;
+        public string? ClubTag { get; set; } = null;
     }
 }

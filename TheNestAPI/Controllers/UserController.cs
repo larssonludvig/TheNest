@@ -38,7 +38,7 @@ namespace TheNestAPI.Controllers
             {
                 Id = res.Id,
                 Name = res.Name,
-                ClubTag = res.ClubTag,
+                ClubTag = user.ClubTag,
                 Rank = res.RankPosition,
                 RankScore = res.RankScore,
                 Change = res.ChangeAmount,

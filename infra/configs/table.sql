@@ -7,9 +7,17 @@ CREATE TABLE leaderboard (
     -- XboxName VARCHAR(255),
     -- PsnName VARCHAR(255),
     LeagueNumber INT NOT NULL,
-    League VARCHAR(255) NOT NULL,
+    -- League VARCHAR(255) NOT NULL,
     RankScore INT NOT NULL,
     Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Clubs (
+    ClubTag VARCHAR(5) PRIMARY KEY,
+    Users INT DEFAULT 0,
+    RankScore INT DEFAULT 0,
+    Position INT NOT NULL,
+    AvgScore Decimal
 );
 
 CREATE TABLE Users (
@@ -136,3 +144,33 @@ INSERT INTO Gadgets (name, heavy, medium, light) VALUES
 ('Dome_Shield', TRUE, FALSE, FALSE),
 ('Anti-Gravity_Cube', TRUE, FALSE, FALSE),
 ('Lockbolt_Launcher', TRUE, FALSE, FALSE);
+
+
+
+SELECT *
+FROM Leaderboard L
+WHERE Season = 's5' AND MAX(Timestamp)
+GROUP BY Name
+INNER JOIN Users U ON L.Name = U.Name;
+
+
+
+
+
+INSERT INTO Clubs (ClubTag, Users, RankScore, Position, AvgScore)
+SELECT q.ClubTag, q.Users, q.RankScore, @position := @position + 1 AS Position, CAST(RankScore AS DECIMAL) / Users AS AvgScore
+FROM (
+    SELECT U.ClubTag, COUNT(1) AS Users, SUM(L.RankScore) AS RankScore
+    FROM (
+        SELECT Name, MAX(Timestamp) AS LatestTimestamp
+        FROM Leaderboard
+        WHERE Season = 's5' AND Timestamp >= NOW() - INTERVAL 1 HOUR
+        GROUP BY Name
+    ) AS LatestLeaderboard
+    INNER JOIN Leaderboard L ON LatestLeaderboard.Name = L.Name AND LatestLeaderboard.LatestTimestamp = L.Timestamp AND L.Season = 's5'
+    INNER JOIN Users U ON L.Name = U.Name
+    WHERE U.ClubTag IS NOT NULL AND TRIM(U.ClubTag) <> ''
+    GROUP BY U.ClubTag
+    ORDER BY RankScore DESC
+) AS q
+JOIN (SELECT @position := 0) AS pos_init;

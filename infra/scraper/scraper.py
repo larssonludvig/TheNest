@@ -29,21 +29,22 @@ def insert_data(data):
             timestamp = datetime.now()
             for item in data.get('data'):
                 cursor.execute("""
-                    INSERT INTO Leaderboard (Name, ClubTag, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO Leaderboard (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, (
-                        item.get('name'), item.get('clubTag'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s5"
+                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s5"
                     )
                 )
                 cursor.execute("""
-                    INSERT INTO Users (Name, SteamName, XboxName, PsnName)
-                    VALUES (%s, %s, %s, %s)
+                    INSERT INTO Users (Name, SteamName, XboxName, PsnName, ClubTag)
+                    VALUES (%s, %s, %s, %s, %s)
                     ON DUPLICATE KEY UPDATE
                         SteamName = VALUES(SteamName),
                         XboxName = VALUES(XboxName),
-                        PsnName = VALUES(PsnName);
+                        PsnName = VALUES(PsnName),
+                        ClubTag = VALUES(ClubTag);
                     """, (
-                        item.get('name'), item.get('steamName'), item.get('xboxName'), item.get('psnName')
+                        item.get('name'), item.get('steamName'), item.get('xboxName'), item.get('psnName'), item.get('clubTag')
                     )
                 )
             print("Inserted scraped values.")

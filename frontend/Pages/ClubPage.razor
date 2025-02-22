@@ -1,0 +1,105 @@
+@page "/clubs/{clubTag}"
+@inject ApiService ApiService
+@inject NavigationManager _nav
+@using Domain
+
+<div class="page-content fade-in">
+    <div class="content-header" style="display: flex;">
+        <div style="display: flex; align-items: center;">
+            <div style="margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo("/clubs");})>
+                <i class="bi bi-arrow-left h1" style="color: #DBDBDB;"/>
+            </div>
+            <div>
+                <div style="display: flex; color: #DBDBDB;">
+                    <h2 style="margin: 0;">@(club?.ClubTag)</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+@* RANK *@
+    <div class="content-area p-2">
+        <h3 style="color: #DBDBDB; margin: 0 0 0 4px;">Rank</h3>
+        <div style="width: 100%; height: 2px; background-color: #DBDBDB; margin-bottom: 1rem" />
+        <div style="display: flex;">
+            @if (!loading)
+            {
+                <div style="flex: 1%; display: flex; align-items: center; flex-direction: column; color: #DBDBDB;">
+                    <p style="font-size: 1.5rem; margin: 0;">Rank Score</p>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        @* <img style="width: 3.5rem; height: 3.5rem;" src="images/ranks/@(club?.League.Replace(" ", "_")).png" /> *@
+                        <p style="font-size: 2.5rem; margin: 0;">@club?.RankScore</p>
+                    </div>
+                </div>
+                <div style="flex: 1%; display: flex; align-items: center; flex-direction: column; color: #DBDBDB;">
+                    <p style="font-size: 1.5rem; margin: 0;">Rank</p>
+                    <p style="font-size: 2.5rem; margin: 0;">@club?.Position</p>
+                </div>
+                <div style="flex: 1%; display: flex; align-items: center; flex-direction: column; color: #DBDBDB;">
+                    <p style="font-size: 1.5rem; margin: 0;">Average Score</p>
+                    <p style="font-size: 2.5rem; margin: 0;">@club?.AvgScore</p>
+                </div>
+            }
+            else
+            {
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 110px;">
+                    <Spinner Color="SpinnerColor.Primary" />
+                </div>
+            }
+        </div>
+
+@* RANK OVER TIME *@
+        <h3 style="color: #DBDBDB; margin: 1rem 0 0 4px;">Users</h3>
+        <div style="width: 100%; height: 2px; background-color: #DBDBDB; margin-bottom: 1rem;" />
+        <div>
+            <p>Not implemented yet</p>
+            @* @if (!loadingHistory)
+            {
+
+            }
+            else
+            {
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 375px;">
+                    <Spinner Color="SpinnerColor.Primary" />
+                </div>
+            } *@
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? clubTag { get; set; }
+
+    private Domain.Club? club = null;
+
+    private bool loading = true;
+    private string? error = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchClub();
+    }
+
+    private async Task FetchClub()
+    {
+        club = null;
+        loading = true;
+        StateHasChanged();
+
+        if (string.IsNullOrEmpty(clubTag))
+            error = "No clubTag specified";
+        else
+        {
+            club = await ApiService.Get<Domain.Club>($"clubs/{clubTag}", null);
+
+            if (club == null)
+            {
+                error = "Unable to fetch club. Please check if the ClubTag is correct.";
+                return;
+            }
+        }
+        
+        loading = false;
+        StateHasChanged();
+    }
+}

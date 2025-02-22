@@ -1,0 +1,103 @@
+@page "/clubs"
+@inject ApiService ApiService
+@inject NavigationManager _nav
+@using Domain
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using System.Globalization
+
+<div class="page-content fade-in">
+    <div class="content-header">
+@* Search bar *@
+        <div style="display: flex; width: 100%;">
+            <span class="searchbar">
+                <input class="searchbarinput" type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by name" />
+                <button @onclick="@(e => FetchData(searchString))">
+                    <i class="bi bi-search" style="color: white;" />
+                </button>
+            </span>
+        </div>
+    </div>
+
+@* Grid *@
+    <div class="content-area">
+        @if (!loading)
+        {
+            <div class="grid">
+                <QuickGrid Items="@data" Pagination=@pagination>
+                    <PropertyColumn Title="Rank" Property=@(x => x.Position) Sortable="true"InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Ascending" IsDefaultSortColumn="true" Align="Align.Center" />
+                    <PropertyColumn Title="Club Tag" Property=@(x => x.ClubTag) Sortable="true" />
+                    <PropertyColumn Title="Users" Property=@(x => x.Users) Align="Align.Center" />
+                    <TemplateColumn Title="Total Score">
+                        <div style="display: flex;">
+                            @* <img style="width: 3rem;" src="images/ranks/@(context.League.Replace(" ", "_")).png" />  *@
+                            <span style="margin-left: 5px; display: flex; flex-direction: column; justify-content: center;">
+                                <p class="m-0">@string.Format(new CultureInfo("en-us"), "{0:c}", context.RankScore).Replace(".00", "").Replace("$", "")</p>
+                            </Span>               
+                        </div>
+                    </TemplateColumn>
+                    <PropertyColumn Title="Average Score" Property=@(x => string.Format(new CultureInfo("en-us"), "{0:c}", x.AvgScore).Replace(".00", "").Replace("$", "")) Sortable="true" Align="Align.Center" />
+                    <TemplateColumn>
+                        <div style="display: flex; margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo($"/clubs/{context.ClubTag}");})>
+                            <i class="bi bi-arrow-right h2" style="margin: 0 !important; color: #DBDBDB;"/>
+                        </div>
+                    </TemplateColumn>
+                </QuickGrid>
+            </div>
+        }
+        else
+        {
+@* Loading icon *@
+            <span style="display: flex; align-items: center; justify-content: center; height: 100%; margin: 5rem;">
+                <Spinner Color="SpinnerColor.Primary" />
+            </span>
+        }
+        @if (!loading)
+        {
+            <Paginator State=pagination />
+            <Dropdown class="pagination-group">
+                <DropdownToggleButton>@pagination.ItemsPerPage</DropdownToggleButton>
+                <DropdownMenu>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 10)">10</DropdownItem>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 25)">25</DropdownItem>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 50)">50</DropdownItem>
+                    <DropdownItem @onclick="@(() => pagination.ItemsPerPage = 100)">100</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        }
+    </div>
+</div>
+
+
+@code {
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+    private IQueryable<Club>? data = null;
+
+    private string searchString = "";
+    private bool loading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = default;
+        await FetchData();
+    }
+
+    private async Task FetchData(string name = "")
+    {
+        loading = true;
+        data = null;
+        StateHasChanged();
+
+        List<Club> users = await ApiService.Get<List<Club>>("clubs/", null);
+        data = users.Where(x => x.ClubTag.ToLower().Contains(name.ToLower())).AsQueryable();
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async Task OnInput(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" || e.Key == "NumpadEnter")
+        {
+            await FetchData(searchString);
+        }
+    }
+}

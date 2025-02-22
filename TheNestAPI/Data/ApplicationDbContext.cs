@@ -17,5 +17,6 @@ namespace TheNestAPI.Data
         public DbSet<Gadgets> Gadgets { get; set; }
         public DbSet<Leagues> Leagues { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<Clubs> Clubs { get; set; }
     }
 }
