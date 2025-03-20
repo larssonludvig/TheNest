@@ -3,4 +3,4 @@ WORKDIR /
 COPY . /
 RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
-CMD ["python", "scraper.py"]
+CMD ["python", "-u", "scraper.py"]

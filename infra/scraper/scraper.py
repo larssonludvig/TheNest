@@ -29,7 +29,7 @@ def insert_data(data):
             timestamp = datetime.now()
             for item in data.get('data'):
                 cursor.execute("""
-                    INSERT INTO Leaderboard (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
+                    INSERT INTO LeaderboardS6 (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, (
                         item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s6"
