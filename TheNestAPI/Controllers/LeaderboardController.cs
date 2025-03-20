@@ -24,7 +24,7 @@ namespace TheNestAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult<LeaderboardEntry>> GetLeaderboardEntry(string name)
         {
-            Leaderboard? entry = await _context.LeaderboardS6
+            LeaderboardS6? entry = await _context.LeaderboardS6
                 .Where(x => x.Name == name)
                 .OrderByDescending(x => x.Timestamp)
                 .FirstOrDefaultAsync();
@@ -50,7 +50,7 @@ namespace TheNestAPI.Controllers
         {
             DateTime now = DateTime.Now;
             
-            List<Leaderboard> res;
+            List<LeaderboardS6> res;
             
             if (from != null && to != null)
             {
@@ -83,7 +83,7 @@ namespace TheNestAPI.Controllers
         {
             DateTime now = DateTime.Now;
             
-            List<Leaderboard> res;
+            List<LeaderboardS6> res;
             
             if (from != null && to != null)
             {

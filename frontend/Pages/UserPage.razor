@@ -162,9 +162,9 @@
     protected override async Task OnInitializedAsync()
     {
         urlFriendlyName = name?.Replace("#", "%23");
-        FetchUser();
-        FetchRankHistory();
-        FetchLeaderboardHistory();
+        await FetchUser();
+        await FetchLeaderboardHistory();
+        await FetchRankHistory();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
