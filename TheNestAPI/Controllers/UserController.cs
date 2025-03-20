@@ -21,7 +21,7 @@ namespace TheNestAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult<User>> GetUser(string name)
         {
-            Leaderboard? res = await _context.Leaderboard.Where(x => x.Name == name).OrderByDescending(x => x.Timestamp).FirstOrDefaultAsync();
+            Leaderboard? res = await _context.LeaderboardS6.Where(x => x.Name == name).OrderByDescending(x => x.Timestamp).FirstOrDefaultAsync();
             
             if (res == null)
                 return NotFound($"User {name} does not exist.");
@@ -54,10 +54,7 @@ namespace TheNestAPI.Controllers
         public async Task<ActionResult<UserHistory>> GetUserHistory(string name)
         {
             List<Leaderboard> res = await _context.Leaderboard
-                .Where(x =>
-                    x.Name == name &&
-                    x.Season != "s5"
-                )
+                .Where(x => x.Name == name)
                 .ToListAsync();
 
             if (res.Count == 0)
@@ -97,6 +94,9 @@ namespace TheNestAPI.Controllers
                     case "s4":
                         user.S4 = league.Name;
                         break;
+                    case "s5":
+                        user.S5 = league.Name;
+                        break;    
                     default:
                         break;
                 }

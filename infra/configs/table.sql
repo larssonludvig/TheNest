@@ -1,15 +1,12 @@
-CREATE TABLE leaderboard (
+CREATE TABLE LeaderboardS6 (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     RankPosition INT NOT NULL,
     ChangeAmount INT NOT NULL,
-    -- SteamName VARCHAR(255),
-    -- XboxName VARCHAR(255),
-    -- PsnName VARCHAR(255),
     LeagueNumber INT NOT NULL,
-    -- League VARCHAR(255) NOT NULL,
     RankScore INT NOT NULL,
-    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Season VARCHAR(255)
 );
 
 CREATE TABLE Clubs (

@@ -32,7 +32,7 @@ def insert_data(data):
                     INSERT INTO Leaderboard (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, (
-                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s5"
+                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s6"
                     )
                 )
                 cursor.execute("""
@@ -58,7 +58,7 @@ def insert_data(data):
         print("no connection to the databse.")
 
 def scrape_api():
-    url = "https://api.the-finals-leaderboard.com/v1/leaderboard/s5/crossplay"
+    url = "https://api.the-finals-leaderboard.com/v1/leaderboard/s6/crossplay"
     print("Scraping started!")
     response = requests.get(url)
     if response.status_code == 200:
