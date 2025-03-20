@@ -1,15 +1,12 @@
-CREATE TABLE leaderboard (
+CREATE TABLE LeaderboardS6 (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     RankPosition INT NOT NULL,
     ChangeAmount INT NOT NULL,
-    -- SteamName VARCHAR(255),
-    -- XboxName VARCHAR(255),
-    -- PsnName VARCHAR(255),
     LeagueNumber INT NOT NULL,
-    -- League VARCHAR(255) NOT NULL,
     RankScore INT NOT NULL,
-    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Season VARCHAR(255)
 );
 
 CREATE TABLE Clubs (
@@ -49,7 +46,7 @@ CREATE TABLE Specializations (
     Light BOOLEAN
 );
 
-INSERT INTO Specializations (name, heavy, medium, light) VALUES
+INSERT INTO Specializations (Name, Heavy, Medium, Light) VALUES
 ('Charge_N_Slam', TRUE, FALSE, FALSE),
 ('Goo_Gun', TRUE, FALSE, FALSE),
 ('Mesh_Shield', TRUE, FALSE, FALSE),
@@ -69,7 +66,7 @@ CREATE TABLE Weapons (
     Light BOOLEAN
 );
 
-INSERT INTO Weapons (name, heavy, medium, light) VALUES
+INSERT INTO Weapons (Name, Heavy, Medium, Light) VALUES
 ('M60', TRUE, FALSE, FALSE),
 ('Lewis_Gun', TRUE, FALSE, FALSE),
 ('Flamethrower', TRUE, FALSE, FALSE),
@@ -101,7 +98,10 @@ INSERT INTO Weapons (name, heavy, medium, light) VALUES
 ('Sword', FALSE, FALSE, TRUE),
 ('Throwing_Knives', FALSE, FALSE, TRUE),
 ('Recurve_Bow', FALSE, FALSE, TRUE),
-('M26_Matter', FALSE, FALSE, TRUE);
+('M26_Matter', FALSE, FALSE, TRUE),
+('ARN-220', TRUE, FALSE, FALSE),
+('CB-01_Repeater', FALSE, TRUE, FALSE),
+('M134_Minigun', FALSE, FALSE, TRUE);
 
 
 CREATE TABLE Gadgets (
@@ -112,7 +112,7 @@ CREATE TABLE Gadgets (
     Light BOOLEAN
 );
 
-INSERT INTO Gadgets (name, heavy, medium, light) VALUES
+INSERT INTO Gadgets (Name, Heavy, Medium, Light) VALUES
 ('Breach_Charge', FALSE, FALSE, TRUE),
 ('Flashbang', TRUE, TRUE, TRUE),
 ('Frag_Grenade', TRUE, TRUE, TRUE),

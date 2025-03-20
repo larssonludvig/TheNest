@@ -24,7 +24,7 @@ namespace TheNestAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult<LeaderboardEntry>> GetLeaderboardEntry(string name)
         {
-            Leaderboard? entry = await _context.Leaderboard
+            LeaderboardS6? entry = await _context.LeaderboardS6
                 .Where(x => x.Name == name)
                 .OrderByDescending(x => x.Timestamp)
                 .FirstOrDefaultAsync();
@@ -50,25 +50,23 @@ namespace TheNestAPI.Controllers
         {
             DateTime now = DateTime.Now;
             
-            List<Leaderboard> res;
+            List<LeaderboardS6> res;
             
             if (from != null && to != null)
             {
-                res = await _context.Leaderboard.Where(x =>
+                res = await _context.LeaderboardS6.Where(x =>
                     x.Name == name &&
                     x.Timestamp.HasValue &&
                     DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0 && 
-                    x.Season == "s5"
+                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
                 ).ToListAsync();
             }
             else
             {
-                res = await _context.Leaderboard.Where(x =>
+                res = await _context.LeaderboardS6.Where(x =>
                     x.Name == name &&
                     x.Timestamp.HasValue &&
-                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0 && 
-                    x.Season == "s5"
+                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 
@@ -85,25 +83,23 @@ namespace TheNestAPI.Controllers
         {
             DateTime now = DateTime.Now;
             
-            List<Leaderboard> res;
+            List<LeaderboardS6> res;
             
             if (from != null && to != null)
             {
-                res = await _context.Leaderboard.Where(x =>
+                res = await _context.LeaderboardS6.Where(x =>
                     x.RankPosition == 500 &&
                     x.Timestamp.HasValue &&
                     DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0 && 
-                    x.Season == "s5"
+                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
                 ).ToListAsync();
             }
             else
             {
-                res = await _context.Leaderboard.Where(x =>
+                res = await _context.LeaderboardS6.Where(x =>
                     x.RankPosition == 500 &&
                     x.Timestamp.HasValue &&
-                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0 && 
-                    x.Season == "s5"
+                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 
@@ -118,54 +114,42 @@ namespace TheNestAPI.Controllers
         [Route("{name}/history/all")]
         public async Task<ActionResult<UserAll>> GetAllFromUser(string name)
         {
-            
-            // var res = await _context.Leaderboard
-            //     .Join(_context.Leagues,
-            //         leaderboard => leaderboard.LeagueNumber,
-            //         league => league.Id,
-            //         (leaderboard, league) => new { Leaderboard = leaderboard, League = league })
-            //     .Where(x =>
-            //         x.Leaderboard.Name == name &&
-            //         x.Leaderboard.Timestamp.HasValue &&
-            //         x.Leaderboard.Season == "s5"
-            //     )
-            //     .ToListAsync();
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == name);
 
-if (user == null)
-    return NotFound($"User {name} not found.");
+            if (user == null)
+                return NotFound($"User {name} not found.");
 
-var result = await (from leaderboard in _context.Leaderboard
-                    join league in _context.Leagues
-                    on leaderboard.LeagueNumber equals league.Id
-                    where leaderboard.Season == "s5" && leaderboard.Name == name
-                    select new
-                    {
-                        leaderboard.Name,
-                        leaderboard.RankPosition,
-                        leaderboard.ChangeAmount,
-                        leaderboard.LeagueNumber,
-                        leaderboard.RankScore,
-                        leaderboard.Timestamp,
-                        LeagueName = league.Name
-                    }).ToListAsync();
+            var result = await (from leaderboard in _context.LeaderboardS6
+                                join league in _context.Leagues
+                                on leaderboard.LeagueNumber equals league.Id
+                                where leaderboard.Name == name
+                                select new
+                                {
+                                    leaderboard.Name,
+                                    leaderboard.RankPosition,
+                                    leaderboard.ChangeAmount,
+                                    leaderboard.LeagueNumber,
+                                    leaderboard.RankScore,
+                                    leaderboard.Timestamp,
+                                    LeagueName = league.Name
+                                }).ToListAsync();
 
-return new UserAll
-{
-    Name = user.Name,
-    XboxName = user.XboxName,
-    PsnName = user.PsnName,
-    SteamName = user.SteamName,
-    ClubTag = user.ClubTag,
-    Entries = result.Select(x => new LeaderboardEntry
-    {
-        Name = x.Name,
-        Rank = x.RankPosition,
-        Change = x.ChangeAmount,
-        League = x.LeagueName,
-        Timestamp = x.Timestamp
-    }).ToList()
-};
+            return new UserAll
+            {
+                Name = user.Name,
+                XboxName = user.XboxName,
+                PsnName = user.PsnName,
+                SteamName = user.SteamName,
+                ClubTag = user.ClubTag,
+                Entries = result.Select(x => new LeaderboardEntry
+                {
+                    Name = x.Name,
+                    Rank = x.RankPosition,
+                    Change = x.ChangeAmount,
+                    League = x.LeagueName,
+                    Timestamp = x.Timestamp
+                }).ToList()
+            };
         }
     }
 }
