@@ -113,5 +113,59 @@ namespace TheNestAPI.Controllers
                 Timestamps = res.Where(x => x.Timestamp.HasValue).Select(x => x.Timestamp.Value).ToList()
             };
         }
+
+        [HttpGet]
+        [Route("{name}/history/all")]
+        public async Task<ActionResult<UserAll>> GetAllFromUser(string name)
+        {
+            
+            // var res = await _context.Leaderboard
+            //     .Join(_context.Leagues,
+            //         leaderboard => leaderboard.LeagueNumber,
+            //         league => league.Id,
+            //         (leaderboard, league) => new { Leaderboard = leaderboard, League = league })
+            //     .Where(x =>
+            //         x.Leaderboard.Name == name &&
+            //         x.Leaderboard.Timestamp.HasValue &&
+            //         x.Leaderboard.Season == "s5"
+            //     )
+            //     .ToListAsync();
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == name);
+
+if (user == null)
+    return NotFound($"User {name} not found.");
+
+var result = await (from leaderboard in _context.Leaderboard
+                    join league in _context.Leagues
+                    on leaderboard.LeagueNumber equals league.Id
+                    where leaderboard.Season == "s5" && leaderboard.Name == name
+                    select new
+                    {
+                        leaderboard.Name,
+                        leaderboard.RankPosition,
+                        leaderboard.ChangeAmount,
+                        leaderboard.LeagueNumber,
+                        leaderboard.RankScore,
+                        leaderboard.Timestamp,
+                        LeagueName = league.Name
+                    }).ToListAsync();
+
+return new UserAll
+{
+    Name = user.Name,
+    XboxName = user.XboxName,
+    PsnName = user.PsnName,
+    SteamName = user.SteamName,
+    ClubTag = user.ClubTag,
+    Entries = result.Select(x => new LeaderboardEntry
+    {
+        Name = x.Name,
+        Rank = x.RankPosition,
+        Change = x.ChangeAmount,
+        League = x.LeagueName,
+        Timestamp = x.Timestamp
+    }).ToList()
+};
+        }
     }
 }
