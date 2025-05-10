@@ -143,7 +143,8 @@ INSERT INTO Gadgets (Name, Heavy, Medium, Light) VALUES
 ('RPG-7', TRUE, FALSE, FALSE),
 ('Dome_Shield', TRUE, FALSE, FALSE),
 ('Anti-Gravity_Cube', TRUE, FALSE, FALSE),
-('Lockbolt_Launcher', TRUE, FALSE, FALSE);
+('Lockbolt_Launcher', TRUE, FALSE, FALSE),
+('Nullifier', FALSE, FALSE, TRUE);
 
 
 
