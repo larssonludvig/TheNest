@@ -1,6 +1,5 @@
 ﻿@page "/randomizer"
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject Constants Constants
 @inject ApiService ApiService
 @inject NavigationManager _nav
 @inject IJSRuntime jsRuntime
@@ -27,7 +26,7 @@
                         <div class="reel scroll-in">
                             <ImageCheckbox ImagePath="@($"images/builds/{loadout.Class}.jpg")" AltText="@(loadout.Class.Replace("_", " "))" IsDisabled="true" />
                             @{
-                                foreach (var item in Constants.Classes)
+                                foreach (var item in @items.Classes)
                                 {
                                     <ImageCheckbox ImagePath="@($"images/builds/{item}.jpg")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
                                 }
@@ -48,10 +47,10 @@
                                 <div class="reel scroll-in">
                                     <ImageCheckbox ImagePath="@($"images/specializations/{loadout.Specialization}.png")" AltText="@(loadout.Specialization.Replace("_", " "))" IsDisabled="true" />
                                     @{
-                                        List<string> specializations = new List<string> (Constants.LSpecializations.Count + Constants.MSpecializations.Count + Constants.HSpecializations.Count);
-                                        specializations.AddRange(Constants.LSpecializations);
-                                        specializations.AddRange(Constants.MSpecializations);
-                                        specializations.AddRange(Constants.HSpecializations);
+                                        List<string> specializations = new List<string> (@items.LSpecializations.Count + @items.MSpecializations.Count + @items.HSpecializations.Count);
+                                        specializations.AddRange(@items.LSpecializations);
+                                        specializations.AddRange(@items.MSpecializations);
+                                        specializations.AddRange(@items.HSpecializations);
                                         specializations = Shuffle(specializations);
 
                                         foreach (var item in specializations)
@@ -75,10 +74,10 @@
                                 <div class="reel scroll-in">
                                     <ImageCheckbox ImagePath="@($"images/weapons/{loadout.Weapon}.png")" AltText="@(loadout.Weapon.Replace("_", " "))" IsDisabled="true" />
                                     @{
-                                        List<string> weapons = new List<string> (Constants.LWeapons.Count + Constants.MWeapons.Count + Constants.HWeapons.Count);
-                                        weapons.AddRange(Constants.LWeapons);
-                                        weapons.AddRange(Constants.MWeapons);
-                                        weapons.AddRange(Constants.HWeapons);
+                                        List<string> weapons = new List<string> (@items.LWeapons.Count + @items.MWeapons.Count + @items.HWeapons.Count);
+                                        weapons.AddRange(@items.LWeapons);
+                                        weapons.AddRange(@items.MWeapons);
+                                        weapons.AddRange(@items.HWeapons);
                                         weapons = Shuffle(weapons);
 
                                         foreach (var item in weapons)
@@ -106,10 +105,10 @@
                                         <div class="reel scroll-in">
                                             <ImageCheckbox ImagePath="@($"images/gadgets/{item}.png")" AltText="@(item.Replace("_", " "))" IsDisabled="true" />
                                             @{
-                                                List<string> gadgets = new List<string> (Constants.LGadgets.Count + Constants.MGadgets.Count + Constants.HGadgets.Count);
-                                                gadgets.AddRange(Constants.LGadgets);
-                                                gadgets.AddRange(Constants.MGadgets);
-                                                gadgets.AddRange(Constants.HGadgets);
+                                                List<string> gadgets = new List<string> (@items.LGadgets.Count + @items.MGadgets.Count + @items.HGadgets.Count);
+                                                gadgets.AddRange(@items.LGadgets);
+                                                gadgets.AddRange(@items.MGadgets);
+                                                gadgets.AddRange(@items.HGadgets);
                                                 gadgets = Shuffle(gadgets);
 
                                                 foreach (var gadget in gadgets)
@@ -214,8 +213,12 @@
     private bool loading = false;
     private bool copied = false;
 
+    private ItemsByClass items = new ItemsByClass();
+
     protected override async Task OnInitializedAsync()
     {
+        await items.Initialize();
+
         mute = await localStorage.GetItemAsync<bool>("randomizer_mute");
         duration = await localStorage.GetItemAsync<double>("randomizer_duration");
         if (duration == 0)

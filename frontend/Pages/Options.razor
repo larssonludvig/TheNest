@@ -1,7 +1,5 @@
 ﻿@page "/randomizer/options"
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject Constants Constants
-
 
 <div class="page-content fade-in">
     <h2>Click on items to exclude from randomizer</h2>
@@ -17,7 +15,7 @@
             <div class="items">
                 @if (selectedClasses != null)
                 {
-                    foreach (string item in Constants.Classes)
+                    foreach (string item in @items.Classes)
                     {
                         <ImageCheckbox ImagePath=@($"images/builds/{item}.jpg") AltText=@item IsCheckedChanged=SelectClass IsChecked=@(selectedClasses.Contains(@item)) WhiteCross=true />
                     }
@@ -36,7 +34,7 @@
                     <div class="items">
                         @if (selectedSpecializations != null)
                         {
-                            foreach (string item in Constants.LSpecializations)
+                            foreach (string item in @items.LSpecializations)
                             {
                                 <ImageCheckbox ImagePath=@($"images/specializations/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                             }
@@ -48,7 +46,7 @@
                     <div class="items">
                         @if (selectedWeapons != null)
                         {
-                            foreach (string item in Constants.LWeapons)
+                            foreach (string item in @items.LWeapons)
                             {
                                 <ImageCheckbox ImagePath=@($"images/weapons/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                             }
@@ -60,7 +58,7 @@
                     <div class="items">
                         @if (selectedGadgets != null)
                         {
-                            foreach (string item in Constants.LGadgets)
+                            foreach (string item in @items.LGadgets)
                             {
                                 <ImageCheckbox ImagePath=@($"images/gadgets/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                             }
@@ -79,7 +77,7 @@
                     <div class="items">
                         @if (selectedSpecializations != null)
                         {
-                            foreach (string item in Constants.MSpecializations)
+                            foreach (string item in @items.MSpecializations)
                             {
                                 <ImageCheckbox ImagePath=@($"images/specializations/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                             }
@@ -91,7 +89,7 @@
                     <div class="items">
                         @if (selectedWeapons != null)
                         {
-                            foreach (string item in Constants.MWeapons)
+                            foreach (string item in @items.MWeapons)
                             {
                                 <ImageCheckbox ImagePath=@($"images/weapons/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                             }
@@ -103,7 +101,7 @@
                     <div class="items">
                         @if (selectedGadgets != null)
                         {
-                            foreach (string item in Constants.MGadgets)
+                            foreach (string item in @items.MGadgets)
                             {
                                 <ImageCheckbox ImagePath=@($"images/gadgets/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                             }
@@ -122,7 +120,7 @@
                     <div class="items">
                         @if (selectedSpecializations != null)
                         {
-                            foreach (string item in Constants.HSpecializations)
+                            foreach (string item in @items.HSpecializations)
                             {
                                 <ImageCheckbox ImagePath=@($"images/specializations/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectSpecialization IsChecked=@(selectedSpecializations.Contains(@item)) />
                             }
@@ -134,7 +132,7 @@
                     <div class="items">
                         @if (selectedWeapons != null)
                         {
-                            foreach (string item in Constants.HWeapons)
+                            foreach (string item in @items.HWeapons)
                             {
                                 <ImageCheckbox ImagePath=@($"images/weapons/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectWeapon IsChecked=@(selectedWeapons.Contains(@item)) />
                             }
@@ -146,7 +144,7 @@
                     <div class="items">
                         @if (selectedGadgets != null)
                         {
-                            foreach (string item in Constants.HGadgets)
+                            foreach (string item in @items.HGadgets)
                             {
                                 <ImageCheckbox ImagePath=@($"images/gadgets/{item}.png") AltText=@(item.Replace("_", " ")) IsCheckedChanged=SelectGadget IsChecked=@(selectedGadgets.Contains(@item)) />
                             }
@@ -164,8 +162,12 @@
     private List<string> selectedWeapons = new List<string>();
     private List<string> selectedGadgets = new List<string>();
 
+    private ItemsByClass items = new ItemsByClass();
+
     protected override async Task OnInitializedAsync()
     {
+        await items.Initialize();
+
         // Classes
         string? cookieClass = await localStorage.GetItemAsync<string>("classes");
         if (!string.IsNullOrEmpty(cookieClass)) {

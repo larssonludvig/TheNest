@@ -1,5 +1,4 @@
 @page "/loadout"
-@inject Constants Constants
 @inject IJSRuntime jsRuntime
 @inject NavigationManager navManager
 
@@ -48,11 +47,14 @@
     private List<string> availableWeapons = new List<string>();
     private List<string> availableGadgets = new List<string>();
 
+    private ItemsByClass items = new ItemsByClass();
+
     private bool copied = false;
 
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await items.Initialize();
+
         string uri = navManager.Uri;
         if (uri.Contains("class="))
             loadout.Class = uri.Split("class=")[1].Split("&")[0];
@@ -70,13 +72,10 @@
         while (loadout.Gadgets.Count < 3)
             loadout.Gadgets.Add("");
 
-
-
-
-        availableClasses = Constants.Classes;
-        availableSpecializations = Constants.LSpecializations.Union(Constants.MSpecializations).Union(Constants.HSpecializations).ToList();
-        availableWeapons = Constants.LWeapons.Union(Constants.MWeapons).Union(Constants.HWeapons).ToList();
-        availableGadgets = Constants.LGadgets.Union(Constants.MGadgets).Union(Constants.HGadgets).ToList();
+        availableClasses = items.Classes;
+        availableSpecializations = items.LSpecializations.Union(items.MSpecializations).Union(items.HSpecializations).ToList();
+        availableWeapons = items.LWeapons.Union(items.MWeapons).Union(items.HWeapons).ToList();
+        availableGadgets = items.LGadgets.Union(items.MGadgets).Union(items.HGadgets).ToList();
     }
 
     private void ClassChanged(string str)
@@ -96,11 +95,11 @@
 
     private void SpecializationChanged(string str)
     {
-        if (loadout.Class != "Light" && Constants.LSpecializations.Contains(str))
+        if (loadout.Class != "Light" && items.LSpecializations.Contains(str))
             SetAvailableItems("Light");
-        else if (loadout.Class != "Medium" && Constants.MSpecializations.Contains(str))
+        else if (loadout.Class != "Medium" && items.MSpecializations.Contains(str))
             SetAvailableItems("Medium");
-        else if (loadout.Class != "Heavy" && Constants.HSpecializations.Contains(str))
+        else if (loadout.Class != "Heavy" && items.HSpecializations.Contains(str))
             SetAvailableItems("Heavy");
 
         loadout.Specialization = str;
@@ -108,11 +107,11 @@
 
     private void WeaponChanged(string str)
     {
-        if (loadout.Class != "Light" && Constants.LWeapons.Contains(str))
+        if (loadout.Class != "Light" && items.LWeapons.Contains(str))
             SetAvailableItems("Light");
-        else if (loadout.Class != "Medium" && Constants.MWeapons.Contains(str))
+        else if (loadout.Class != "Medium" && items.MWeapons.Contains(str))
             SetAvailableItems("Medium");
-        else if (loadout.Class != "Heavy" && Constants.HWeapons.Contains(str))
+        else if (loadout.Class != "Heavy" && items.HWeapons.Contains(str))
             SetAvailableItems("Heavy");
 
         loadout.Weapon = str;
@@ -154,19 +153,19 @@
         switch (c)
         {
             case "Light":
-                availableSpecializations = Constants.LSpecializations;
-                availableWeapons = Constants.LWeapons;
-                availableGadgets = Constants.LGadgets;
+                availableSpecializations = items.LSpecializations;
+                availableWeapons = items.LWeapons;
+                availableGadgets = items.LGadgets;
                 break;
             case "Medium":
-                availableSpecializations = Constants.MSpecializations;
-                availableWeapons = Constants.MWeapons;
-                availableGadgets = Constants.MGadgets;
+                availableSpecializations = items.MSpecializations;
+                availableWeapons = items.MWeapons;
+                availableGadgets = items.MGadgets;
                 break;
             case "Heavy":
-                availableSpecializations = Constants.HSpecializations;
-                availableWeapons = Constants.HWeapons;
-                availableGadgets = Constants.HGadgets;
+                availableSpecializations = items.HSpecializations;
+                availableWeapons = items.HWeapons;
+                availableGadgets = items.HGadgets;
                 break;
         }
     }

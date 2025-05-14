@@ -22,14 +22,13 @@ Currently, the site contains a collection of tools that can be used for the game
 ||Maps|__Under Development__. Detailed maps about from the game.
 
 ## Planned Changes
-* Unify location for items between frontend and backend. Possibly by creating API endpoint
 * Create a home page that is not the About page
-* Move user information out of Leaderboard db table. Currently, too much duplicate data is stored.
 * Page for only ruby history
 * Prediction of ruby change over time
 * Add results of previous seasons to database so it can be fetched as rank history over seasons.
+    * Exists in db, need to write endpoint and displayed in frontend
 * Option to randomize reserve loadout
-* General refactorization on the codebase
+* General refactorization of the codebase
 * General styling of the site
 
 ## Licensing
