@@ -92,5 +92,258 @@ namespace TheNestAPI.Controllers
                 Gadgets = selectedGadgets
             };
         }
+
+        [HttpGet]
+        public async Task<ActionResult<Dictionary<string, Dictionary<string, List<string>>>>> GetAll()
+        {
+            List<string> classes = new List<string>() {"Heavy", "Medium", "Light"};
+
+            Dictionary<string, List<string>> heavy = new Dictionary<string, List<string>>();
+            heavy.Add("Specializations", (await _context.Specializations
+                .Where(x => x.Heavy == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+            heavy.Add("Weapons", (await _context.Weapons
+                .Where(x => x.Heavy == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+            heavy.Add("Gadgets", (await _context.Gadgets
+                .Where(x => x.Heavy == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+            
+            Dictionary<string, List<string>> medium = new Dictionary<string, List<string>>();
+            medium.Add("Specializations", (await _context.Specializations
+                .Where(x => x.Medium == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+            medium.Add("Weapons", (await _context.Weapons
+                .Where(x => x.Medium == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+            medium.Add("Gadgets", (await _context.Gadgets
+                .Where(x => x.Medium == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+
+            Dictionary<string, List<string>> light = new Dictionary<string, List<string>>();
+            light.Add("Specializations", (await _context.Specializations
+                .Where(x => x.Light == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+            light.Add("Weapons", (await _context.Weapons
+                .Where(x => x.Light == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+            light.Add("Gadgets", (await _context.Gadgets
+                .Where(x => x.Light == true)
+                .ToListAsync())
+                .Select(x => x.Name.ToString()).ToList()
+            );
+
+            Dictionary<string, Dictionary<string, List<string>>> res = new Dictionary<string, Dictionary<string, List<string>>>();
+            res.Add("Heavy", heavy);
+            res.Add("Medium", medium);
+            res.Add("Light", light);
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("heavy/specializations")]
+        public async Task<ActionResult<List<string>>> GetHeavySpecializations()
+        {
+            List<string> res = new List<string>();
+
+            List<Specializations> query = await _context.Specializations
+                .Where(x => x.Heavy == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No specializations for heavy forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("heavy/weapons")]
+        public async Task<ActionResult<List<string>>> GetHeavyWeapons()
+        {
+            List<string> res = new List<string>();
+
+            List<Weapons> query = await _context.Weapons
+                .Where(x => x.Heavy == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No weapons for heavy forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("heavy/gadgets")]
+        public async Task<ActionResult<List<string>>> GetHeavyGadgets()
+        {
+            List<string> res = new List<string>();
+
+            List<Gadgets> query = await _context.Gadgets
+                .Where(x => x.Heavy == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No gadgets for heavy forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("medium/specializations")]
+        public async Task<ActionResult<List<string>>> GetMediumSpecializations()
+        {
+            List<string> res = new List<string>();
+
+            List<Specializations> query = await _context.Specializations
+                .Where(x => x.Medium == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No specializations for medium forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("medium/weapons")]
+        public async Task<ActionResult<List<string>>> GetMediumWeapons()
+        {
+            List<string> res = new List<string>();
+
+            List<Weapons> query = await _context.Weapons
+                .Where(x => x.Medium == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No weapons for medium forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("medium/gadgets")]
+        public async Task<ActionResult<List<string>>> GetMediumGadgets()
+        {
+            List<string> res = new List<string>();
+
+            List<Gadgets> query = await _context.Gadgets
+                .Where(x => x.Medium == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No gadgets for medium forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("light/specializations")]
+        public async Task<ActionResult<List<string>>> GetLightSpecializations()
+        {
+            List<string> res = new List<string>();
+
+            List<Specializations> query = await _context.Specializations
+                .Where(x => x.Light == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No specializations for light forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("light/weapons")]
+        public async Task<ActionResult<List<string>>> GetLightWeapons()
+        {
+            List<string> res = new List<string>();
+
+            List<Weapons> query = await _context.Weapons
+                .Where(x => x.Light == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No weapons for light forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        [Route("light/gadgets")]
+        public async Task<ActionResult<List<string>>> GetLightGadgets()
+        {
+            List<string> res = new List<string>();
+
+            List<Gadgets> query = await _context.Gadgets
+                .Where(x => x.Light == true)
+                .ToListAsync();
+
+            if (query.Count <= 0)
+                return NotFound("No gadgets for light forund.");
+
+            foreach (var item in query)
+            {
+                res.Add(item.Name);
+            }
+
+            return res;
+        }
     }
 }
