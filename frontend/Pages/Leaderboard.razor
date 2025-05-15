@@ -7,9 +7,21 @@
 
 <div class="page-content fade-in">
     <div class="content-header">
-@* Season radio buttons *@
-        <div style="display: flex; gap: 8px;">
+        <h1 class="m-0">Leaderboards</h1>
+    </div>
 
+    <div class="content-area">
+        <p class="px-3 pt-2">This site uses a public API wrapper that can be found <a style="color: white;" href="https://github.com/leonlarsson/the-finals-api">Here!</a></p>
+        <div style="display: flex; gap: 8px; flex-direction: row; margin: 1rem; flex-wrap: wrap;">
+@* Search bar *@
+            <span class="searchbar">
+                <input class="searchbarinput" type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by name" />
+                <button @onclick="@(e => FetchData(searchString))">
+                    <i class="bi bi-search" style="color: white;" />
+                </button>
+            </span>
+
+@* Season radio buttons *@
             <div class="radio-group">
                 <div class="radio-button" @onclick="@(() => SetSeason("s6"))">
                     <input type="radio" name="s6" checked="@(season == "s6")" />
@@ -43,10 +55,7 @@
                     <DropdownItem @onclick="@(() => SetSeason("cb1"))">Closed Beta 1</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-        </div>
-    
-@* Platform radio buttons *@
-        <div style="display: flex; width: 100%;">
+
             @if (season == "s2" || season == "s1" || season == "ob")
             {
                 <div class="radio-group" style="margin-bottom: 0;">
@@ -76,19 +85,9 @@
                     </div>
                 </div>
             }
-
-@* Search bar *@
-            <span class="searchbar">
-                <input class="searchbarinput" type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by name" />
-                <button @onclick="@(e => FetchData(searchString))">
-                    <i class="bi bi-search" style="color: white;" />
-                </button>
-            </span>
         </div>
-    </div>
 
 @* Leaderboard grid *@
-    <div class="content-area">
         @if (!loading)
         {
             <div class="grid">
@@ -197,9 +196,6 @@
                 </DropdownMenu>
             </Dropdown>
         }
-    </div>
-    <div style="margin-top: 1rem; width: 50rem;">
-        <p>This site uses a public API wrapper that can be found <a style="color: white;" href="https://github.com/leonlarsson/the-finals-api">Here!</a></p>
     </div>
 </div>
 

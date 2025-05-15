@@ -7,9 +7,14 @@
 
 <div class="page-content fade-in">
     <div class="content-header">
-    <p>DISCLAMER: Only the top 10.000 users on the ranked leaderboard are counted. Those are the only users that can be fetched. Thus, totals and user counts are not entirely correct.</p>
+        <h1 class="m-0">Clubs</h1>
+    </div>
+
+@* Grid *@
+    <div class="content-area">
+        <p class="p-2">DISCLAMER: Only the top 10.000 users on the ranked leaderboard are counted. Those are the only users that can be fetched. Thus, totals and user counts are not entirely correct.</p>
 @* Search bar *@
-        <div style="display: flex; width: 100%;">
+        <div class="p-2" style="display: flex; width: 100%; padding-right: 16px;">
             <span class="searchbar">
                 <input class="searchbarinput" type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by name" />
                 <button @onclick="@(e => FetchData(searchString))">
@@ -17,10 +22,6 @@
                 </button>
             </span>
         </div>
-    </div>
-
-@* Grid *@
-    <div class="content-area">
         @if (!loading)
         {
             <div class="grid">

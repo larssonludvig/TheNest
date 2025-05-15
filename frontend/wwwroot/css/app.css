@@ -23,21 +23,10 @@ a, .btn-link {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-.content {
-    padding-top: 4.5rem;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    position: absolute;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
 .page-content {
     display: flex;
-    padding-top: 3rem;
+    padding: 2rem 1rem;
+    padding-left: 21rem;
     justify-content: start;
     align-items: center;
     flex-direction: column;
@@ -142,11 +131,11 @@ h1:focus {
     border: 2px solid #252525;
     border-top: none;
     border-radius: 0 0 5px 5px;
-    width: 50rem;
+    width: 100%;
 }
 
 .content-header {
-    width: 50rem;
+    width: 100%;
     background-color: #373737;
     border: 2px solid #252525;
     border-radius: 5px 5px 0 0;
@@ -203,19 +192,27 @@ tr:nth-child(even) {
     display: flex;
     gap: 8px;
     background-color: #373737;
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 5px;
     color: #DBDBDB;
     width: max-content;
     margin-bottom: 8px;
-    border: 2px solid #252525;
+    border: 1px solid #252525;
+    padding: 0;
+    height: 2rem;
+}
+
+.radio-button {
+    padding: 0;
+    margin: 0;
 }
 
 .radio-button label {
     padding: 3px 8px;
+    margin: 0;
     border-radius: 5px;
     color: #DBDBDB;
-    height: 2rem;
+    /* height: 2rem; */
 }
 
 .radio-button input:checked + label {
@@ -236,9 +233,9 @@ tr:nth-child(even) {
 }
 
 .searchbar {
-    margin-left: auto;
+    /* margin-left: auto; */
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .searchbarinput {
@@ -413,7 +410,8 @@ i {
     color: #DBDBDB;
     margin-bottom: 8px;
     border-radius: 5px;
-    outline: 2px solid #252525;
+    outline: 1px solid #252525;
+    height: 2rem;
 }
 
 .dropdown:hover {
@@ -477,4 +475,13 @@ article {
     height: 2rem;
     border-radius: 5px;
     color: white;
+}
+
+.separator {
+    height: 2px;
+    border-radius: 2px;
+    background-color: #2a2a2c;
+    width: auto;
+    margin-left: 4px;
+    margin-right: 4px;
 }
