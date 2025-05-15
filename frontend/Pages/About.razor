@@ -1,14 +1,64 @@
 @page "/"
+@inject ApiService ApiService
+@inject NavigationManager _nav
+@using Domain
 
-<div class="page-content fade-in" style="width:90%;max-width:40rem;text-align:justify; color: #DBDBDB;">
-    <h2 style="width: 100%;">Hello There!</h2>
-    <p style="width: 100%;">This little site have been brought to you by Tanamo. I want to start by thanking <a href="https://www.embark-studios.com/" style="color:white;">Embark Studios</a> for and amazing game and my dear friend <a href="https://www.twitch.tv/plopparntv" style="color:white;"><img src="images/twitch.png" alt="" style="width:1.5rem;" />PlopparnTV</a> for the idea for the site. </p>
-    <br />
-    <p style="width: 100%;">As of now, the site is still in development and I'm working on adding more features and improvements. If you have any suggestions or feedback, feel free to contact "tanamo" on Discord.</p>
-    <br />
-    <p style="width: 100%;">Thank you for visiting and I hope that you find some usage of the features of the site.</p>
-    <br />
-    <div style="width:100%;display:flex;justify-content:end;">
-        <a style="color:white;text-decoration:none;" href="https://www.youtube.com/watch?v=G6k2A9SaFzE">*Insert chaotic cashout music*</a>
+<div class="page-content fade-in">
+    <div class="content-header" style="display: flex;">
+        <h1 class="m-0">THE NEST</h1>
+    </div>
+    <div class="content-area p-0" style="display: flex;">
+        <div class="content-nav p-2" style="width: 30%">
+            <a class="nav-link" href="loadout">LOADOUT</a>
+            <a class="nav-link" href="randomizer">RANDOMIZER</a>
+            <a class="subnav-link" href="randomizer/options">OPTIONS</a>
+            <a class="nav-link" href="leaderboard">LEADERBOARD</a>
+            <a class="subnav-link" href="clubs">CLUBS</a>
+            <a class="nav-link" href="maps">MAPS</a>
+            <div style="position: absolute; bottom: 0;">
+                <div style="display: flex; flex-direction: column; margin-left: -5px;">
+                    <a class="subnav-link" href="privacy-policy">PRIVACY POLICY</a>
+                    <a class="subnav-link" href="terms-of-service">TERMS OF SERVICE</a>
+                </div>
+            </div>
+        </div>
+        <div class="p-2" style="width: 100%;">
+            @if (ploppIsLive)
+            {
+                <h3 style="width: 100%;">Plopparn is live!</h3>
+                <div style=""></div>
+                    <div style="aspect-ratio:16/9;max-width:1280px;min-width:100%!important;">
+                    <iframe src="https://player.twitch.tv/?channel=plopparntv&parent=plopparn.tv&autoplay=true&muted=true&time=0s" width="100%" height="100%" frameborder="0" allowfullscreen style="" />
+                </div>
+            }
+
+            <h2 style="width: 100%;">Hello There!</h2>
+            <p style="width: 100%;">This little site have been brought to you by Tanamo. I want to start by thanking <a href="https://www.embark-studios.com/" style="color:white;">Embark Studios</a> for and amazing game and my dear friend <a href="https://www.twitch.tv/plopparntv" style="color:white;"><img src="images/twitch.png" alt="" style="width:1.5rem;" />PlopparnTV</a> for the idea for the site. </p>
+            <br />
+            <p style="width: 100%;">As of now, the site is still in development and I'm working on adding more features and improvements. If you have any suggestions or feedback, feel free to contact "tanamo" on Discord.</p>
+            <br />
+            <p style="width: 100%;">Thank you for visiting and I hope that you find some usage of the features of the site.</p>
+            <br />
+            <div style="width:100%;display:flex;justify-content:end;">
+                <a style="color:white;text-decoration:none;" href="https://www.youtube.com/watch?v=G6k2A9SaFzE">*Insert chaotic cashout music*</a>
+            </div>
+        </div>
     </div>
 </div>
+
+@code {
+    private bool ploppIsLive = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLiveStatus();
+    }
+
+    private async Task<bool> GetLiveStatus()
+    {
+        ploppIsLive = await ApiService.Get<bool>("twitch/live", null);
+
+        return ploppIsLive;
+    }
+    
+}
