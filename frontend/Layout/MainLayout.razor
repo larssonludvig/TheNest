@@ -6,69 +6,71 @@
 <div class="page">
     <main>
         <article class="content p-0">
-            @* Info bar *@
-            @* <div style="width: 100vw; height: 2rem; background-color: rgb(228, 228, 39); color: black; display: flex; justify-content: center; align-items: center;">
-                <p style="padding: 0; margin: 0;">The site is updating to S6, some features may not work correctly.</p>
-            </div> *@
-            @* Info bar *@
-            <nav class="nav-content">
-                <div class="nav-title" style="cursor: pointer;" onclick=@(() => {_nav.NavigateTo($"/");})>
+            <div class="nav-menu" onclick=@(() => {showNav = !showNav;})>
+                <i class="bi bi-list h1 m-0" style="color: #DBDBDB;" />
+                <h1 class="nav-menu-title">The Nest</h1>
+                <p class="nav-menu-version">@version</p>
+            </div>
+            <nav class="nav-content" style=@(showNav ? "display: flex;" : "")>
+                <div class="nav-title" style="cursor: pointer;" onclick=@(() => {NavigateTo($"/");})>
                     <h1 style="font-weight: bold;">The Nest</h1>
                     <p style="opacity: 0.7;">@version</p>
                 </div>
                 <div class="separator mb-3" />
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/");})>
                     <i class="bi bi-house" style="color: #DBDBDB;"/>
                     <a class="menu-link">Home</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/loadout");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/loadout");})>
                     <i class="bi bi-pencil" style="color: #DBDBDB;" />
                     <a class="menu-link">Loadout</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/randomizer");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/randomizer");})>
                     <i class="bi bi-dice-5" style="color: #DBDBDB;" />
                     <a class="menu-link">Randomizer</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/randomizer/options");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/randomizer/options");})>
                     @* <i class="bi bi-gear" style="color: #DBDBDB;" /> *@
                     <a class="submenu-link">Options</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/leaderboard");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/leaderboard");})>
                     <i class="bi bi-bar-chart" style="color: #DBDBDB;" />
                     <a class="menu-link">Leaderboard</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/clubs");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/clubs");})>
                     @* <i class="bi bi-egg" style="color: #DBDBDB;" /> *@
                     <a class="submenu-link">Clubs</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/maps");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/maps");})>
                     <i class="bi bi-map" style="color: #DBDBDB;" />
                     <a class="menu-link">Maps</a>
                 </div>
                 <div class="separator mb-3 mt-3" />
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"https://discord.com/invite/EMVAKruWrY");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"https://discord.com/invite/EMVAKruWrY");})>
                     <i class="bi bi-discord" style="color: #DBDBDB;" />
                     <a class="menu-link">Discord</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"https://www.twitch.tv/plopparntv");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"https://www.twitch.tv/plopparntv");})>
                     <i class="bi bi-twitch" style="color: #DBDBDB;" />
                     <a class="menu-link">Stream</a>
                 </div>
                 <div class="separator mb-3 mt-3" />
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/terms-of-service");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/terms-of-service");})>
                     <a class="submenu-link">Terms of Service</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {_nav.NavigateTo($"/privacy-policy");})>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/privacy-policy");})>
                     <a class="submenu-link">Privacy Policy</a>
                 </div>
             </nav>
             @Body
+            <div class="nav-shadow" style=@(showNav ? "display: flex;" : "") onclick=@(() => {showNav = !showNav;}) />
         </article>
     </main>
 </div>
 
 @code {
-    private string version = ""; 
+    private string version = "";
+    private bool showNav = false;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -83,5 +85,11 @@
         var assembly = Assembly.GetExecutingAssembly();
         version = "v" + assembly?.GetName()?.Version?.ToString().Substring(0, 5);
         return version;
+    }
+
+    private void NavigateTo(string path)
+    {
+        showNav = false;
+        _nav.NavigateTo(path);
     }
 }

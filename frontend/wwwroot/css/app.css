@@ -36,6 +36,23 @@ a, .btn-link {
     scrollbar-width: none;  /* Firefox */
 }
 
+@media only screen and (max-width: 800px) {
+    .page-content {
+        padding-left: 1rem;
+        padding-top: 4rem;
+    }
+
+    .image-area {
+        width: 6rem;
+        height: 8rem;
+    }
+
+    .image {
+        height: 6rem;
+        width: 6rem;
+    }
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .content::-webkit-scrollbar {
     display: none;
@@ -357,17 +374,6 @@ i {
     position: absolute;
     top: 4px;
     right: 4px;
-}
-
-@media only screen and (max-width: 30rem) {
-    .image-area {
-        width: 6rem;
-        height: 8rem;
-    }
-
-    .image {
-        height: 6rem;
-    }
 }
 
 .shadow {
