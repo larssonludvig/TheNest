@@ -43,13 +43,29 @@ a, .btn-link {
     }
 
     .image-area {
-        width: 6rem;
-        height: 8rem;
+        width: 6rem !important;
+        height: 8rem !important;
+        margin-bottom: 2rem;
     }
 
     .image {
-        height: 6rem;
-        width: 6rem;
+        height: 6rem !important;
+        width: 6rem !important;
+    }
+
+    .items {
+        gap: 0.5rem !important;
+    }
+
+    .reel {
+        width: 6rem !important;
+        height: 10rem !important;
+    }
+
+    .items-picker {
+        width: 100% !important;
+        padding-top: 3rem;
+
     }
 }
 
@@ -126,7 +142,18 @@ h1:focus {
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+}
 
+.items-picker {
+    position: absolute;
+    width: 30rem;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.picker-dropdown-position {
+    position: relative;
 }
 
 .item {
@@ -216,7 +243,7 @@ tr:nth-child(even) {
     margin-bottom: 8px;
     border: 1px solid #252525;
     padding: 0;
-    height: 2rem;
+    /* height: 2rem; */
 }
 
 .radio-button {
@@ -378,7 +405,7 @@ i {
 
 .shadow {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.5);
     height: 100vh;
     width: 100vw;
     top: 0;
