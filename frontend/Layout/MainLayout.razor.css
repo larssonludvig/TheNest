@@ -95,19 +95,14 @@ main {
     background-color: #202022;
     z-index: 5;
     width: 100vw;
-    padding: 4px;
+    padding: 8px;
     gap: 5px;
     align-items: center;
 }
 
 .nav-menu-title {
     margin: 0;
-}
-
-.nav-menu-version {
-    margin: 0;
-    opacity: 0.5;
-    font-size: small;
+    font-weight: bold;
 }
 
 .nav-shadow {

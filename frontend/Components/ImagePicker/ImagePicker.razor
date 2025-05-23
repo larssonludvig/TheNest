@@ -5,30 +5,28 @@
         <img class="image" src=@ImagePath alt=@Label onerror="this.src='images/404.png'" />
         <i class="bi bi-caret-down-fill image-drop"></i>
     </div>
-    <p class="image-label">@Label</p>
+    <p class="image-label">@Label.Replace("_", " ")</p>
 
     @if (expanded)
     {
         <div class="shadow fade-in" />
-        <div style="position: relative;">
-            <div class="items fade-in" style="position: absolute; width: 30rem; top: 0; left: -4rem; z-index: 5;">
-                @foreach (var item in Items)
-                {
-                    <div class="item" @onclick="() => Clicked(item)">
-                        <div class="image-area">
-                            <div class="image-layer1">
-                                @{
-                                    int lastSlashIndex = ImagePath.LastIndexOf('/')+1;
-                                    string basePath = ImagePath.Substring(0, lastSlashIndex);
-                                    string fileType = ImagePath.Contains("builds") ? ".jpg" : ".png";
-                                    <img class="image" src=@($"{basePath}{item}{fileType}") alt=item onerror="this.src='images/404.png'" />
-                                }
-                            </div>
-                            <p class="image-label">@item.Replace("_", " ")</p>
+        <div class="items fade-in items-picker">
+            @foreach (var item in Items)
+            {
+                <div class="item" @onclick="() => Clicked(item)">
+                    <div class="image-area">
+                        <div class="image-layer1">
+                            @{
+                                int lastSlashIndex = ImagePath.LastIndexOf('/')+1;
+                                string basePath = ImagePath.Substring(0, lastSlashIndex);
+                                string fileType = ImagePath.Contains("builds") ? ".jpg" : ".png";
+                                <img class="image" src=@($"{basePath}{item}{fileType}") alt=item onerror="this.src='images/404.png'" />
+                            }
                         </div>
+                        <p class="image-label">@item.Replace("_", " ")</p>
                     </div>
-                }
-            </div>
+                </div>
+            }
         </div>
     }
 </div>

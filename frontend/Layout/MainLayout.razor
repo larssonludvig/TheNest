@@ -9,7 +9,6 @@
             <div class="nav-menu" onclick=@(() => {showNav = !showNav;})>
                 <i class="bi bi-list h1 m-0" style="color: #DBDBDB;" />
                 <h1 class="nav-menu-title">The Nest</h1>
-                <p class="nav-menu-version">@version</p>
             </div>
             <nav class="nav-content" style=@(showNav ? "display: flex;" : "")>
                 <div class="nav-title" style="cursor: pointer;" onclick=@(() => {NavigateTo($"/");})>

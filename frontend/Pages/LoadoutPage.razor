@@ -3,7 +3,7 @@
 @inject NavigationManager navManager
 
 <div class="page-content fade-in">
-    <div class="items" style="gap:2rem;">
+    <div class="items">
         <div class="item">
             <h1 class="itemHeader">Build</h1>
             <ImagePicker ImagePath=@($"images/builds/{loadout.Class}.jpg") Label=@loadout.Class Items=@availableClasses OnClick="ClassChanged" />
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div style="height:4rem;" />
+    <div style="height:2rem;" />
     <button class="large-button" @onclick="Share">
         Share
         <i class="bi bi-link" style="color: white;" />
