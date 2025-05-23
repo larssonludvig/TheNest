@@ -11,18 +11,20 @@ namespace TheNestAPI.Controllers
     public class TwitchController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public TwitchController(ApplicationDbContext context)
+        public TwitchController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet("live")]
         public async Task<ActionResult<bool>> getListOfClubs()
         {
             using var client = new HttpClient();
-            string clientId = "<clientId>";
-            string token = "<token>";
+            string clientId = _configuration["Twitch:ClientId"];
+            string token = _configuration["Twitch:Token"];
 
             client.DefaultRequestHeaders.Add("Client-ID", clientId);
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
