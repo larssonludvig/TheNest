@@ -67,6 +67,10 @@ a, .btn-link {
         padding-top: 3rem;
         position: absolute !important;
     }
+
+    .twitch-chat {
+        display: none;
+    }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
