@@ -7,9 +7,6 @@ using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Console.WriteLine("variable: \"" + Environment.GetEnvironmentVariable("Kestrel__EndPoints__Https__Certificate__Password") + "\"");
-
-
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

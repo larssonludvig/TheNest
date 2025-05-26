@@ -1,0 +1,150 @@
+@page "/notes"
+@inject ApiService ApiService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using Domain
+@using BlazorPanzoom
+@using Domain;
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using System.Globalization
+
+<div class="page-content fade-in">
+    <div class="content-header">
+        <h1 class="m-0">Notes</h1>
+        <p style="opacity: 0.8;">If you do not know what this is, then you do not belong here.</p>
+    </div>
+    <div class="content-area p-2">
+        <h3>Auth Token</h3>
+        <input type="password" placeholder="token..." @bind="token" />
+        <button @onclick="SubmitToken">Submit</button>
+        <div class="separator mt-2 mb-2" />
+        <h3>New Note</h3>
+        <textarea placeholder="note..." rows="4" cols="50" @bind="@textNote" />
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <p>Offset: </p>
+            <Dropdown>
+                <DropdownToggleButton>@offset min</DropdownToggleButton>
+                <DropdownMenu>
+                    <DropdownItem @onclick="@(() => offset = 1)">1 min</DropdownItem>
+                    <DropdownItem @onclick="@(() => offset = 2)">2 min</DropdownItem>
+                    <DropdownItem @onclick="@(() => offset = 5)">5 min</DropdownItem>
+                    <DropdownItem @onclick="@(() => offset = 10)">10 min</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <button class="large-button p-2" style="font-size: medium;" @onclick="CreateNote">Create Note</button>
+            @if (creating)
+            {
+                <Spinner Color="SpinnerColor.Primary" />
+            }
+        </div>
+        <div class="separator mt-2 mb-2" />
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <h3>Saved Notes</h3>
+            <i class="bi bi-arrow-clockwise h4" style="color: #DBDBDB;" @onclick=@(() => {FetchData();}) />
+        </div>
+        <div class="p-2" style="display: flex; width: 100%; padding-right: 16px;">
+            <span class="searchbar">
+                <input class="searchbarinput" type="text" @bind="searchString" @oninput="@(e => { searchString = e.Value?.ToString() ?? ""; })" @onkeydown="@OnInput" placeholder="Search by note" />
+                <button @onclick="@(e => FetchData(searchString))">
+                    <i class="bi bi-search" style="color: white;" />
+                </button>
+            </span>
+        </div>
+        <div class="grid">
+            @if (!loading)
+            {
+                <QuickGrid Items="@notes" Pagination="@pagination">
+                    <PropertyColumn Title="ID" Property="@(x => x.Id)" Sortable="true" InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Descending" IsDefaultSortColumn="true" Align="Align.Center" />
+                    <PropertyColumn Title="Stream" Property="@(x => x.StreamId)" Sortable="true" />
+                    <PropertyColumn Title="Elapsed" Property="@(x => x.ElapsedTime)" />
+                    <PropertyColumn Title="Offset [min]" Property="@(x => x.Offset)" />
+                    <PropertyColumn Title="Note" Property="@(x => x.Description)" />
+                    @* <TemplateColumn Title="Link">
+                        @{
+                            string link = $"https://twitch.tv/videos/{context.StreamId}?t={context.ElapsedTime}";
+                            <a href=@link>Open VOD</a>
+                        }
+                    </TemplateColumn> *@
+                </QuickGrid>
+            }
+            else
+            {
+                <span style="display: flex; align-items: center; justify-content: center; height: 100%; margin: 5rem;">
+                    <Spinner Color="SpinnerColor.Primary" />
+                </span>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private int offset = 1;
+    private IQueryable<Note>? notes = null;
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+    private bool loading = false;
+    private bool creating = false;
+    private string token = "";
+    private string textNote = "";
+    private string searchString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        token = await localStorage.GetItemAsync<string>("notesAuth") ?? "";
+        notes = default;
+        await FetchData();
+    }
+
+    private async Task FetchData(string search = "")
+    {
+        loading = true;
+        notes = null;
+        StateHasChanged();
+
+        Dictionary<string, string> headers = new Dictionary<string, string> {
+            { "Authorization", token}
+        };
+
+        List<Note> res = await ApiService.Get<List<Note>>("notes/", headers);
+        notes = res.Where(x => x.Description.ToLower().Contains(search.ToLower())).AsQueryable();
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async Task CreateNote() {
+        creating = true;
+        StateHasChanged();
+
+        Note newNote = new Note
+        {
+            Description = textNote,
+            Offset = offset
+        };
+
+        Dictionary<string, string> headers = new Dictionary<string, string> {
+            { "Authorization", token}
+        };
+
+        List<Note> res = await ApiService.Put<List<Note>, Note>("notes", newNote, headers);
+        notes = res.AsQueryable();
+
+        textNote = "";
+        creating = false;
+        StateHasChanged();
+    }
+
+    private async Task OnInput(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" || e.Key == "NumpadEnter")
+        {
+            await FetchData(searchString);
+        }
+    }
+
+    private async Task SubmitToken()
+    {
+        await localStorage.SetItemAsync("notesAuth", token);
+        await FetchData();
+    }
+}

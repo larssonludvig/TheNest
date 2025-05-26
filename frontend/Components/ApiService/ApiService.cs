@@ -14,12 +14,12 @@ namespace Components.ApiService
         public Task Initialize(string? baseUrl = null)
         {
             _httpClient = new HttpClient();
-            
+
             if (!string.IsNullOrEmpty(baseUrl))
                 _httpClient.BaseAddress = new System.Uri(baseUrl);
-            else    
+            else
                 _httpClient.BaseAddress = new System.Uri(_baseUrl);
-            
+
             return Task.CompletedTask;
         }
 
@@ -44,6 +44,36 @@ namespace Components.ApiService
             }
 
             var response = await _httpClient.GetAsync(endpoint);
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+
+                T? data = JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (data == null)
+                    throw new System.Exception("Failed to deserialize response");
+
+                return data;
+            }
+            throw new System.Exception("Failed to fetch data");
+        }
+        
+         public async Task<T> Put<T, V>(string endpoint, V body, Dictionary<string, string>? headers = null)
+        {
+            await Initialize();
+
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+            }
+
+            var response = await _httpClient.PutAsJsonAsync(endpoint, body);
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
