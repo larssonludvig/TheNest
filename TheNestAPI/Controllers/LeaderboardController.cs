@@ -28,7 +28,7 @@ namespace TheNestAPI.Controllers
                 .Where(x => x.Name == name)
                 .OrderByDescending(x => x.Timestamp)
                 .FirstOrDefaultAsync();
-            
+
             Leagues league = await _context.Leagues
                 .Where(x => x.Id == entry.LeagueNumber)
                 .FirstOrDefaultAsync();
@@ -36,7 +36,8 @@ namespace TheNestAPI.Controllers
             if (entry == null)
                 return NotFound("Failed to get leaderboard by username.");
 
-            return new LeaderboardEntry {
+            return new LeaderboardEntry
+            {
                 Name = entry.Name,
                 Rank = entry.RankScore,
                 League = league.Name,
@@ -49,9 +50,9 @@ namespace TheNestAPI.Controllers
         public async Task<ActionResult<LeaderboardHistory>> GetLeaderboardHistoryOfUser(string name, [FromQuery(Name = "from")] DateTime? from, [FromQuery(Name = "to")] DateTime? to)
         {
             DateTime now = DateTime.Now;
-            
+
             List<LeaderboardS6> res;
-            
+
             if (from != null && to != null)
             {
                 res = await _context.LeaderboardS6.Where(x =>
@@ -70,7 +71,8 @@ namespace TheNestAPI.Controllers
                 ).ToListAsync();
             }
 
-            return new LeaderboardHistory {
+            return new LeaderboardHistory
+            {
                 Name = name,
                 Ranks = res.Select(x => x.RankScore).ToList(),
                 Timestamps = res.Where(x => x.Timestamp.HasValue).Select(x => x.Timestamp.Value).ToList()
@@ -82,9 +84,9 @@ namespace TheNestAPI.Controllers
         public async Task<ActionResult<LeaderboardHistory>> GetRubyHistory([FromQuery(Name = "from")] DateTime? from, [FromQuery(Name = "to")] DateTime? to)
         {
             DateTime now = DateTime.Now;
-            
+
             List<LeaderboardS6> res;
-            
+
             if (from != null && to != null)
             {
                 res = await _context.LeaderboardS6.Where(x =>
@@ -103,7 +105,8 @@ namespace TheNestAPI.Controllers
                 ).ToListAsync();
             }
 
-            return new LeaderboardHistory {
+            return new LeaderboardHistory
+            {
                 Name = "Ruby",
                 Ranks = res.Select(x => x.RankScore).ToList(),
                 Timestamps = res.Where(x => x.Timestamp.HasValue).Select(x => x.Timestamp.Value).ToList()
@@ -150,6 +153,46 @@ namespace TheNestAPI.Controllers
                     Timestamp = x.Timestamp
                 }).ToList()
             };
+        }
+
+        [HttpGet]
+        [Route("{name}/string")]
+        public async Task<string> getUserString(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "PlopparnTV";
+            }
+
+            using var client = new HttpClient();
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s6/crossplay");
+            var content = await response.Content.ReadAsStringAsync();
+            var json = System.Text.Json.JsonDocument.Parse(content);
+            var data = json.RootElement.GetProperty("data");
+
+            foreach (var item in data.EnumerateArray())
+            {
+                if (item.GetProperty("name").GetString().Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return $"{name} is rank {item.GetProperty("rank")} with {item.GetProperty("rankScore")}rs";
+                }
+            }
+            return $"{name} not found in top 10k";
+        }
+
+        [HttpGet]
+        [Route("ruby/string")]
+        public async Task<string> getUserString()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s6/crossplay");
+            var content = await response.Content.ReadAsStringAsync();
+            var json = System.Text.Json.JsonDocument.Parse(content);
+            var data = json.RootElement.GetProperty("data");
+
+            var last = data[500];
+
+            return $"The border to Ruby is currently {last.GetProperty("rankScore")}rs";
         }
     }
 }
