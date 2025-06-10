@@ -11,10 +11,12 @@
         <div class="p-2" style="width: 100%;">
             @if (ploppIsLive)
             {
-                <h3 style="width: 100%;;">Plopparn is live!</h3>
-                <div style="aspect-ratio:16/9;max-width:800px;">
+                <h3 style="width: 100%;">Plopparn is live!</h3>
+                <div style="aspect-ratio: 16/9; max-width: 1000px; display: flex;">
                     <iframe src="https://player.twitch.tv/?channel=plopparntv&parent=plopparn.tv&autoplay=true&muted=true&time=0s" width="100%" height="100%" frameborder="0" allowfullscreen style="" />
+                    <iframe class="twitch-chat" src="https://www.twitch.tv/embed/plopparntv/chat?parent=plopparn.tv&darkpopout" height="100%"/>
                 </div>
+                <div class="separator mt-2 mb-2" />
             }
 
             <h2 style="width: 100%;">Hello There!</h2>
