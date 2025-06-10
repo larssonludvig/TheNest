@@ -69,11 +69,11 @@ namespace TheNestAPI.Controllers
             note.ElapsedTime = $"{elapsed.Hours:D2}h{elapsed.Minutes:D2}m{elapsed.Seconds:D2}s";
             note.Game = data[0].GetProperty("game_name").GetString();
 
-            // response = await client.GetAsync($"https://api.twitch.tv/helix/videos?user_id={data[0].GetProperty("user_id").GetString()}");
-            // content = await response.Content.ReadAsStringAsync();
+            response = await client.GetAsync($"https://api.twitch.tv/helix/videos?user_id={data[0].GetProperty("user_id").GetString()}");
+            content = await response.Content.ReadAsStringAsync();
 
-            // json = System.Text.Json.JsonDocument.Parse(content);
-            // data = json.RootElement.GetProperty("data");
+            json = System.Text.Json.JsonDocument.Parse(content);
+            data = json.RootElement.GetProperty("data");
 
             note.StreamId = data[0].GetProperty("id").ToString();
 

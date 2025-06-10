@@ -20,7 +20,7 @@ namespace TheNestAPI.Controllers
         }
 
         [HttpGet("live")]
-        public async Task<ActionResult<bool>> getListOfClubs()
+        public async Task<ActionResult<bool>> getLiveStatus()
         {
             using var client = new HttpClient();
             string clientId = _configuration["Twitch:ClientId"];

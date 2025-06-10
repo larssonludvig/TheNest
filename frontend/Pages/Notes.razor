@@ -60,12 +60,12 @@
                     <PropertyColumn Title="Elapsed" Property="@(x => x.ElapsedTime)" />
                     <PropertyColumn Title="Offset [min]" Property="@(x => x.Offset)" />
                     <PropertyColumn Title="Note" Property="@(x => x.Description)" />
-                    @* <TemplateColumn Title="Link">
+                    <TemplateColumn Title="Link">
                         @{
                             string link = $"https://twitch.tv/videos/{context.StreamId}?t={context.ElapsedTime}";
                             <a href=@link>Open VOD</a>
                         }
-                    </TemplateColumn> *@
+                    </TemplateColumn>
                 </QuickGrid>
             }
             else
