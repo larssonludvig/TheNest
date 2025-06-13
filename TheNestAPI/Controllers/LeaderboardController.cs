@@ -24,7 +24,7 @@ namespace TheNestAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult<LeaderboardEntry>> GetLeaderboardEntry(string name)
         {
-            LeaderboardS6? entry = await _context.LeaderboardS6
+            LeaderboardS6? entry = await _context.LeaderboardLastWeek
                 .Where(x => x.Name == name)
                 .OrderByDescending(x => x.Timestamp)
                 .FirstOrDefaultAsync();
@@ -49,25 +49,28 @@ namespace TheNestAPI.Controllers
         [Route("{name}/history")]
         public async Task<ActionResult<LeaderboardHistory>> GetLeaderboardHistoryOfUser(string name, [FromQuery(Name = "from")] DateTime? from, [FromQuery(Name = "to")] DateTime? to)
         {
-            DateTime now = DateTime.Now;
+            // DateTime now = DateTime.Now;
 
             List<LeaderboardS6> res;
 
             if (from != null && to != null)
             {
-                res = await _context.LeaderboardS6.Where(x =>
-                    x.Name == name &&
-                    x.Timestamp.HasValue &&
-                    DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
-                ).ToListAsync();
+                res = await _context.LeaderboardLastWeek
+                    .Where(x =>
+                        x.Name == name
+                        //  &&
+                        // x.Timestamp.HasValue &&
+                        // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
+                        // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
+                    ).ToListAsync();
             }
             else
             {
-                res = await _context.LeaderboardS6.Where(x =>
-                    x.Name == name &&
-                    x.Timestamp.HasValue &&
-                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
+                res = await _context.LeaderboardLastWeek.Where(x =>
+                    x.Name == name
+                    // &&
+                    // x.Timestamp.HasValue &&
+                    // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 
@@ -89,19 +92,22 @@ namespace TheNestAPI.Controllers
 
             if (from != null && to != null)
             {
-                res = await _context.LeaderboardS6.Where(x =>
-                    x.RankPosition == 500 &&
-                    x.Timestamp.HasValue &&
-                    DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                    DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
-                ).ToListAsync();
+                res = await _context.LeaderboardLastWeek
+                    .Where(x =>
+                        x.RankPosition == 500
+                        // &&
+                        // x.Timestamp.HasValue &&
+                        // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
+                        // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
+                    ).ToListAsync();
             }
             else
             {
-                res = await _context.LeaderboardS6.Where(x =>
-                    x.RankPosition == 500 &&
-                    x.Timestamp.HasValue &&
-                    DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
+                res = await _context.LeaderboardLastWeek.Where(x =>
+                    x.RankPosition == 500
+                    // &&
+                    // x.Timestamp.HasValue &&
+                    // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 
@@ -122,7 +128,7 @@ namespace TheNestAPI.Controllers
             if (user == null)
                 return NotFound($"User {name} not found.");
 
-            var result = await (from leaderboard in _context.LeaderboardS6
+            var result = await (from leaderboard in _context.LeaderboardS7
                                 join league in _context.Leagues
                                 on leaderboard.LeagueNumber equals league.Id
                                 where leaderboard.Name == name
@@ -165,7 +171,7 @@ namespace TheNestAPI.Controllers
             }
 
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s6/crossplay");
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s7/crossplay");
             var content = await response.Content.ReadAsStringAsync();
             var json = System.Text.Json.JsonDocument.Parse(content);
             var data = json.RootElement.GetProperty("data");
@@ -174,7 +180,7 @@ namespace TheNestAPI.Controllers
             {
                 if (item.GetProperty("name").GetString().Contains(name, StringComparison.OrdinalIgnoreCase))
                 {
-                    return $"{name} is rank {item.GetProperty("rank")} with {item.GetProperty("rankScore")}rs";
+                    return $"{item.GetProperty("name")} is rank {item.GetProperty("rank")} with {item.GetProperty("rankScore")} RS";
                 }
             }
             return $"{name} not found in top 10k";
@@ -185,14 +191,14 @@ namespace TheNestAPI.Controllers
         public async Task<string> getUserString()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s6/crossplay");
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s7/crossplay");
             var content = await response.Content.ReadAsStringAsync();
             var json = System.Text.Json.JsonDocument.Parse(content);
             var data = json.RootElement.GetProperty("data");
 
             var last = data[500];
 
-            return $"The border to Ruby is currently {last.GetProperty("rankScore")}rs";
+            return $"The border to Ruby is currently {last.GetProperty("rankScore")} RS";
         }
     }
 }

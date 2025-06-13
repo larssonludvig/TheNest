@@ -40,11 +40,11 @@ def update_clubs():
                     SELECT U.ClubTag, COUNT(1) AS Users, SUM(L.RankScore) AS RankScore
                     FROM (
                         SELECT Name, MAX(Timestamp) AS LatestTimestamp
-                        FROM LeaderboardS6
-                        WHERE Season = 's6' AND Timestamp >= NOW() - INTERVAL 1 HOUR
+                        FROM LeaderboardLastWeek
+                        WHERE Season = 's7' AND Timestamp >= NOW() - INTERVAL 1 HOUR
                         GROUP BY Name
                     ) AS LatestLeaderboard
-                    INNER JOIN LeaderboardS6 L ON LatestLeaderboard.Name = L.Name AND LatestLeaderboard.LatestTimestamp = L.Timestamp AND L.Season = 's6'
+                    INNER JOIN LeaderboardLastWeek L ON LatestLeaderboard.Name = L.Name AND LatestLeaderboard.LatestTimestamp = L.Timestamp AND L.Season = 's7'
                     INNER JOIN Users U ON L.Name = U.Name
                     WHERE U.ClubTag IS NOT NULL AND TRIM(U.ClubTag) <> ''
                     GROUP BY U.ClubTag

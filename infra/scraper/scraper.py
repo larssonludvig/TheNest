@@ -9,7 +9,7 @@ def connect_to_db():
         connection = mysql.connector.connect(
             user='root',
             host='10.43.114.2',
-            password='<pass>',
+            password='',
             port='3306',
             database='thefinals'
         )
@@ -29,11 +29,23 @@ def insert_data(data):
             timestamp = datetime.now()
             for item in data.get('data'):
                 cursor.execute("""
-                    INSERT INTO LeaderboardS6 (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
+                    INSERT INTO LeaderboardS7 (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, (
-                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s6"
+                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s7"
                     )
+                )
+                cursor.execute("""
+                    INSERT INTO LeaderboardLastWeek (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    """, (
+                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s7"
+                    )
+                )
+                cursor.execute("""
+                    DELETE FROM LeaderboardLastWeek
+                    WHERE Timestamp < NOW() - INTERVAL 7 DAY
+                    """
                 )
                 cursor.execute("""
                     INSERT INTO Users (Name, SteamName, XboxName, PsnName, ClubTag)
@@ -58,7 +70,7 @@ def insert_data(data):
         print("no connection to the databse.")
 
 def scrape_api():
-    url = "https://api.the-finals-leaderboard.com/v1/leaderboard/s6/crossplay"
+    url = "https://api.the-finals-leaderboard.com/v1/leaderboard/s7/crossplay"
     print("Scraping started!")
     response = requests.get(url)
     if response.status_code == 200:
@@ -71,4 +83,4 @@ def scrape_api():
 if __name__ == "__main__":
     while True:
         scrape_api()
-        time.sleep(900)
+        time.sleep(1800)
