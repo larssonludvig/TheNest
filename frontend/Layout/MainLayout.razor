@@ -44,6 +44,10 @@
                     <i class="bi bi-map" style="color: #DBDBDB;" />
                     <a class="menu-link">Maps</a>
                 </div>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"/challenges");})>
+                    <i class="bi bi-rocket-takeoff" style="color: #DBDBDB;" />
+                    <a class="menu-link">Challenges</a>
+                </div>
                 <div class="separator mb-3 mt-3" />
                 <div class="menu-item" onclick=@(() => {NavigateTo($"https://discord.com/invite/EMVAKruWrY");})>
                     <i class="bi bi-discord" style="color: #DBDBDB;" />
@@ -51,7 +55,11 @@
                 </div>
                 <div class="menu-item" onclick=@(() => {NavigateTo($"https://www.twitch.tv/plopparntv");})>
                     <i class="bi bi-twitch" style="color: #DBDBDB;" />
-                    <a class="menu-link">Stream</a>
+                    <a class="menu-link">Twitch</a>
+                </div>
+                <div class="menu-item" onclick=@(() => {NavigateTo($"https://www.youtube.com/@PlopparnTV");})>
+                    <i class="bi bi-youtube" style="color: #DBDBDB;" />
+                    <a class="menu-link">YouTube</a>
                 </div>
                 <div class="separator mb-3 mt-3" />
                 <div class="menu-item" onclick=@(() => {NavigateTo($"/terms-of-service");})>
