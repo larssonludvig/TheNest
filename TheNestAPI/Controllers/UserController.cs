@@ -21,7 +21,7 @@ namespace TheNestAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult<User>> GetUser(string name)
         {
-            LeaderboardS6? res = await _context.LeaderboardLastWeek
+            LeaderboardLastWeek? res = await _context.LeaderboardLastWeek
                 .Where(x => x.Name == name)
                 .OrderByDescending(x => x.Timestamp)
                 .FirstOrDefaultAsync();
@@ -56,56 +56,57 @@ namespace TheNestAPI.Controllers
         [Route("{name}/history")]
         public async Task<ActionResult<UserHistory>> GetUserHistory(string name)
         {
-            List<Leaderboard> res = await _context.Leaderboard
-                .Where(x => x.Name == name)
-                .ToListAsync();
+            return NotFound();
+            // List<Leaderboard> res = await _context.Leaderboard
+            //     .Where(x => x.Name == name)
+            //     .ToListAsync();
 
-            if (res.Count == 0)
-                return NotFound("There is no history of user: " + name);
+            // if (res.Count == 0)
+            //     return NotFound("There is no history of user: " + name);
 
-            UserHistory user = new UserHistory();
+            // UserHistory user = new UserHistory();
 
-            foreach (Leaderboard item in res)
-            {
-                if (string.IsNullOrEmpty(item.Season))
-                    break;
+            // foreach (Leaderboard item in res)
+            // {
+            //     if (string.IsNullOrEmpty(item.Season))
+            //         break;
 
-                Leagues league = await _context.Leagues
-                    .Where(x => x.Id == item.LeagueNumber)
-                    .FirstOrDefaultAsync();
+            //     Leagues league = await _context.Leagues
+            //         .Where(x => x.Id == item.LeagueNumber)
+            //         .FirstOrDefaultAsync();
 
-                switch (item.Season)
-                {
-                    case "cb1":
-                        user.CB1 = league.Name;
-                        break;
-                    case "cb2":
-                        user.CB2 = league.Name;
-                        break;
-                    case "ob":
-                        user.OB = league.Name;
-                        break;
-                    case "s1":
-                        user.S1 = league.Name;
-                        break;
-                    case "s2":
-                        user.S2 = league.Name;
-                        break;
-                    case "s3":
-                        user.S3 = league.Name;
-                        break;
-                    case "s4":
-                        user.S4 = league.Name;
-                        break;
-                    case "s5":
-                        user.S5 = league.Name;
-                        break;    
-                    default:
-                        break;
-                }
-            }
+            //     switch (item.Season)
+            //     {
+            //         case "cb1":
+            //             user.CB1 = league.Name;
+            //             break;
+            //         case "cb2":
+            //             user.CB2 = league.Name;
+            //             break;
+            //         case "ob":
+            //             user.OB = league.Name;
+            //             break;
+            //         case "s1":
+            //             user.S1 = league.Name;
+            //             break;
+            //         case "s2":
+            //             user.S2 = league.Name;
+            //             break;
+            //         case "s3":
+            //             user.S3 = league.Name;
+            //             break;
+            //         case "s4":
+            //             user.S4 = league.Name;
+            //             break;
+            //         case "s5":
+            //             user.S5 = league.Name;
+            //             break;    
+            //         default:
+            //             break;
+            //     }
+            // }
 
-            return user;
+            // return user;
         }
     }
 }

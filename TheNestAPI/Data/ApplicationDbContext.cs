@@ -12,8 +12,8 @@ namespace TheNestAPI.Data
 
         public DbSet<Leaderboard> Leaderboard { get; set; }
         public DbSet<LeaderboardS6> LeaderboardS6 { get; set; }
-        public DbSet<LeaderboardS6> LeaderboardS7 { get; set; }
-        public DbSet<LeaderboardS6> LeaderboardLastWeek { get; set; }
+        public DbSet<LeaderboardS7> LeaderboardS7 { get; set; }
+        public DbSet<LeaderboardLastWeek> LeaderboardLastWeek { get; set; }
         public DbSet<Builds> Builds { get; set; }
         public DbSet<Specializations> Specializations { get; set; }
         public DbSet<Weapons> Weapons { get; set; }
