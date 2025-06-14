@@ -144,7 +144,10 @@ INSERT INTO Gadgets (Name, Heavy, Medium, Light) VALUES
 ('Dome_Shield', TRUE, FALSE, FALSE),
 ('Anti-Gravity_Cube', TRUE, FALSE, FALSE),
 ('Lockbolt_Launcher', TRUE, FALSE, FALSE),
-('Nullifier', FALSE, FALSE, TRUE);
+('Nullifier', FALSE, FALSE, TRUE),
+('H+_Infuser', FALSE, FALSE, TRUE),
+('Breach_Drill', FALSE, TRUE, FALSE),
+('Healing_Emitter', TRUE, FALSE, FALSE);
 
 
 

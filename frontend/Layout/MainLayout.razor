@@ -16,35 +16,35 @@
                     <p style="opacity: 0.7;">@version</p>
                 </div>
                 <div class="separator mb-3" />
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/");})>
+                <div class="menu-item" style=@(currentPage == "/" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/");})>
                     <i class="bi bi-house" style="color: #DBDBDB;"/>
                     <a class="menu-link">Home</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/loadout");})>
+                <div class="menu-item" style=@(currentPage == "/loadout" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/loadout");})>
                     <i class="bi bi-pencil" style="color: #DBDBDB;" />
                     <a class="menu-link">Loadout</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/randomizer");})>
+                <div class="menu-item" style=@(currentPage == "/randomizer" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/randomizer");})>
                     <i class="bi bi-dice-5" style="color: #DBDBDB;" />
                     <a class="menu-link">Randomizer</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/randomizer/options");})>
+                <div class="menu-item" style=@(currentPage == "/randomizer/options" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/randomizer/options");})>
                     @* <i class="bi bi-gear" style="color: #DBDBDB;" /> *@
                     <a class="submenu-link">Options</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/leaderboard");})>
+                <div class="menu-item" style=@(currentPage == "/leaderboard" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/leaderboard");})>
                     <i class="bi bi-bar-chart" style="color: #DBDBDB;" />
                     <a class="menu-link">Leaderboard</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/clubs");})>
+                <div class="menu-item" style=@(currentPage == "/clubs" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/clubs");})>
                     @* <i class="bi bi-egg" style="color: #DBDBDB;" /> *@
                     <a class="submenu-link">Clubs</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/maps");})>
+                <div class="menu-item" style=@(currentPage == "/maps" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/maps");})>
                     <i class="bi bi-map" style="color: #DBDBDB;" />
                     <a class="menu-link">Maps</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/challenges");})>
+                <div class="menu-item" style=@(currentPage == "/challenges" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/challenges");})>
                     <i class="bi bi-rocket-takeoff" style="color: #DBDBDB;" />
                     <a class="menu-link">Challenges</a>
                 </div>
@@ -62,10 +62,10 @@
                     <a class="menu-link">YouTube</a>
                 </div>
                 <div class="separator mb-3 mt-3" />
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/terms-of-service");})>
+                <div class="menu-item" style=@(currentPage == "/terms-of-service" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/terms-of-service");})>
                     <a class="submenu-link">Terms of Service</a>
                 </div>
-                <div class="menu-item" onclick=@(() => {NavigateTo($"/privacy-policy");})>
+                <div class="menu-item" style=@(currentPage == "/privacy-policy" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/privacy-policy");})>
                     <a class="submenu-link">Privacy Policy</a>
                 </div>
             </nav>
@@ -78,6 +78,7 @@
 @code {
     private string version = "";
     private bool showNav = false;
+    private string currentPage = "/";
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -97,6 +98,7 @@
     private void NavigateTo(string path)
     {
         showNav = false;
+        currentPage = path;
         _nav.NavigateTo(path);
     }
 }

@@ -43,11 +43,6 @@ def insert_data(data):
                     )
                 )
                 cursor.execute("""
-                    DELETE FROM LeaderboardLastWeek
-                    WHERE Timestamp < NOW() - INTERVAL 7 DAY
-                    """
-                )
-                cursor.execute("""
                     INSERT INTO Users (Name, SteamName, XboxName, PsnName, ClubTag)
                     VALUES (%s, %s, %s, %s, %s)
                     ON DUPLICATE KEY UPDATE
