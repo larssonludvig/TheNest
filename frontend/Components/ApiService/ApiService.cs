@@ -61,7 +61,7 @@ namespace Components.ApiService
             throw new System.Exception("Failed to fetch data");
         }
         
-         public async Task<T> Put<T, V>(string endpoint, V body, Dictionary<string, string>? headers = null)
+        public async Task<T> Put<T, V>(string endpoint, V body, Dictionary<string, string>? headers = null)
         {
             await Initialize();
 
@@ -74,6 +74,36 @@ namespace Components.ApiService
             }
 
             var response = await _httpClient.PutAsJsonAsync(endpoint, body);
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+
+                T? data = JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (data == null)
+                    throw new System.Exception("Failed to deserialize response");
+
+                return data;
+            }
+            throw new System.Exception("Failed to fetch data");
+        }
+
+        public async Task<T> Post<T, V>(string endpoint, V body, Dictionary<string, string>? headers = null)
+        {
+            await Initialize();
+
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+            }
+
+            var response = await _httpClient.PostAsJsonAsync(endpoint, body);
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();

@@ -8,5 +8,6 @@ namespace Domain
         public string Game { get; set; } = "";
         public string ElapsedTime { get; set; } = "";
         public int Offset { get; set; }
+        public bool Used { get; set; } = false;
     }
 }

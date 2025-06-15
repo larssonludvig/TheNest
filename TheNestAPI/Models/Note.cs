@@ -8,5 +8,6 @@ namespace TheNestAPI.Models
         public string Game { get; set; } = "";
         public string ElapsedTime { get; set; } = "";
         public int offset { get; set; }
+        public bool Used { get; set; } = false;
     }
 }

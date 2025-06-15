@@ -19,7 +19,7 @@
         <div class="separator mt-2 mb-2" />
         <h3>New Note</h3>
         <textarea placeholder="note..." rows="4" cols="50" @bind="@textNote" />
-        <div style="display: flex; gap: 1rem; align-items: center;">
+        @* <div style="display: flex; gap: 1rem; align-items: center;">
             <p>Offset: </p>
             <Dropdown>
                 <DropdownToggleButton>@offset min</DropdownToggleButton>
@@ -30,7 +30,7 @@
                     <DropdownItem @onclick="@(() => offset = 10)">10 min</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-        </div>
+        </div> *@
         <div style="display: flex; gap: 1rem; align-items: center;">
             <button class="large-button p-2" style="font-size: medium;" @onclick="CreateNote">Create Note</button>
             @if (creating)
@@ -56,15 +56,18 @@
             {
                 <QuickGrid Items="@notes" Pagination="@pagination">
                     <PropertyColumn Title="ID" Property="@(x => x.Id)" Sortable="true" InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Descending" IsDefaultSortColumn="true" Align="Align.Center" />
-                    <PropertyColumn Title="Stream" Property="@(x => x.StreamId)" Sortable="true" />
-                    <PropertyColumn Title="Elapsed" Property="@(x => x.ElapsedTime)" />
-                    <PropertyColumn Title="Offset [min]" Property="@(x => x.Offset)" />
+                    @* <PropertyColumn Title="Stream" Property="@(x => x.StreamId)" Sortable="true" /> *@
+                    @* <PropertyColumn Title="Elapsed" Property="@(x => x.ElapsedTime)" /> *@
+                    @* <PropertyColumn Title="Offset [min]" Property="@(x => x.Offset)" /> *@
                     <PropertyColumn Title="Note" Property="@(x => x.Description)" />
                     <TemplateColumn Title="Link">
                         @{
                             string link = $"https://twitch.tv/videos/{context.StreamId}?t={context.ElapsedTime}";
-                            <a href=@link>Open VOD</a>
+                            <a style="color: #DBDBDB" href=@link>VOD</a>
                         }
+                    </TemplateColumn>
+                    <TemplateColumn Title="Used">
+                        <Switch @bind-value="context.Used" @onclick=@(() => { ToggleUsed(context.Id); }) />
                     </TemplateColumn>
                 </QuickGrid>
                 <Paginator State=pagination />
@@ -147,5 +150,21 @@
     {
         await localStorage.SetItemAsync("notesAuth", token);
         await FetchData();
+    }
+
+    private async Task ToggleUsed(int id)
+    {
+        loading = true;
+        StateHasChanged();
+
+        Dictionary<string, string> headers = new Dictionary<string, string> {
+            { "Authorization", token}
+        };
+
+        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}", 1, headers);
+        notes = res.AsQueryable();
+
+        loading = false;
+        StateHasChanged();
     }
 }

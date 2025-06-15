@@ -82,5 +82,33 @@ namespace TheNestAPI.Controllers
 
             return await _context.Notes.ToListAsync();
         }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<List<Note>>> ToggleUsedStatus(int id)
+        {
+            string authToken = Request.Headers["Authorization"];
+            string storedToken = await _context.Generic
+                .Where(x => x.Key == "notesAuth")
+                .Select(x => x.Value)
+                .FirstOrDefaultAsync();
+
+            if (storedToken == null || authToken != storedToken)
+            {
+                return Unauthorized("Invalid auth token.");
+            }
+
+            var entity = await _context.Notes
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (entity != null)
+            {
+                entity.Used = !entity.Used;
+                await _context.SaveChangesAsync();
+                return await _context.Notes.ToListAsync();
+            }
+
+            return NotFound($"No note with id \"{id}\" found.");
+        }
     }
 }
