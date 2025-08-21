@@ -58,19 +58,19 @@ namespace TheNestAPI.Controllers
                 res = await _context.LeaderboardLastWeek
                     .Where(x =>
                         x.Name == name
-                        //  &&
-                        // x.Timestamp.HasValue &&
-                        // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                        // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
+                    //  &&
+                    // x.Timestamp.HasValue &&
+                    // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
+                    // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
                     ).ToListAsync();
             }
             else
             {
                 res = await _context.LeaderboardLastWeek.Where(x =>
                     x.Name == name
-                    // &&
-                    // x.Timestamp.HasValue &&
-                    // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
+                // &&
+                // x.Timestamp.HasValue &&
+                // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 
@@ -95,19 +95,19 @@ namespace TheNestAPI.Controllers
                 res = await _context.LeaderboardLastWeek
                     .Where(x =>
                         x.RankPosition == 500
-                        // &&
-                        // x.Timestamp.HasValue &&
-                        // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                        // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
+                    // &&
+                    // x.Timestamp.HasValue &&
+                    // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
+                    // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
                     ).ToListAsync();
             }
             else
             {
                 res = await _context.LeaderboardLastWeek.Where(x =>
                     x.RankPosition == 500
-                    // &&
-                    // x.Timestamp.HasValue &&
-                    // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
+                // &&
+                // x.Timestamp.HasValue &&
+                // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 
@@ -199,6 +199,31 @@ namespace TheNestAPI.Controllers
             var last = data[500];
 
             return $"The border to Ruby is currently {last.GetProperty("rankScore")} RS";
+        }
+
+        [HttpGet]
+        [Route("wt/{name}/string")]
+        public async Task<string> getWTUserString(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "PlopparnTV";
+            }
+
+            using var client = new HttpClient();
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s7worldtour/crossplay");
+            var content = await response.Content.ReadAsStringAsync();
+            var json = System.Text.Json.JsonDocument.Parse(content);
+            var data = json.RootElement.GetProperty("data");
+
+            foreach (var item in data.EnumerateArray())
+            {
+                if (item.GetProperty("name").GetString().Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return $"{item.GetProperty("name")} is rank {item.GetProperty("rank")} with {item.GetProperty("cashouts").GetInt64().ToString("N0")}$ in world tour";
+                }
+            }
+            return $"{name} not found in top 10k";
         }
     }
 }

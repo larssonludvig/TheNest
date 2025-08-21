@@ -33,7 +33,23 @@ namespace TheNestAPI.Controllers
                 return Unauthorized("Invalid auth token.");
             }
 
-            return await _context.Notes.ToListAsync();
+            bool includeOld = false;
+
+            string? includeOldHeader = Request.Headers["includeold"];
+
+            if (!string.IsNullOrWhiteSpace(includeOldHeader) && bool.TryParse(includeOldHeader, out bool parsedValue))
+            {
+                includeOld = parsedValue;
+            }
+
+            if (includeOld)
+            {
+                return await _context.Notes.ToListAsync();
+            }
+            return await _context.Notes
+                .Where(x => DateTime.Compare(DateTime.Now.AddDays(-14), x.Created ?? DateTime.Now.AddDays(-15)) <= 0)
+                .ToListAsync();
+                
         }
 
         [HttpPut]
@@ -68,6 +84,7 @@ namespace TheNestAPI.Controllers
             TimeSpan elapsed = now - start;
             note.ElapsedTime = $"{elapsed.Hours:D2}h{elapsed.Minutes:D2}m{elapsed.Seconds:D2}s";
             note.Game = data[0].GetProperty("game_name").GetString();
+            note.Created = DateTime.Now;
 
             response = await client.GetAsync($"https://api.twitch.tv/helix/videos?user_id={data[0].GetProperty("user_id").GetString()}");
             content = await response.Content.ReadAsStringAsync();
@@ -80,7 +97,9 @@ namespace TheNestAPI.Controllers
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
-            return await _context.Notes.ToListAsync();
+            return await _context.Notes
+                .Where(x => DateTime.Compare(DateTime.Now.AddDays(-14), x.Created ?? DateTime.Now.AddDays(-15)) <= 0)
+                .ToListAsync();
         }
 
         [HttpPost("{id}")]
