@@ -41,10 +41,10 @@ def update_clubs():
                     FROM (
                         SELECT Name, MAX(Timestamp) AS LatestTimestamp
                         FROM LeaderboardLastWeek
-                        WHERE Season = 's7' AND Timestamp >= NOW() - INTERVAL 1 HOUR
+                        WHERE Season = 's8' AND Timestamp >= NOW() - INTERVAL 1 HOUR
                         GROUP BY Name
                     ) AS LatestLeaderboard
-                    INNER JOIN LeaderboardLastWeek L ON LatestLeaderboard.Name = L.Name AND LatestLeaderboard.LatestTimestamp = L.Timestamp AND L.Season = 's7'
+                    INNER JOIN LeaderboardLastWeek L ON LatestLeaderboard.Name = L.Name AND LatestLeaderboard.LatestTimestamp = L.Timestamp AND L.Season = 's8'
                     INNER JOIN Users U ON L.Name = U.Name
                     WHERE U.ClubTag IS NOT NULL AND TRIM(U.ClubTag) <> ''
                     GROUP BY U.ClubTag

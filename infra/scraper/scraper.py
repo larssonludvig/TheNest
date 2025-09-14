@@ -29,17 +29,17 @@ def insert_data(data):
             timestamp = datetime.now()
             for item in data.get('data'):
                 cursor.execute("""
-                    INSERT INTO LeaderboardS7 (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
+                    INSERT INTO LeaderboardS8 (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, (
-                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s7"
+                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s8"
                     )
                 )
                 cursor.execute("""
                     INSERT INTO LeaderboardLastWeek (Name, RankPosition, ChangeAmount, LeagueNumber, RankScore, Timestamp, Season)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, (
-                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s7"
+                        item.get('name'), item.get('rank'), item.get('change'), item.get('leagueNumber'), item.get('rankScore'), timestamp, "s8"
                     )
                 )
                 cursor.execute("""
@@ -65,7 +65,7 @@ def insert_data(data):
         print("no connection to the databse.")
 
 def scrape_api():
-    url = "https://api.the-finals-leaderboard.com/v1/leaderboard/s7/crossplay"
+    url = "https://api.the-finals-leaderboard.com/v1/leaderboard/s8/crossplay"
     print("Scraping started!")
     response = requests.get(url)
     if response.status_code == 200:

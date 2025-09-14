@@ -1,4 +1,4 @@
-CREATE TABLE LeaderboardS7 (
+CREATE TABLE LeaderboardS8 (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     RankPosition INT NOT NULL,

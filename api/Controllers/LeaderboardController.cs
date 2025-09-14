@@ -128,7 +128,7 @@ namespace TheNestAPI.Controllers
             if (user == null)
                 return NotFound($"User {name} not found.");
 
-            var result = await (from leaderboard in _context.LeaderboardS7
+            var result = await (from leaderboard in _context.LeaderboardS8
                                 join league in _context.Leagues
                                 on leaderboard.LeagueNumber equals league.Id
                                 where leaderboard.Name == name
@@ -171,7 +171,7 @@ namespace TheNestAPI.Controllers
             }
 
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s7/crossplay");
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s8/crossplay");
             var content = await response.Content.ReadAsStringAsync();
             var json = System.Text.Json.JsonDocument.Parse(content);
             var data = json.RootElement.GetProperty("data");
@@ -191,7 +191,7 @@ namespace TheNestAPI.Controllers
         public async Task<string> getUserString()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s7/crossplay");
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s/crossplay");
             var content = await response.Content.ReadAsStringAsync();
             var json = System.Text.Json.JsonDocument.Parse(content);
             var data = json.RootElement.GetProperty("data");
@@ -211,7 +211,7 @@ namespace TheNestAPI.Controllers
             }
 
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s7worldtour/crossplay");
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s8worldtour/crossplay");
             var content = await response.Content.ReadAsStringAsync();
             var json = System.Text.Json.JsonDocument.Parse(content);
             var data = json.RootElement.GetProperty("data");
@@ -225,5 +225,32 @@ namespace TheNestAPI.Controllers
             }
             return $"{name} not found in top 10k";
         }
+
+        [HttpGet]
+        [Route("tdm/{name}/string")]
+        public async Task<string> getTDMUserString(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "PlopparnTV";
+            }
+
+            using var client = new HttpClient();
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s8teamdeathmatch/crossplay");
+            var content = await response.Content.ReadAsStringAsync();
+            var json = System.Text.Json.JsonDocument.Parse(content);
+            var data = json.RootElement.GetProperty("data");
+
+            foreach (var item in data.EnumerateArray())
+            {
+                if (item.GetProperty("name").GetString().Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return $"{item.GetProperty("name")} is rank {item.GetProperty("rank")} with {item.GetProperty("points").GetInt64().ToString("N0")}$ points";
+                }
+            }
+            return $"{name} not found in top 10k";
+        }
+
+
     }
 }
