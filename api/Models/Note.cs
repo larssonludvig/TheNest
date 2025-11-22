@@ -10,5 +10,7 @@ namespace TheNestAPI.Models
         public int offset { get; set; }
         public bool Used { get; set; } = false;
         public DateTime? Created { get; set; }
+        public string? Username { get; set; }
+        public string? ClipURI { get; set; }
     }
 }

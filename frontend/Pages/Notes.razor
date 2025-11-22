@@ -70,7 +70,10 @@
                         }
                     </TemplateColumn>
                     <TemplateColumn Title="Clip">
-                        <a style="color: #DBDBDB" href=@context.ClipURI>Clip</a>
+                        @if(!string.IsNullOrEmpty(context.ClipURI))
+                        {
+                            <a style="color: #DBDBDB" href=@context.ClipURI>Clip</a>
+                        }
                     </TemplateColumn>
                     <TemplateColumn Title="Used">
                         <Switch @bind-value="context.Used" @onclick=@(() => { ToggleUsed(context.Id); }) />

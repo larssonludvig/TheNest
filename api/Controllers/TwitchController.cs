@@ -38,11 +38,11 @@ namespace TheNestAPI.Controllers
             return data.GetArrayLength() > 0; // if array is not empty, streamer is live
         }
 
-        [HttpGet("arccountdown")]
+        [HttpGet("dreamhack")]
         public async Task<ActionResult<string>> getArcCountdown()
         {
             DateTime today = DateTime.Today;
-            DateTime targetDate = new DateTime(today.Year, 10, 30);
+            DateTime targetDate = new DateTime(today.Year, 11, 24);
             TimeSpan difference = targetDate - today;
             return difference.Days.ToString();
         }
