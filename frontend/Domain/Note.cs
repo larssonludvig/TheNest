@@ -9,5 +9,7 @@ namespace Domain
         public string ElapsedTime { get; set; } = "";
         public int Offset { get; set; }
         public bool Used { get; set; } = false;
+        public string ClipURI { get; set; } = "";
+        public string Username { get; set; } = "";
     }
 }

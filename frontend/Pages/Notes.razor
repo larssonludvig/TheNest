@@ -62,11 +62,15 @@
                     @* <PropertyColumn Title="Elapsed" Property="@(x => x.ElapsedTime)" /> *@
                     @* <PropertyColumn Title="Offset [min]" Property="@(x => x.Offset)" /> *@
                     <PropertyColumn Title="Note" Property="@(x => x.Description)" />
-                    <TemplateColumn Title="Link">
+                    <PropertyColumn Title="Username" Property="@(x => x.Username)" />
+                    <TemplateColumn Title="VOD">
                         @{
                             string link = $"https://twitch.tv/videos/{context.StreamId}?t={context.ElapsedTime}";
-                            <a style="color: #DBDBDB" href=@link>VOD</a>
+                            <a style="color: #DBDBDB" href=@link>Twitch</a>
                         }
+                    </TemplateColumn>
+                    <TemplateColumn Title="Clip">
+                        <a style="color: #DBDBDB" href=@context.ClipURI>Clip</a>
                     </TemplateColumn>
                     <TemplateColumn Title="Used">
                         <Switch @bind-value="context.Used" @onclick=@(() => { ToggleUsed(context.Id); }) />
