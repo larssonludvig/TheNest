@@ -66,6 +66,37 @@ namespace TheNestAPI.Controllers
                 return Unauthorized("Invalid auth token.");
             }
 
+            note = await addVODInfo(note);
+
+            _context.Notes.Add(note);
+            await _context.SaveChangesAsync();
+
+            return await _context.Notes
+                .Where(x => DateTime.Compare(DateTime.Now.AddDays(-14), x.Created ?? DateTime.Now.AddDays(-15)) <= 0)
+                .ToListAsync();
+        }
+
+        [HttpPut("bot")]
+        public async Task<ActionResult<bool>> createNoteBot([FromBody] BotNote data)
+        {
+            Note note = new Note
+            {
+                Description = data.Description,
+                Username = data.Username,
+                ClipURI = data.ClipURI,
+                offset = 0
+            };
+
+            note = await addVODInfo(note);
+
+            _context.Notes.Add(note);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        private async Task<Note> addVODInfo(Note note)
+        {
             using var client = new HttpClient();
             string clientId = _configuration["Twitch:ClientId"];
             string token = _configuration["Twitch:Token"];
@@ -93,13 +124,8 @@ namespace TheNestAPI.Controllers
             data = json.RootElement.GetProperty("data");
 
             note.StreamId = data[0].GetProperty("id").ToString();
-
-            _context.Notes.Add(note);
-            await _context.SaveChangesAsync();
-
-            return await _context.Notes
-                .Where(x => DateTime.Compare(DateTime.Now.AddDays(-14), x.Created ?? DateTime.Now.AddDays(-15)) <= 0)
-                .ToListAsync();
+            
+            return note;
         }
 
         [HttpPost("{id}")]
