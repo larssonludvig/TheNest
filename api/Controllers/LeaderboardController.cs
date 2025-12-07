@@ -191,7 +191,7 @@ namespace TheNestAPI.Controllers
         public async Task<string> getUserString()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s/crossplay");
+            var response = await client.GetAsync($"https://api.the-finals-leaderboard.com/v1/leaderboard/s8/crossplay");
             var content = await response.Content.ReadAsStringAsync();
             var json = System.Text.Json.JsonDocument.Parse(content);
             var data = json.RootElement.GetProperty("data");
