@@ -50,17 +50,14 @@
                     <i class="bi bi-search" style="color: white;" />
                 </button>
             </span>
-            <p style="margin-left: 2rem; margin-right: 1rem;">Include old posts:</p>
-            <Switch @bind-value="includeOldPosts" @onclick=@(() => { includeOldPosts = !includeOldPosts; }) />
+            <p style="margin-left: 2rem; margin-right: 1rem;">Include used:</p>
+            <Switch @bind-value="includeUsedPosts" @onclick=@(() => { includeUsedPosts = !includeUsedPosts; FetchData(searchString); }) />
         </div>
         <div class="grid">
             @if (!loading)
             {
                 <QuickGrid Items="@notes" Pagination="@pagination">
                     <PropertyColumn Title="ID" Property="@(x => x.Id)" Sortable="true" InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Descending" IsDefaultSortColumn="true" Align="Align.Center" />
-                    @* <PropertyColumn Title="Stream" Property="@(x => x.StreamId)" Sortable="true" /> *@
-                    @* <PropertyColumn Title="Elapsed" Property="@(x => x.ElapsedTime)" /> *@
-                    @* <PropertyColumn Title="Offset [min]" Property="@(x => x.Offset)" /> *@
                     <PropertyColumn Title="Note" Property="@(x => x.Description)" />
                     <PropertyColumn Title="Username" Property="@(x => x.Username)" />
                     <TemplateColumn Title="VOD">
@@ -102,7 +99,7 @@
     private string textNote = "";
     private string searchString = "";
 
-    private bool includeOldPosts = false;
+    private bool includeUsedPosts = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -121,8 +118,9 @@
             { "Authorization", token}
         };
 
-        List<Note> res = await ApiService.Get<List<Note>>("notes/" + (includeOldPosts ? "?includeold=true" : ""), headers);
-        notes = res.Where(x => x.Description.ToLower().Contains(search.ToLower())).AsQueryable();
+        List<Note> res = await ApiService.Get<List<Note>>("notes/", headers);
+        UpdateNotes(res);
+
         loading = false;
         StateHasChanged();
     }
@@ -173,9 +171,18 @@
         };
 
         List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}", 1, headers);
-        notes = res.AsQueryable();
+        UpdateNotes(res);
 
         loading = false;
         StateHasChanged();
+    }
+
+    private void UpdateNotes(List<Note> res)
+    {
+        if (!includeUsedPosts)
+        {
+            res = res.Where(x => !x.Used).ToList();
+        }
+        notes = res.AsQueryable();
     }
 }

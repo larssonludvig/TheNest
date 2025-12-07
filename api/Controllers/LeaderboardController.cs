@@ -49,8 +49,6 @@ namespace TheNestAPI.Controllers
         [Route("{name}/history")]
         public async Task<ActionResult<LeaderboardHistory>> GetLeaderboardHistoryOfUser(string name, [FromQuery(Name = "from")] DateTime? from, [FromQuery(Name = "to")] DateTime? to)
         {
-            // DateTime now = DateTime.Now;
-
             List<LeaderboardLastWeek> res;
 
             if (from != null && to != null)
@@ -58,19 +56,12 @@ namespace TheNestAPI.Controllers
                 res = await _context.LeaderboardLastWeek
                     .Where(x =>
                         x.Name == name
-                    //  &&
-                    // x.Timestamp.HasValue &&
-                    // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                    // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
                     ).ToListAsync();
             }
             else
             {
                 res = await _context.LeaderboardLastWeek.Where(x =>
                     x.Name == name
-                // &&
-                // x.Timestamp.HasValue &&
-                // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 
@@ -95,19 +86,12 @@ namespace TheNestAPI.Controllers
                 res = await _context.LeaderboardLastWeek
                     .Where(x =>
                         x.RankPosition == 500
-                    // &&
-                    // x.Timestamp.HasValue &&
-                    // DateTime.Compare((DateTime)from, x.Timestamp.Value) <= 0 &&
-                    // DateTime.Compare((DateTime)to, x.Timestamp.Value) >= 0
                     ).ToListAsync();
             }
             else
             {
                 res = await _context.LeaderboardLastWeek.Where(x =>
                     x.RankPosition == 500
-                // &&
-                // x.Timestamp.HasValue &&
-                // DateTime.Compare(now.AddDays(-7), x.Timestamp.Value) <= 0
                 ).ToListAsync();
             }
 

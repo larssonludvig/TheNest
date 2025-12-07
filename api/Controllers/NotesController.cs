@@ -33,23 +33,8 @@ namespace TheNestAPI.Controllers
                 return Unauthorized("Invalid auth token.");
             }
 
-            bool includeOld = false;
-
-            string? includeOldHeader = Request.Headers["includeold"];
-
-            if (!string.IsNullOrWhiteSpace(includeOldHeader) && bool.TryParse(includeOldHeader, out bool parsedValue))
-            {
-                includeOld = parsedValue;
-            }
-
-            if (includeOld)
-            {
-                return await _context.Notes.ToListAsync();
-            }
             return await _context.Notes
-                .Where(x => DateTime.Compare(DateTime.Now.AddDays(-14), x.Created ?? DateTime.Now.AddDays(-15)) <= 0)
-                .ToListAsync();
-                
+                .ToListAsync();    
         }
 
         [HttpPut]
