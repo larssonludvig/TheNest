@@ -15,8 +15,8 @@ APP_ID = ''
 APP_SECRET = ''
 USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
 TARGET_CHANNEL = ''
-TOKEN = ""
-REFRESH_TOKEN = ""
+TOKEN = ''
+REFRESH_TOKEN = ''
 
 CHAT = None
 _pending_clip = {}
@@ -25,8 +25,6 @@ async def on_message(msg: ChatMessage):
     text = (msg.text or "").strip()
     user_name = (getattr(msg, "user", None).name if getattr(msg, "user", None) else "").lower()
     room = None
-
-    print(f"{user_name}: {text}")
 
     if hasattr(msg, "room") and msg.room:
         room = getattr(msg.room, "name", msg.room)
@@ -37,10 +35,46 @@ async def on_message(msg: ChatMessage):
     room = str(room).lower()
 
     if re.match(r'^\s*!bot\b', text, re.IGNORECASE):
-        print("Bot command received, staying silent.")
         if CHAT:
             await CHAT.send_message(room, "Shhhhh, I am not here...")
         return
+
+    m = re.match(r'^\s*!ruby\b', text, re.IGNORECASE)
+    if m:
+        requester = (getattr(msg, "user", None).name if getattr(msg, "user", None) else "unknown")
+        try:
+            response = requests.get(f"https://api.plopparn.tv/leaderboard/ruby/string", timeout=5)
+            if response.status_code == 200:
+                reply = response.text.strip()
+            else:
+                reply = f"@{requester}, could not find ruby."
+        except Exception as e:
+            reply = f"@{requester}, error when fetching ruby."
+            print(f"[{room}] Exception while fetching rank: {e}")
+        if CHAT:
+            await CHAT.send_message(room, reply)
+        return
+
+    m = re.match(r'^\s*!rank\b(?:\s+(.*))?$', text, re.IGNORECASE)
+    if m:
+        user = (m.group(1) or "").strip()
+        if not user:
+            user = "twitch_plopparn"
+        requester = (getattr(msg, "user", None).name if getattr(msg, "user", None) else "unknown")
+        print(f"[{room}] Rank command from {requester!s}: user='{user}'")
+        try:
+            response = requests.get(f"https://api.plopparn.tv/leaderboard/{user}/string", timeout=5)
+            if response.status_code == 200:
+                reply = response.text.strip()
+            else:
+                reply = f"@{requester}, could not fetch rank for {user}."
+        except Exception as e:
+            reply = f"@{requester}, error fetching rank for {user}."
+            print(f"[{room}] Exception while fetching rank: {e}")
+        if CHAT:
+            await CHAT.send_message(room, reply)
+        return
+
 
     m = re.match(r'^\s*!clip\b(?:\s+(.*))?$', text, re.IGNORECASE)
     if m:
