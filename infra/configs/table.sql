@@ -101,7 +101,9 @@ INSERT INTO Weapons (Name, Heavy, Medium, Light) VALUES
 ('M26_Matter', FALSE, FALSE, TRUE),
 ('ARN-220', FALSE, FALSE, TRUE),
 ('CB-01_Repeater', FALSE, TRUE, FALSE),
-('M134_Minigun', TRUE, FALSE, FALSE);
+('M134_Minigun', TRUE, FALSE, FALSE),
+('BFR_Titan', TRUE, FALSE, FALSE),
+('P90', FALSE, TRUE, FALSE);
 
 
 CREATE TABLE Gadgets (
