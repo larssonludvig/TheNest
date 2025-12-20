@@ -23,23 +23,26 @@
 
 @* Season radio buttons *@
             <div class="radio-group">
-                <div class="radio-button" @onclick="@(() => SetSeason("s8"))">
-                    <input type="radio" name="s8" checked="@(season == "s8")" />
-                    <label for="s8">Ranked</label>
+                <div class="radio-button" @onclick="@(() => SetSeason("s9"))">
+                    <input type="radio" name="s9" checked="@(season == "s9")" />
+                    <label for="s9">Ranked</label>
                 </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("s8worldtour"))">
-                    <input type="radio" name="s8worldtour" checked="@(season == "s8worldtour")" />
-                    <label for="s8worldtour">World Tour</label>
+                <div class="radio-button" @onclick="@(() => SetSeason("s9worldtour"))">
+                    <input type="radio" name="s9worldtour" checked="@(season == "s9worldtour")" />
+                    <label for="s9worldtour">World Tour</label>
                 </div>
-                <div class="radio-button" @onclick="@(() => SetSeason("s8sponsor"))">
-                    <input type="radio" name="s8sponsor" checked="@(season == "s8sponsor")" />
-                    <label for="s8sponsor">Sponsor</label>
+                <div class="radio-button" @onclick="@(() => SetSeason("s9sponsor"))">
+                    <input type="radio" name="s9sponsor" checked="@(season == "s9sponsor")" />
+                    <label for="s9sponsor">Sponsor</label>
                 </div>
             </div>
 
             <Dropdown>
                 <DropdownToggleButton>Old Leaderboards</DropdownToggleButton>
                 <DropdownMenu>
+                    <DropdownItem @onclick="@(() => SetSeason("s8"))">Season 8 Ranked</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s8worldtour"))">Season 8 World Tour</DropdownItem>
+                    <DropdownItem @onclick="@(() => SetSeason("s8sponsor"))">Season 8 Sponsor</DropdownItem>
                     <DropdownItem @onclick="@(() => SetSeason("s7"))">Season 7 Ranked</DropdownItem>
                     <DropdownItem @onclick="@(() => SetSeason("s7worldtour"))">Season 7 World Tour</DropdownItem>
                     <DropdownItem @onclick="@(() => SetSeason("s7sponsor"))">Season 7 Sponsor</DropdownItem>
@@ -208,7 +211,7 @@
 
 @code {
     [Parameter, SupplyParameterFromQuery]
-    public string season { get; set; } = "s8";
+    public string season { get; set; } = "s9";
 
     private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private IQueryable<Data>? data = null;
@@ -231,7 +234,7 @@
         StateHasChanged();
 
         if (string.IsNullOrEmpty(season))
-            season = "s8";
+            season = "s9";
 
         string baseUrl = "https://api.the-finals-leaderboard.com/";
         string endpoint = "";
