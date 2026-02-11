@@ -119,6 +119,12 @@ async def on_message(msg: ChatMessage):
                         )
                         if response.status_code == 200:
                             print(f"[{room}] Successfully sent clip note to API.")
+                            if CHAT:
+                                response = requests.get(f"https://api.plopparn.tv/notes/{requester}", timeout=5)
+                                if response.status_code == 200:
+                                    used_count = response.json()
+                                    reply = f"@{requester}, Thank you for clipping! Your clips have been used {used_count} times."
+                                    await CHAT.send_message(room, reply)
                         else:
                             print(f"[{room}] Failed to send clip note to API. Status code: {response.status_code}")
                     except Exception as e:
