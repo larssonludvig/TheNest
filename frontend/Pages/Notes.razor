@@ -19,18 +19,6 @@
         <div class="separator mt-2 mb-2" />
         <h3>New Note</h3>
         <textarea placeholder="note..." rows="4" cols="50" @bind="@textNote" />
-        @* <div style="display: flex; gap: 1rem; align-items: center;">
-            <p>Offset: </p>
-            <Dropdown>
-                <DropdownToggleButton>@offset min</DropdownToggleButton>
-                <DropdownMenu>
-                    <DropdownItem @onclick="@(() => offset = 1)">1 min</DropdownItem>
-                    <DropdownItem @onclick="@(() => offset = 2)">2 min</DropdownItem>
-                    <DropdownItem @onclick="@(() => offset = 5)">5 min</DropdownItem>
-                    <DropdownItem @onclick="@(() => offset = 10)">10 min</DropdownItem>
-                </DropdownMenu>
-            </Dropdown>
-        </div> *@
         <div style="display: flex; gap: 1rem; align-items: center;">
             <button class="large-button p-2" style="font-size: medium;" @onclick="CreateNote">Create Note</button>
             @if (creating)
@@ -74,6 +62,9 @@
                     </TemplateColumn>
                     <TemplateColumn Title="Used">
                         <Switch @bind-value="context.Used" @onclick=@(() => { ToggleUsed(context.Id); }) />
+                    </TemplateColumn>
+                    <TemplateColumn Title="Processed">
+                        <Switch @bind-value="context.Processed" @onclick=@(() => { ToggleProcessed(context.Id); }) />
                     </TemplateColumn>
                 </QuickGrid>
                 <Paginator State=pagination />
@@ -170,7 +161,39 @@
             { "Authorization", token}
         };
 
-        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}", 1, headers);
+        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}/used", 1, headers);
+        UpdateNotes(res);
+
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async Task ToggleProcessed(int id)
+    {
+        loading = true;
+        StateHasChanged();
+
+        Dictionary<string, string> headers = new Dictionary<string, string> {
+            { "Authorization", token}
+        };
+
+        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}/processed", 1, headers);
+        UpdateNotes(res);
+
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async Task ToggleDeleted(int id)
+    {
+        loading = true;
+        StateHasChanged();
+
+        Dictionary<string, string> headers = new Dictionary<string, string> {
+            { "Authorization", token}
+        };
+
+        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}/delete", 1, headers);
         UpdateNotes(res);
 
         loading = false;

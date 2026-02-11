@@ -34,6 +34,7 @@ namespace TheNestAPI.Controllers
             }
 
             return await _context.Notes
+                .Where(x => x.Deleted == false)
                 .ToListAsync();    
         }
 
@@ -90,6 +91,7 @@ namespace TheNestAPI.Controllers
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var response = await client.GetAsync($"https://api.twitch.tv/helix/streams?user_login=plopparntv");
+
             var content = await response.Content.ReadAsStringAsync();
 
             var json = System.Text.Json.JsonDocument.Parse(content);
@@ -113,7 +115,7 @@ namespace TheNestAPI.Controllers
             return note;
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("{id}/used")]
         public async Task<ActionResult<List<Note>>> ToggleUsedStatus(int id)
         {
             string authToken = Request.Headers["Authorization"];
@@ -139,6 +141,70 @@ namespace TheNestAPI.Controllers
             }
 
             return NotFound($"No note with id \"{id}\" found.");
+        }
+
+        [HttpPost("{id}/processed")]
+        public async Task<ActionResult<List<Note>>> ToggleProcessedStatus(int id)
+        {
+            string authToken = Request.Headers["Authorization"];
+            string storedToken = await _context.Generic
+                .Where(x => x.Key == "notesAuth")
+                .Select(x => x.Value)
+                .FirstOrDefaultAsync();
+
+            if (storedToken == null || authToken != storedToken)
+            {
+                return Unauthorized("Invalid auth token.");
+            }
+
+            var entity = await _context.Notes
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (entity != null)
+            {
+                entity.Processed = !entity.Processed;
+                await _context.SaveChangesAsync();
+                return await _context.Notes.ToListAsync();
+            }
+
+            return NotFound($"No note with id \"{id}\" found.");
+        }
+
+        [HttpPost("{id}/delete")]
+        public async Task<ActionResult<List<Note>>> ToggleDeletedStatus(int id)
+        {
+            string authToken = Request.Headers["Authorization"];
+            string storedToken = await _context.Generic
+                .Where(x => x.Key == "notesAuth")
+                .Select(x => x.Value)
+                .FirstOrDefaultAsync();
+
+            if (storedToken == null || authToken != storedToken)
+            {
+                return Unauthorized("Invalid auth token.");
+            }
+
+            var entity = await _context.Notes
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (entity != null)
+            {
+                entity.Deleted = !entity.Deleted;
+                await _context.SaveChangesAsync();
+                return await _context.Notes.ToListAsync();
+            }
+
+            return NotFound($"No note with id \"{id}\" found.");
+        }
+
+        [HttpGet("{user}")]
+        public async Task<ActionResult<int>> GetUserNoteUsedCount(string user)
+        {
+            return await _context.Notes
+                .Where(x => x.Username.ToLower() == user.ToLower() && x.Used == true)
+                .CountAsync();
         }
     }
 }

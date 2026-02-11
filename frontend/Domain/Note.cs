@@ -11,5 +11,7 @@ namespace Domain
         public bool Used { get; set; } = false;
         public string ClipURI { get; set; } = "";
         public string Username { get; set; } = "";
+        public bool Processed { get; set; } = false;
+        public bool Deleted { get; set; } = false;
     }
 }

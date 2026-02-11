@@ -12,5 +12,7 @@ namespace TheNestAPI.Models
         public DateTime? Created { get; set; }
         public string? Username { get; set; }
         public string? ClipURI { get; set; }
+        public bool Processed { get; set; } = false;
+        public bool Deleted { get; set; } = false;
     }
 }
