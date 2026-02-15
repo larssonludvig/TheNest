@@ -20,7 +20,7 @@ namespace TheNestAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Note>>> getNotes()
+        public async Task<ActionResult<List<Note>>> GetNotes()
         {
             string authToken = Request.Headers["Authorization"];
             string storedToken = await _context.Generic
@@ -33,9 +33,7 @@ namespace TheNestAPI.Controllers
                 return Unauthorized("Invalid auth token.");
             }
 
-            return await _context.Notes
-                .Where(x => x.Deleted == false)
-                .ToListAsync();    
+            return await GetNonDeletedNotes();
         }
 
         [HttpPut]
@@ -57,9 +55,7 @@ namespace TheNestAPI.Controllers
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
-            return await _context.Notes
-                .Where(x => DateTime.Compare(DateTime.Now.AddDays(-14), x.Created ?? DateTime.Now.AddDays(-15)) <= 0)
-                .ToListAsync();
+            return await GetNonDeletedNotes();
         }
 
         [HttpPut("bot")]
@@ -111,7 +107,7 @@ namespace TheNestAPI.Controllers
             data = json.RootElement.GetProperty("data");
 
             note.StreamId = data[0].GetProperty("id").ToString();
-            
+
             return note;
         }
 
@@ -137,7 +133,9 @@ namespace TheNestAPI.Controllers
             {
                 entity.Used = !entity.Used;
                 await _context.SaveChangesAsync();
-                return await _context.Notes.ToListAsync();
+                return await _context.Notes
+                    .Where(x => x.Id == id)
+                    .ToListAsync();
             }
 
             return NotFound($"No note with id \"{id}\" found.");
@@ -165,7 +163,9 @@ namespace TheNestAPI.Controllers
             {
                 entity.Processed = !entity.Processed;
                 await _context.SaveChangesAsync();
-                return await _context.Notes.ToListAsync();
+                return await _context.Notes
+                    .Where(x => x.Id == id)
+                    .ToListAsync();
             }
 
             return NotFound($"No note with id \"{id}\" found.");
@@ -193,7 +193,7 @@ namespace TheNestAPI.Controllers
             {
                 entity.Deleted = !entity.Deleted;
                 await _context.SaveChangesAsync();
-                return await _context.Notes.ToListAsync();
+                return await GetNonDeletedNotes();
             }
 
             return NotFound($"No note with id \"{id}\" found.");
@@ -203,8 +203,26 @@ namespace TheNestAPI.Controllers
         public async Task<ActionResult<int>> GetUserNoteUsedCount(string user)
         {
             return await _context.Notes
-                .Where(x => x.Username.ToLower() == user.ToLower() && x.Used == true)
-                .CountAsync();
+                .Where(
+                    x => x.Username.ToLower() == user.ToLower() &&
+                    x.Used == true &&
+                    x.Deleted == false
+                ).CountAsync();
+        }
+
+        private async Task<List<Note>> GetNonDeletedNotes()
+        {
+            return await _context.Notes
+                .Where(x =>
+                    x.Deleted == false &&
+                    (DateTime.Compare(DateTime.Now.AddDays(-14), x.Created ?? DateTime.Now.AddDays(-15)) <= 0 || x.ClipURI != null)
+                )
+                .ToListAsync();
+        }
+
+        private bool LessThanTwoWeeks(DateTime date)
+        {
+            return DateTime.Compare(DateTime.Now.AddDays(-14), date) <= 0;
         }
     }
 }
