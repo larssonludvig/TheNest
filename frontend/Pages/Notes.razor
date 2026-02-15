@@ -66,6 +66,9 @@
                     <TemplateColumn Title="Processed">
                         <Switch @bind-value="context.Processed" @onclick=@(() => { ToggleProcessed(context.Id); }) />
                     </TemplateColumn>
+                    <TemplateColumn Title="Delete">
+                        <Switch @bind-value="context.Deleted" @onclick=@(() => { ToggleDeleted(context.Id); }) />
+                    </TemplateColumn>
                 </QuickGrid>
                 <Paginator State=pagination />
             }
