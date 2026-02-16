@@ -17,14 +17,21 @@
         <button @onclick="SubmitToken">Submit</button>
         <div class="separator mt-2 mb-2" />
         <h3>New Note</h3>
-        <textarea placeholder="note..." rows="4" cols="50" @bind="@textNote" />
-        <div style="display: flex; gap: 1rem; align-items: center;">
-            <button class="large-button p-2" style="font-size: medium;" @onclick="CreateNote">Create Note</button>
-            @if (creating)
-            {
-                <Spinner Color="SpinnerColor.Primary" />
-            }
-        </div>
+        @if (ploppIsLive) 
+        {
+            <textarea placeholder="note..." rows="4" cols="50" @bind="@textNote" />
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button class="large-button p-2" style="font-size: medium;" @onclick="CreateNote">Create Note</button>
+                @if (creating)
+                {
+                    <Spinner Color="SpinnerColor.Primary" />
+                }
+            </div>
+        }
+        else
+        {
+            <p style="opacity: 0.8;">Plopparn is not live, notes cannot be created.</p>
+        }
         <div class="separator mt-2 mb-2" />
         <div style="display: flex; gap: 1rem; align-items: center;">
             <h3>Saved Notes</h3>
@@ -113,10 +120,13 @@
     private Modal confirmModal;
     private int noteToDeleteId = -1;
 
+    private bool ploppIsLive = false;
+
     protected override async Task OnInitializedAsync()
     {
         token = await localStorage.GetItemAsync<string>("notesAuth") ?? "";
         notes = default;
+        await GetLiveStatus();
         await FetchData();
     }
 
@@ -242,5 +252,12 @@
             res = res.Where(x => !x.Used).ToList();
         }
         notes = res.AsQueryable();
+    }
+
+    private async Task<bool> GetLiveStatus()
+    {
+        ploppIsLive = await ApiService.Get<bool>("twitch/live", null);
+
+        return ploppIsLive;
     }
 }
