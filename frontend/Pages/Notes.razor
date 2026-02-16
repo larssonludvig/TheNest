@@ -3,7 +3,6 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using Domain
 @using BlazorPanzoom
-@using Domain;
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using System.Globalization
 
@@ -29,7 +28,7 @@
         <div class="separator mt-2 mb-2" />
         <div style="display: flex; gap: 1rem; align-items: center;">
             <h3>Saved Notes</h3>
-            <i class="bi bi-arrow-clockwise h4" style="color: #DBDBDB;" @onclick=@(() => {FetchData();}) />
+            <i class="bi bi-arrow-clockwise h4" style="color: #DBDBDB;" @onclick=@(async () => { await FetchData(); }) />
         </div>
         <div class="p-2" style="display: flex; width: 100%; padding-right: 16px;">
             <span class="searchbar">
@@ -39,7 +38,7 @@
                 </button>
             </span>
             <p style="margin-left: 2rem; margin-right: 1rem;">Include used:</p>
-            <Switch @bind-value="includeUsedPosts" @onclick=@(() => { includeUsedPosts = !includeUsedPosts; FetchData(searchString); }) />
+            <Switch @bind-value="includeUsedPosts" @onclick=@(async () => { includeUsedPosts = !includeUsedPosts; await FetchData(searchString); }) />
         </div>
         <div class="grid">
             @if (!loading)
@@ -48,26 +47,32 @@
                     <PropertyColumn Title="ID" Property="@(x => x.Id)" Sortable="true" InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Descending" IsDefaultSortColumn="true" Align="Align.Center" />
                     <PropertyColumn Title="Note" Property="@(x => x.Description)" />
                     <PropertyColumn Title="Username" Property="@(x => x.Username)" />
-                    <TemplateColumn Title="VOD">
+                    <TemplateColumn Title="VOD" class="text-center">
                         @{
                             string link = $"https://twitch.tv/videos/{context.StreamId}?t={context.ElapsedTime}";
-                            <a style="color: #DBDBDB" href=@link>Twitch</a>
+                            <a href=@link><i class="bi bi-twitch" style="color: #DBDBDB; font-size: 1.5rem;" /></a>
                         }
                     </TemplateColumn>
-                    <TemplateColumn Title="Clip">
+                    <TemplateColumn Title="Clip" class="text-center">
                         @if(!string.IsNullOrEmpty(context.ClipURI))
                         {
-                            <a style="color: #DBDBDB" href=@context.ClipURI>Clip</a>
+                            <a href=@context.ClipURI><i class="bi bi-link-45deg" style="color: #DBDBDB; font-size: 1.5rem;" /></a>
                         }
                     </TemplateColumn>
-                    <TemplateColumn Title="Used">
-                        <Switch @bind-value="context.Used" @onclick=@(() => { ToggleUsed(context.Id); }) />
+                    <TemplateColumn Title="Used" class="text-center">
+                        <button class="btn btn-link border-white" style="padding: 0 6px;" @onclick=@(async () => { await ToggleUsed(context.Id); })>
+                            <i class="bi bi-check-lg" style="color: @(context.Used ? "#DBDBDB" : "#2B2B2B"); font-size: 1.5rem;" />
+                        </button>
                     </TemplateColumn>
-                    <TemplateColumn Title="Processed">
-                        <Switch @bind-value="context.Processed" @onclick=@(() => { ToggleProcessed(context.Id); }) />
+                    <TemplateColumn Title="Processed" class="text-center">
+                        <button class="btn btn-link border-white" style="padding: 0 6px;" @onclick=@(async () => { await ToggleProcessed(context.Id); })>
+                            <i class="bi bi-check-lg" style="color: @(context.Processed ? "#DBDBDB" : "#2B2B2B"); font-size: 1.5rem;" />
+                        </button>
                     </TemplateColumn>
-                    <TemplateColumn Title="Delete">
-                        <Switch @bind-value="context.Deleted" @onclick=@(() => { ToggleDeleted(context.Id); }) />
+                    <TemplateColumn Title="Delete" class="text-center">
+                        <button class="btn btn-link" @onclick=@(async () => { await ShowConfirmationModal(context.Id); })>
+                            <i class="bi bi-trash" style="color: #DBDBDB; font-size: 1.5rem;" />
+                        </button>
                     </TemplateColumn>
                 </QuickGrid>
                 <Paginator State=pagination />
@@ -82,6 +87,16 @@
     </div>
 </div>
 
+<Modal @ref="confirmModal" Title="Confirm Deletion" class="confirmation-modal">
+    <BodyTemplate>
+        Are you sure you want to delete note: @noteToDeleteId?
+    </BodyTemplate>
+    <FooterTemplate>
+        <button @onclick="@(async () => { await ToggleDeleted(noteToDeleteId); })">Confirm</button>
+        <button @onclick="HideConfirmationModal">Cancel</button>
+    </FooterTemplate>
+</Modal>
+
 @code {
     private int offset = 1;
     private IQueryable<Note>? notes = null;
@@ -94,6 +109,9 @@
     private string searchString = "";
 
     private bool includeUsedPosts = false;
+
+    private Modal confirmModal;
+    private int noteToDeleteId = -1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -164,8 +182,8 @@
             { "Authorization", token}
         };
 
-        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}/used", 1, headers);
-        UpdateNotes(res);
+        await ApiService.Post<List<Note>, int>($"notes/{id}/used", 1, headers);
+        await FetchData(searchString);
 
         loading = false;
         StateHasChanged();
@@ -180,11 +198,23 @@
             { "Authorization", token}
         };
 
-        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}/processed", 1, headers);
-        UpdateNotes(res);
+        await ApiService.Post<List<Note>, int>($"notes/{id}/processed", 1, headers);
+        await FetchData(searchString);
 
         loading = false;
         StateHasChanged();
+    }
+
+    private async Task ShowConfirmationModal(int id)
+    {
+        noteToDeleteId = id;
+        await confirmModal.ShowAsync();
+    }
+
+    private async Task HideConfirmationModal()
+    {
+        noteToDeleteId = -1;
+        await confirmModal.HideAsync();
     }
 
     private async Task ToggleDeleted(int id)
@@ -196,8 +226,10 @@
             { "Authorization", token}
         };
 
-        List<Note> res = await ApiService.Post<List<Note>, int>($"notes/{id}/delete", 1, headers);
-        UpdateNotes(res);
+        await ApiService.Post<List<Note>, int>($"notes/{id}/delete", 1, headers);
+        await FetchData(searchString);
+
+        await HideConfirmationModal();
 
         loading = false;
         StateHasChanged();

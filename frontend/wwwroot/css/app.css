@@ -527,3 +527,39 @@ article {
     margin-left: 4px;
     margin-right: 4px;
 }
+
+.confirmation-modal .modal-content {
+    background-color: #373737;
+    border: 1px solid #252525;
+    color: #DBDBDB;
+}
+
+.confirmation-modal .modal-header {
+    background-color: #373737 !important;
+    border-bottom: 1px solid #252525 !important;
+    color: #DBDBDB !important;
+}
+
+.confirmation-modal .modal-footer {
+    background-color: #373737 !important;
+    border-top: 1px solid #252525 !important;
+}
+
+.confirmation-modal button {
+    background-color: #1255cf;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bolder;
+    border-radius: 5px;
+}
+
+.confirmation-modal button:hover {
+    background-color: #0f47a1;
+    cursor: pointer;
+}
+
+.confirmation-modal i {
+    color: #DBDBDB;
+}
