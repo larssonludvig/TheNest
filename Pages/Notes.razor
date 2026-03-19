@@ -154,15 +154,14 @@
         Note newNote = new Note
         {
             Description = textNote,
-            Offset = offset
         };
 
         Dictionary<string, string> headers = new Dictionary<string, string> {
             { "Authorization", token}
         };
-
-        List<Note> res = await ApiService.Put<List<Note>, Note>("notes", newNote, headers);
-        notes = res.AsQueryable();
+    
+        await ApiService.Put<String, Note>("clip", newNote, headers);
+        await FetchData(searchString);
 
         textNote = "";
         creating = false;
