@@ -1,0 +1,22 @@
+@page "/clips/{code}"
+@inject NavigationManager _nav
+@inject ApiService _api
+@using Domain
+
+@code {
+    [Parameter]
+    public string? code { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(code))
+        {
+            _nav.NavigateTo("");
+        }
+
+        Console.WriteLine($"Code: {code}");
+
+        Link link = await _api.Get<Link>($"links/{code}", null);
+        _nav.NavigateTo(link.Url);
+    }
+}
