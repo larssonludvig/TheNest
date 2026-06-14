@@ -20,30 +20,28 @@
                     <i class="bi bi-house" style="color: #DBDBDB;"/>
                     <a class="menu-link">Home</a>
                 </div>
-                <div class="menu-item" style=@(currentPage == "/loadout" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/loadout");})>
+                @* <div class="menu-item" style=@(currentPage == "/loadout" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/loadout");})>
                     <i class="bi bi-pencil" style="color: #DBDBDB;" />
                     <a class="menu-link">Loadout</a>
-                </div>
-                <div class="menu-item" style=@(currentPage == "/randomizer" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/randomizer");})>
+                </div> *@
+                @* <div class="menu-item" style=@(currentPage == "/randomizer" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/randomizer");})>
                     <i class="bi bi-dice-5" style="color: #DBDBDB;" />
                     <a class="menu-link">Randomizer</a>
-                </div>
-                <div class="menu-item" style=@(currentPage == "/randomizer/options" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/randomizer/options");})>
-                    @* <i class="bi bi-gear" style="color: #DBDBDB;" /> *@
+                </div> *@
+                @* <div class="menu-item" style=@(currentPage == "/randomizer/options" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/randomizer/options");})>
                     <a class="submenu-link">Options</a>
-                </div>
+                </div> *@
                 <div class="menu-item" style=@(currentPage == "/leaderboard" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/leaderboard");})>
                     <i class="bi bi-bar-chart" style="color: #DBDBDB;" />
                     <a class="menu-link">Leaderboard</a>
                 </div>
-                <div class="menu-item" style=@(currentPage == "/clubs" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/clubs");})>
-                    @* <i class="bi bi-egg" style="color: #DBDBDB;" /> *@
+                @* <div class="menu-item" style=@(currentPage == "/clubs" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/clubs");})>
                     <a class="submenu-link">Clubs</a>
-                </div>
-                <div class="menu-item" style=@(currentPage == "/maps" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/maps");})>
+                </div> *@
+                @* <div class="menu-item" style=@(currentPage == "/maps" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/maps");})>
                     <i class="bi bi-map" style="color: #DBDBDB;" />
                     <a class="menu-link">Maps</a>
-                </div>
+                </div> *@
                 <div class="menu-item" style=@(currentPage == "/challenges" ? "background-color: #006bb7;" : "") onclick=@(() => {NavigateTo($"/challenges");})>
                     <i class="bi bi-rocket-takeoff" style="color: #DBDBDB;" />
                     <a class="menu-link">Challenges</a>
@@ -69,6 +67,9 @@
                     <a class="submenu-link">Privacy Policy</a>
                 </div>
             </nav>
+            <div style="width: 100vw; height: 2rem; background-color: rgb(228, 228, 39); color: black; display: flex; justify-content: center; align-items: center;">
+                <p style="padding: 0; margin: 0;">This site is being decommissioned due to no longer being maintained.</p>
+            </div>
             @Body
             <div class="nav-shadow" style=@(showNav ? "display: flex;" : "") onclick=@(() => {showNav = !showNav;}) />
         </article>

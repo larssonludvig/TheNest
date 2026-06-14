@@ -176,11 +176,11 @@
                                 </Span>               
                             </div>
                         </TemplateColumn>
-                        <TemplateColumn>
+                        @* <TemplateColumn>
                             <div style="display: flex; margin-right: 1rem;" onclick=@(() => {_nav.NavigateTo($"/users/{context.Name.Replace("#", "%23")}");})>
                                 <i class="bi bi-graph-up h2" style="margin: 0 !important; color: #DBDBDB;"/>
                             </div>
-                        </TemplateColumn>
+                        </TemplateColumn> *@
                     }
                 </QuickGrid>
             </div>
